@@ -28,6 +28,16 @@
     })->middleware(['auth', 'verified'])->name('shop');
 
 
+    Route::get('/preventivatore', function () {
+        return Inertia::render('Preventivatore');
+    })->middleware(['auth', 'verified'])->name('preventivatore');
+
+
+    Route::get('/aziende', function () {
+        return Inertia::render('Aziende');
+    })->middleware(['auth', 'verified'])->name('aziende');
+
+
     Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
