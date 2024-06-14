@@ -25,10 +25,10 @@ export default function Authenticated({user, header, children}) {
                                     Dashboard
                                 </NavLink>
 
-                                <NavLink href={route('pratiche')} active={route().current('pratiche')}>
+                                <NavLink href={route('pratiche.index')} active={route().current('pratiche.index')}>
                                     Pratiche
                                 </NavLink>
-                                
+
                                 <NavLink href={route('aziende')} active={route().current('aziende')}>
                                     Aziende
                                 </NavLink>
@@ -40,12 +40,6 @@ export default function Authenticated({user, header, children}) {
                                 <NavLink href={route('shop')} active={route().current('shop')}>
                                     Shop
                                 </NavLink>
-
-
-
-
-
-
 
 
                                 {
@@ -127,6 +121,22 @@ export default function Authenticated({user, header, children}) {
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
                             Dashboard
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink href={route('pratiche.index')} active={route().current('pratiche.index')}>
+                            Pratiche
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink href={route('aziende')} active={route().current('aziende')}>
+                            Aziende
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink href={route('preventivatore')} active={route().current('preventivatore')}>
+                            Preventivatore
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink href={route('shop')} active={route().current('shop')}>
+                            Shop
                         </ResponsiveNavLink>
                     </div>
 

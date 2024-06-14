@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Enum\UserRole\UserRole;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -25,10 +27,6 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function view()
-    {
-        dd(Auth::user());
-    }
 
     /**
      * Update the user's profile information.

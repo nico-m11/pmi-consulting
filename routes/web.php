@@ -1,5 +1,6 @@
 <?php
 
+    use App\Http\Controllers\PraticheController;
     use App\Http\Controllers\ProfileController;
     use Illuminate\Foundation\Application;
     use Illuminate\Support\Facades\Route;
@@ -14,35 +15,40 @@
         ]);
     });
 
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
 
-    Route::get('/pratiche', function () {
-        return Inertia::render('Pratiche');
-    })->middleware(['auth', 'verified'])->name('pratiche');
+    Route::middleware(['auth', 'verified'])->group(function () {
+        // -----
+        // DASHBOARD
+        // -----
+        Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
 
-
-    Route::get('/shop', function () {
-        return Inertia::render('Shop');
-    })->middleware(['auth', 'verified'])->name('shop');
-
-
-    Route::get('/preventivatore', function () {
-        return Inertia::render('Preventivatore');
-    })->middleware(['auth', 'verified'])->name('preventivatore');
-
-
-    Route::get('/aziende', function () {
-        return Inertia::render('Aziende');
-    })->middleware(['auth', 'verified'])->name('aziende');
-
-
-    Route::middleware('auth')->group(function () {
+        // -----
+        // USER PROFILE
+        // -----
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-        Route::get('/profile/view', [ProfileController::class, 'view'])->name('profile.view');
+
+        // -----
+        // SHOP
+        // -----
+        Route::get('/shop', fn() => Inertia::render('Shop'))->name('shop');
+
+        // -----
+        // PREVENTIVATORE
+        // -----
+        Route::get('/preventivatore', fn() => Inertia::render('Preventivatore'))->name('preventivatore');
+
+        // -----
+        // AZIENDE
+        // -----
+        Route::get('/aziende', fn() => Inertia::render('Aziende'))->name('aziende');
+
+        // -----
+        // PRATICHE
+        // -----
+        Route::get('/pratiche', [PraticheController::class, 'index'])->middleware('isUtente')->name('pratiche.index');
     });
+
 
     require __DIR__ . '/auth.php';
