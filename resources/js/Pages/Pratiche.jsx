@@ -1,16 +1,35 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
+import InputLabel from '@/Components/InputLabel';
+import TextInput from '@/Components/TextInput';
 import { useState } from 'react';
 
-export default function Pratiche({auth, data}) {
+export default function Pratiche({ auth }) {
+    const { data, setData, post, processing, errors } = useForm({
+        financingType: 'azienda',
+        fullName: '',
+        email: '',
+        phone: '',
+        address: '',
+        companyName: '',
+        businessType: '',
+        vatNumber: '',
+        profession: '',
+        amount: '',
+        purpose: '',
+        income: '',
+        employmentType: '',
+        employerName: '',
+        yearsOfService: '',
+    });
 
-    var nico = data;
-    console.log(nico)
-
-    const [financingType, setFinancingType] = useState('azienda');
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        post('/pratiche');
+    };
 
     const handleFinancingTypeChange = (event) => {
-        setFinancingType(event.target.value);
+        setData('financingType', event.target.value);
     };
 
     return (
@@ -24,18 +43,16 @@ export default function Pratiche({auth, data}) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <form className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <form className="grid grid-cols-1 sm:grid-cols-2 gap-6" onSubmit={handleSubmit}>
                                 <div className="mb-4 col-span-1 sm:col-span-2">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                                        Tipo di finanziamento
-                                    </label>
+                                    <InputLabel value="Tipo di finanziamento" />
                                     <div className="flex items-center">
                                         <input
                                             className="mr-2 leading-tight"
                                             type="radio"
                                             name="financingType"
                                             value="azienda"
-                                            checked={financingType === 'azienda'}
+                                            checked={data.financingType === 'azienda'}
                                             onChange={handleFinancingTypeChange}
                                         />
                                         <span className="text-gray-700">Azienda</span>
@@ -44,7 +61,7 @@ export default function Pratiche({auth, data}) {
                                             type="radio"
                                             name="financingType"
                                             value="piva"
-                                            checked={financingType === 'piva'}
+                                            checked={data.financingType === 'piva'}
                                             onChange={handleFinancingTypeChange}
                                         />
                                         <span className="text-gray-700">P.IVA</span>
@@ -52,112 +69,225 @@ export default function Pratiche({auth, data}) {
                                 </div>
 
                                 <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="fullName">
-                                        Nome completo
-                                    </label>
-                                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="fullName" type="text" placeholder="Nome completo" />
-                                </div>
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-                                        Indirizzo email
-                                    </label>
-                                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Email" />
-                                </div>
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
-                                        Numero di telefono
-                                    </label>
-                                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="phone" type="tel" placeholder="Telefono" />
-                                </div>
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="address">
-                                        Indirizzo di residenza
-                                    </label>
-                                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="address" type="text" placeholder="Indirizzo" />
+                                    <InputLabel htmlFor="fullName" value="Nome completo" />
+                                    <TextInput
+                                        id="fullName"
+                                        name="fullName"
+                                        value={data.fullName}
+                                        onChange={(e) => setData('fullName', e.target.value)}
+                                        type="text"
+                                        className="mt-1 block w-full"
+                                        placeholder="Nome completo"
+                                    />
+                                    {errors.fullName && <div className="text-red-600">{errors.fullName}</div>}
                                 </div>
 
-                                {financingType === 'azienda' && (
+                                <div className="mb-4">
+                                    <InputLabel htmlFor="email" value="Indirizzo email" />
+                                    <TextInput
+                                        id="email"
+                                        name="email"
+                                        value={data.email}
+                                        onChange={(e) => setData('email', e.target.value)}
+                                        type="email"
+                                        className="mt-1 block w-full"
+                                        placeholder="Email"
+                                    />
+                                    {errors.email && <div className="text-red-600">{errors.email}</div>}
+                                </div>
+
+                                <div className="mb-4">
+                                    <InputLabel htmlFor="phone" value="Numero di telefono" />
+                                    <TextInput
+                                        id="phone"
+                                        name="phone"
+                                        value={data.phone}
+                                        onChange={(e) => setData('phone', e.target.value)}
+                                        type="tel"
+                                        className="mt-1 block w-full"
+                                        placeholder="Telefono"
+                                    />
+                                    {errors.phone && <div className="text-red-600">{errors.phone}</div>}
+                                </div>
+
+                                <div className="mb-4">
+                                    <InputLabel htmlFor="address" value="Indirizzo di residenza" />
+                                    <TextInput
+                                        id="address"
+                                        name="address"
+                                        value={data.address}
+                                        onChange={(e) => setData('address', e.target.value)}
+                                        type="text"
+                                        className="mt-1 block w-full"
+                                        placeholder="Indirizzo"
+                                    />
+                                    {errors.address && <div className="text-red-600">{errors.address}</div>}
+                                </div>
+
+                                {data.financingType === 'azienda' && (
                                     <>
                                         <div className="mb-4">
-                                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="companyName">
-                                                Nome dell'azienda
-                                            </label>
-                                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="companyName" type="text" placeholder="Nome dell'azienda" />
+                                            <InputLabel htmlFor="companyName" value="Nome dell'azienda" />
+                                            <TextInput
+                                                id="companyName"
+                                                name="companyName"
+                                                value={data.companyName}
+                                                onChange={(e) => setData('companyName', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="Nome dell'azienda"
+                                            />
+                                            {errors.companyName && <div className="text-red-600">{errors.companyName}</div>}
                                         </div>
                                         <div className="mb-4">
-                                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="businessType">
-                                                Tipo di attività
-                                            </label>
-                                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="businessType" type="text" placeholder="Tipo di attività" />
+                                            <InputLabel htmlFor="businessType" value="Tipo di attività" />
+                                            <TextInput
+                                                id="businessType"
+                                                name="businessType"
+                                                value={data.businessType}
+                                                onChange={(e) => setData('businessType', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="Tipo di attività"
+                                            />
+                                            {errors.businessType && <div className="text-red-600">{errors.businessType}</div>}
                                         </div>
                                     </>
                                 )}
 
-                                {financingType === 'piva' && (
+                                {data.financingType === 'piva' && (
                                     <>
                                         <div className="mb-4">
-                                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="vatNumber">
-                                                Numero di Partita IVA
-                                            </label>
-                                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="vatNumber" type="text" placeholder="Numero di Partita IVA" />
+                                            <InputLabel htmlFor="vatNumber" value="Numero di Partita IVA" />
+                                            <TextInput
+                                                id="vatNumber"
+                                                name="vatNumber"
+                                                value={data.vatNumber}
+                                                onChange={(e) => setData('vatNumber', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="Numero di Partita IVA"
+                                            />
+                                            {errors.vatNumber && <div className="text-red-600">{errors.vatNumber}</div>}
                                         </div>
                                         <div className="mb-4">
-                                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="profession">
-                                                Professione
-                                            </label>
-                                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="profession" type="text" placeholder="Professione" />
+                                            <InputLabel htmlFor="profession" value="Professione" />
+                                            <TextInput
+                                                id="profession"
+                                                name="profession"
+                                                value={data.profession}
+                                                onChange={(e) => setData('profession', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="Professione"
+                                            />
+                                            {errors.profession && <div className="text-red-600">{errors.profession}</div>}
                                         </div>
                                     </>
                                 )}
 
                                 <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="amount">
-                                        Importo del finanziamento richiesto
-                                    </label>
-                                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="amount" type="number" placeholder="Importo" />
+                                    <InputLabel htmlFor="amount" value="Importo del finanziamento richiesto" />
+                                    <TextInput
+                                        id="amount"
+                                        name="amount"
+                                        value={data.amount}
+                                        onChange={(e) => setData('amount', e.target.value)}
+                                        type="number"
+                                        className="mt-1 block w-full"
+                                        placeholder="Importo"
+                                    />
+                                    {errors.amount && <div className="text-red-600">{errors.amount}</div>}
                                 </div>
+
                                 <div className="mb-4 col-span-1 sm:col-span-2">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="purpose">
-                                        Finalità del finanziamento
-                                    </label>
-                                    <textarea className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="purpose" placeholder="Finalità"></textarea>
+                                    <InputLabel htmlFor="purpose" value="Finalità del finanziamento" />
+                                    <textarea
+                                        id="purpose"
+                                        name="purpose"
+                                        value={data.purpose}
+                                        onChange={(e) => setData('purpose', e.target.value)}
+                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-1"
+                                        placeholder="Finalità"
+                                    />
+                                    {errors.purpose && <div className="text-red-600">{errors.purpose}</div>}
                                 </div>
+
                                 <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="income">
-                                        Reddito mensile
-                                    </label>
-                                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="income" type="number" placeholder="Reddito" />
+                                    <InputLabel htmlFor="income" value="Reddito mensile" />
+                                    <TextInput
+                                        id="income"
+                                        name="income"
+                                        value={data.income}
+                                        onChange={(e) => setData('income', e.target.value)}
+                                        type="number"
+                                        className="mt-1 block w-full"
+                                        placeholder="Reddito"
+                                    />
+                                    {errors.income && <div className="text-red-600">{errors.income}</div>}
                                 </div>
+
                                 <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="employmentType">
-                                        Tipo di impiego
-                                    </label>
-                                    <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="employmentType">
+                                    <InputLabel htmlFor="employmentType" value="Tipo di impiego" />
+                                    <select
+                                        id="employmentType"
+                                        name="employmentType"
+                                        value={data.employmentType}
+                                        onChange={(e) => setData('employmentType', e.target.value)}
+                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-1"
+                                    >
                                         <option value="full-time">Tempo pieno</option>
                                         <option value="part-time">Part-time</option>
                                         <option value="self-employed">Autonomo</option>
                                     </select>
+                                    {errors.employmentType && <div className="text-red-600">{errors.employmentType}</div>}
                                 </div>
+
                                 <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="employerName">
-                                        Nome del datore di lavoro
-                                    </label>
-                                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="employerName" type="text" placeholder="Datore di lavoro" />
+                                    <InputLabel htmlFor="employerName" value="Nome del datore di lavoro" />
+                                    <TextInput
+                                        id="employerName"
+                                        name="employerName"
+                                        value={data.employerName}
+                                        onChange={(e) => setData('employerName', e.target.value)}
+                                        type="text"
+                                        className="mt-1 block w-full"
+                                        placeholder="Datore di lavoro"
+                                    />
+                                    {errors.employerName && <div className="text-red-600">{errors.employerName}</div>}
                                 </div>
+
                                 <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="yearsOfService">
-                                        Anni di servizio
-                                    </label>
-                                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="yearsOfService" type="number" placeholder="Anni di servizio" />
+                                    <InputLabel htmlFor="yearsOfService" value="Anni di servizio" />
+                                    <TextInput
+                                        id="yearsOfService"
+                                        name="yearsOfService"
+                                        value={data.yearsOfService}
+                                        onChange={(e) => setData('yearsOfService', e.target.value)}
+                                        type="number"
+                                        className="mt-1 block w-full"
+                                        placeholder="Anni di servizio"
+                                    />
+                                    {errors.yearsOfService && <div className="text-red-600">{errors.yearsOfService}</div>}
                                 </div>
+
                                 <div className="mb-4 col-span-1 sm:col-span-2">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="documents">
-                                        Documenti richiesti
-                                    </label>
-                                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="documents" type="file" multiple />
+                                    <InputLabel htmlFor="documents" value="Documenti richiesti" />
+                                    <input
+                                        id="documents"
+                                        name="documents"
+                                        type="file"
+                                        multiple
+                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-1"
+                                    />
                                 </div>
+
                                 <div className="flex items-center justify-between col-span-1 sm:col-span-2">
-                                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                                    <button
+                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                        type="submit"
+                                        disabled={processing}
+                                    >
                                         Invia
                                     </button>
                                 </div>
