@@ -47,7 +47,7 @@
         // -----
         // PRATICHE
         // -----
-        Route::get('/pratiche', [PraticheController::class, 'index'])->middleware('isUtente')->name('pratiche.index');
+        Route::get('/pratiche', [PraticheController::class, 'index'])->name('pratiche.index');
     });
 
 

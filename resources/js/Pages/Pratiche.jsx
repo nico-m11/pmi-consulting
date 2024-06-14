@@ -6,7 +6,7 @@ export default function Pratiche({auth, data}) {
 
     var nico = data;
     console.log(nico)
-export default function Pratiche({ auth }) {
+
     const [financingType, setFinancingType] = useState('azienda');
 
     const handleFinancingTypeChange = (event) => {
