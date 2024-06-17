@@ -78,18 +78,20 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                     <h2 className="font-semibold text-xl text-gray-800 leading-tight">
                         Aziende
                     </h2>
-                    <Link
-                        className="bg-red-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-red-600"
-                        onClick={handleDownloadExcel}
-                    >
-                        Scarica Excel
-                    </Link>
-                    <Link
-                        // href={route("aziende.create")}
-                        className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
-                    >
-                        Add new
-                    </Link>
+                    <div className='flex justify-end items-center'>
+                        <Link
+                            className="bg-red-500 py-1 mr-2 px-3 text-white rounded shadow transition-all hover:bg-red-600"
+                            onClick={handleDownloadExcel}
+                        >
+                            Scarica Excel
+                        </Link>
+                        <Link
+                            // href={route("aziende.create")}
+                            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+                        >
+                            Add new
+                        </Link>
+                    </div>
                 </div>
             }
             >
