@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('aziendes', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement()->unique();
             $table->string('name');
             $table->string('indirizzo');
-            $table->timestamps();
+            $table->dateTime('created_at');
         });
     }
 
