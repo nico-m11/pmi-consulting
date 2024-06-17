@@ -1,7 +1,7 @@
 import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import {Head, Link} from "@inertiajs/react";
+import {Head, Link, router} from "@inertiajs/react";
 import TableHeading from "@/Components/TableHeading";
 import * as ExcelJS from "exceljs";
 import { saveAs } from 'file-saver';
@@ -20,8 +20,6 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
 
         router.get(route("aziende.index"), queryParams);
     };
-
-
 
     const handleDownloadExcel = async () => {
         const workbook = new ExcelJS.Workbook();
