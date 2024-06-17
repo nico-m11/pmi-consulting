@@ -1,5 +1,6 @@
 <?php
 
+    use App\Http\Controllers\AziendeController;
     use App\Http\Controllers\PraticheController;
     use App\Http\Controllers\ProfileController;
     use Illuminate\Foundation\Application;
@@ -42,7 +43,7 @@
         // -----
         // AZIENDE
         // -----
-        Route::get('/aziende', fn() => Inertia::render('Aziende'))->name('aziende');
+        Route::get('/aziende', [AziendeController::class, 'index'])->name('aziende.index');
 
         // -----
         // PRATICHE

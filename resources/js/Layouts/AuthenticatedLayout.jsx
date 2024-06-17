@@ -29,7 +29,8 @@ export default function Authenticated({user, header, children}) {
                                     Pratiche
                                 </NavLink>
 
-                                <NavLink href={route('aziende')} active={route().current('aziende')}>
+
+                                <NavLink href={route('aziende.index')} active={route().current('aziende.index')}>
                                     Aziende
                                 </NavLink>
 
@@ -127,7 +128,7 @@ export default function Authenticated({user, header, children}) {
                             Pratiche
                         </ResponsiveNavLink>
 
-                        <ResponsiveNavLink href={route('aziende')} active={route().current('aziende')}>
+                        <ResponsiveNavLink href={route('aziende.index')} active={route().current('aziende.index')}>
                             Aziende
                         </ResponsiveNavLink>
 
