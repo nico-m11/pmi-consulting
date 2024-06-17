@@ -4,11 +4,11 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import {Head, Link, router} from "@inertiajs/react";
 import TableHeading from "@/Components/TableHeading";
 import * as ExcelJS from "exceljs";
-import { saveAs } from 'file-saver';
+import {saveAs} from 'file-saver';
 
-export default function Aziende({auth, aziende, queryParams = null, success}) {
+export default function ListaUtenti({auth, users, queryParams = null, success}) {
 
-    const azienda = JSON.parse(aziende);
+    const user = JSON.parse(users);
 
     queryParams = queryParams || {};
     const searchFieldChanged = (name, value) => {
@@ -18,7 +18,7 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
             delete queryParams[name];
         }
 
-        router.get(route("aziende.index"), queryParams);
+        router.get(route("listaUtenti.index"), queryParams);
     };
 
     const handleDownloadExcel = async () => {
@@ -26,18 +26,19 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
         const worksheet = workbook.addWorksheet('Aziende');
 
         worksheet.columns = [
-            { header: 'id', key: 'id', width: 30 },
-            { header: 'name', key: 'name', width: 30 },
-            { header: 'indirizzo', key: 'indirizzo', width: 30 },
+            {header: 'id', key: 'id', width: 30},
+            {header: 'name', key: 'name', width: 30},
+            {header: 'email', key: 'email', width: 30},
+            {header: 'id_user_role', key: 'id_user_role', width: 30},
         ];
 
-        azienda.forEach((item) => {
+        user.forEach((item) => {
             worksheet.addRow(item);
         });
 
         const buffer = await workbook.xlsx.writeBuffer();
         const blob = new Blob([buffer], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-        saveAs(blob, 'aziende.xlsx');
+        saveAs(blob, 'listaUtenti.xlsx');
     };
 
     const onKeyPress = (name, e) => {
@@ -56,7 +57,7 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-         router.get(route("aziende.index"), queryParams);
+        router.get(route("listaUtenti.index"), queryParams);
     };
 
     const deleteProject = (project) => {
@@ -64,7 +65,7 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
             return;
         }
         router.delete(
-            route("aziende.destroy", project.id)
+            route("listaUtenti.destroy", project.id)
         );
     };
 
@@ -74,7 +75,7 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                        Aziende
+                        Lista Utenti
                     </h2>
                     <div className='flex justify-end items-center'>
                         <Link
@@ -92,9 +93,9 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                     </div>
                 </div>
             }
-            >
-        <Head title="Aziende"/>
-        <div className="py-12">
+        >
+            <Head title="Aziende"/>
+            <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     {success && (
                         <div className="bg-emerald-500 py-2 px-4 text-white rounded mb-4">
@@ -194,58 +195,56 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {azienda.map((az) => (
+                                    {user.map((u) => (
 
-                                    <tr
-                                        className="bg-white border-b  border-gray-700"
-                                        key={az.id}
-                                    >
-                                        <td className="px-3 py-2">
-                                            {az.id}
-                                        </td>
-                                        <td className="px-3 py-2">
-                                            <img
-                                                //    src={project.image_path} style={{ width: 60 }}
-                                            />
-                                        </td>
-                                        <th className="px-3 py-2 text-100 text-nowrap hover:underline">
-                                            <Link
-                                                   // href={route("project.show", aziende.id)}
-                                            >
-                                                {az.name}
+                                        <tr
+                                            className="bg-white border-b  border-gray-700"
+                                            key={u.id}
+                                        >
+                                            <td className="px-3 py-2">
+                                                {u.id}
+                                            </td>
+                                            <td className="px-3 py-2">
+                                                <img
+                                                    //    src={project.image_path} style={{ width: 60 }}
+                                                />
+                                            </td>
+                                            <th className="px-3 py-2 text-100 text-nowrap hover:underline">
+                                                <Link
+                                                    // href={route("project.show", aziende.id)}
+                                                >
+                                                    {u.name}
 
-                                            </Link>
-                                        </th>
-                                        <td className="px-3 py-2">
-                                            {'Pending'}
-                                        </td>
-                                        <td className="px-3 py-2 text-nowrap">
-                                            {/*{project.created_at}*/}
-                                            {'data di creazione'}
-                                        </td>
-                                        <td className="px-3 py-2 text-nowrap">
-                                            {az.indirizzo}
+                                                </Link>
+                                            </th>
+                                            <td className="px-3 py-2">
+                                                {'Pending'}
+                                            </td>
+                                            <td className="px-3 py-2 text-nowrap">
+                                                {u.id_user_role === 3 ? 'Utente' : u.id_user_role === 2 ? 'Agente' : 'Amministratore'}
+                                            </td>
+                                            <td className="px-3 py-2 text-nowrap">
+                                                {u.email}˘
 
-                                        </td>
-                                        <td className="px-3 py-2">
-                                            {/*{project.createdBy.name}*/}
-                                            {'data created by'}
-                                        </td>
-                                        <td className="px-3 py-2 text-nowrap">
-                                            <Link
-                                                //href={route("project.edit", aziende.id)}
-                                                className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
-                                            >
-                                                Edit
-                                            </Link>
-                                            <button
-                                                //onClick={(e) => deleteProject(aziende)}
-                                                className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
-                                            >
-                                                Delete
-                                            </button>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td className="px-3 py-2">
+                                                {u.created_at}
+                                            </td>
+                                            <td className="px-3 py-2 text-nowrap">
+                                                <Link
+                                                    //href={route("project.edit", aziende.id)}
+                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
+                                                >
+                                                    Edit
+                                                </Link>
+                                                <button
+                                                    //onClick={(e) => deleteProject(aziende)}
+                                                    className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
                                     ))}
                                     </tbody>
                                 </table>
