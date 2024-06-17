@@ -25,29 +25,64 @@ export default function Authenticated({user, header, children}) {
                                     Dashboard
                                 </NavLink>
 
-                                <NavLink href={route('pratiche.index')} active={route().current('pratiche.index')}>
-                                    Pratiche
-                                </NavLink>
+                                { // Viasualizzazione Utente
+                                    user.id_user_role === 3 ?
+                                        <>
+
+                                            <NavLink href={route('pratiche.index')}
+                                                     active={route().current('pratiche.index')}>
+                                                Pratiche
+                                            </NavLink>
 
 
-                                <NavLink href={route('aziende.index')} active={route().current('aziende.index')}>
-                                    Aziende
-                                </NavLink>
+                                            <NavLink href={route('aziende.index')}
+                                                     active={route().current('aziende.index')}>
+                                                Aziende
+                                            </NavLink>
 
-                                <NavLink href={route('preventivatore')} active={route().current('preventivatore')}>
-                                    Preventivatore
-                                </NavLink>
+                                            <NavLink href={route('preventivatore')}
+                                                     active={route().current('preventivatore')}>
+                                                Preventivatore
+                                            </NavLink>
 
-                                <NavLink href={route('shop')} active={route().current('shop')}>
-                                    Shop
-                                </NavLink>
+                                            <NavLink href={route('shop')} active={route().current('shop')}>
+                                                Shop
+                                            </NavLink>
+                                        </>
+                                        :
+                                        <></>
+                                }
 
 
-                                {
+                                { // Visualizzazione Amministratore
+                                    user.id_user_role === 1 ?
+                                        <>
+                                            <NavLink href={route('aziende.index')}
+                                                     active={route().current('aziende.index')}>
+                                                Liste Pratiche
+                                            </NavLink>
+                                            <NavLink href={route('preventivatore')}
+                                                     active={route().current('preventivatore')}>
+                                                Preventivatore
+                                            </NavLink>
+                                            <NavLink href={route('listaUtenti.index')}
+                                                     active={route().current('listaUtenti.index')}>
+                                                Lista Utenti
+                                            </NavLink>
+                                        </>
+                                        :
+                                        <></>
+                                }
+
+                                { // Visualizzazione Agente
                                     user.id_user_role === 2 ?
-                                        <NavLink href={route('listaPratiche')} active={route().current('lisaPratiche')}>
-                                            Liste Pratiche
-                                        </NavLink>
+                                        <>
+
+                                            <NavLink href={route('listaUtenti.index')}
+                                                     active={route().current('listaUtenti.index')}>
+                                                Lista Utenti
+                                            </NavLink>
+                                        </>
                                         :
                                         <></>
                                 }
@@ -124,21 +159,63 @@ export default function Authenticated({user, header, children}) {
                             Dashboard
                         </ResponsiveNavLink>
 
-                        <ResponsiveNavLink href={route('pratiche.index')} active={route().current('pratiche.index')}>
-                            Pratiche
-                        </ResponsiveNavLink>
+                        {/* Visualizzazione smartfone Utente*/}
+                        {user.id_user_role === 3 ?
+                            <>
+                                <ResponsiveNavLink href={route('pratiche.index')}
+                                                   active={route().current('pratiche.index')}>
+                                    Pratiche
+                                </ResponsiveNavLink>
 
-                        <ResponsiveNavLink href={route('aziende.index')} active={route().current('aziende.index')}>
-                            Aziende
-                        </ResponsiveNavLink>
+                                <ResponsiveNavLink href={route('aziende.index')}
+                                                   active={route().current('aziende.index')}>
+                                    Aziende
+                                </ResponsiveNavLink>
 
-                        <ResponsiveNavLink href={route('preventivatore')} active={route().current('preventivatore')}>
-                            Preventivatore
-                        </ResponsiveNavLink>
+                                <ResponsiveNavLink href={route('preventivatore')}
+                                                   active={route().current('preventivatore')}>
+                                    Preventivatore
+                                </ResponsiveNavLink>
 
-                        <ResponsiveNavLink href={route('shop')} active={route().current('shop')}>
-                            Shop
-                        </ResponsiveNavLink>
+                                <ResponsiveNavLink href={route('shop')} active={route().current('shop')}>
+                                    Shop
+                                </ResponsiveNavLink>
+                            </>
+                            :
+                            <></>}
+
+                        {/* Visualizzazione smartfone Amministratiore*/}
+                        {user.id_user_role === 1 ?
+                            <>
+                                <ResponsiveNavLink href={route('aziende.index')}
+                                                   active={route().current('aziende.index')}>
+                                    Aziende
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href={route('preventivatore')}
+                                                   active={route().current('preventivatore')}>
+                                    Preventivatore
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href={route('listaUtenti.index')}
+                                                   active={route().current('listaUtenti.index')}>
+                                    Lista Utenti
+                                </ResponsiveNavLink>
+                            </> : <></>}
+
+                        {/* Visualizzazione smartfone Agente*/}
+                        {user.id_user_role === 2 ?
+                            <>
+                                <ResponsiveNavLink href={route('aziende.index')}
+                                                   active={route().current('aziende.index')}>
+                                    Aziende
+                                </ResponsiveNavLink>
+
+                                <ResponsiveNavLink href={route('listaUtenti.index')}
+                                                   active={route().current('listaUtenti.index')}>
+                                    Lista Utenti
+                                </ResponsiveNavLink>
+                            </> : <></>}
+
+
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200">

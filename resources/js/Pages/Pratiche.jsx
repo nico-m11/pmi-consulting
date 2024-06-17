@@ -5,7 +5,6 @@ import { useState } from 'react';
 export default function Pratiche({auth, data}) {
 
     var nico = data;
-    console.log(nico)
 
     const [financingType, setFinancingType] = useState('azienda');
 
