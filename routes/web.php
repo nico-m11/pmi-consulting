@@ -4,6 +4,9 @@
     use App\Http\Controllers\PraticheController;
     use App\Http\Controllers\ProfileController;
     use App\Http\Controllers\UserController;
+    use App\Http\Middleware\RoleAgenteValidate;
+    use App\Http\Middleware\RoleAmministratoreValidate;
+    use App\Http\Middleware\RoleUserValidate;
     use Illuminate\Foundation\Application;
     use Illuminate\Support\Facades\Route;
     use Inertia\Inertia;
@@ -31,6 +34,7 @@
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::get('/user_list', [UserController::class, 'index'])
+             ->middleware(RoleAmministratoreValidate::class, RoleAgenteValidate::class)
              ->name('listaUtenti.index');
 
         // -----
@@ -43,6 +47,7 @@
         // PREVENTIVATORE
         // -----
         Route::get('/preventivatore', fn() => Inertia::render('Preventivatore'))
+             ->middleware(RoleUserValidate::class, RoleAmministratoreValidate::class)
              ->name('preventivatore');
 
         // -----
@@ -53,7 +58,8 @@
         // -----
         // PRATICHE
         // -----
-        Route::get('/pratiche', [PraticheController::class, 'index'])->name('pratiche.index');
+        Route::get('/pratiche', [PraticheController::class, 'index'])
+             ->name('pratiche.index');
     });
 
 

@@ -1,26 +1,31 @@
 <?php
 
+
     namespace App\Http\Middleware;
 
     use App\Enum\UserRole\UserRole;
     use Closure;
     use Illuminate\Http\Request;
-    use Illuminate\Routing\Controllers\Middleware;
-    use Symfony\Component\HttpFoundation\Response;
     use Illuminate\Support\Facades\Auth;
+    use Symfony\Component\HttpFoundation\Response;
 
-    class RoleUserValidate extends Middleware
+
+    class RoleUserValidate
     {
         /**
          * Handle an incoming request.
          *
-         * @param \Closure(Request): (\Symfony\Component\HttpFoundation\Response) $next
+         * @param Request $request
+         * @param Closure $next
+         *
+         * @return Response
          */
         public function handle(Request $request, Closure $next): Response
         {
-            if (Auth::User()->id_user_role !== UserRole::Utente) {
-                return response()->json('Opps! You do not have permission to access.');
+
+            if (Auth::User()->id_user_role !== UserRole::Utente->value) {
+            return response()->json('Opps! You do not have permission to access.', 401);
             }
-            return $next($request);
+                return $next($request);
         }
     }
