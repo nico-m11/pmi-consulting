@@ -34,7 +34,7 @@
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::get('/user_list', [UserController::class, 'index'])
-             ->middleware(RoleAmministratoreValidate::class, RoleAgenteValidate::class)
+           //  ->middleware(RoleAmministratoreValidate::class, RoleAgenteValidate::class)
              ->name('listaUtenti.index');
 
         // -----
@@ -47,7 +47,7 @@
         // PREVENTIVATORE
         // -----
         Route::get('/preventivatore', fn() => Inertia::render('Preventivatore'))
-             ->middleware(RoleUserValidate::class, RoleAmministratoreValidate::class)
+            // ->middleware(RoleUserValidate::class, RoleAmministratoreValidate::class)
              ->name('preventivatore');
 
         // -----
