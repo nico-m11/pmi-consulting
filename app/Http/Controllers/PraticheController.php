@@ -5,9 +5,10 @@
     use App\Http\Requests\StorePraticheRequest;
     use App\Http\Requests\UpdatePraticheRequest;
     use App\Models\Pratiche;
-    use Illuminate\Support\Facades\Auth;
+    use Illuminate\Database\Eloquent\Casts\Json;
     use Inertia\Inertia;
     use Inertia\Response;
+    use Inertia\ResponseFactory;
 
     class PraticheController extends Controller
     {
@@ -17,18 +18,20 @@
          */
         public function index(): Response
         {
-            $result = (new Pratiche)->index();
+            $pratiche = Pratiche::all();
+
             return Inertia::render('Pratiche', [
-                'data' => $result,
+                'pratiche' => Json::encode($pratiche),
+
             ]);
         }
 
         /**
          * Show the form for creating a new resource.
          */
-        public function create()
+        public function create(): Response|ResponseFactory
         {
-            //
+            return inertia("PraticheCreate");
         }
 
         /**
@@ -42,9 +45,11 @@
         /**
          * Display the specified resource.
          */
-        public function show(Pratiche $pratiche)
+        public function show(Pratiche $pratiche): Response
         {
-            //
+            return Inertia::render('PraticheShow', [
+                'pratiche' => $pratiche
+            ]);
         }
 
         /**
@@ -52,7 +57,9 @@
          */
         public function edit(Pratiche $pratiche)
         {
-            //
+            return Inertia::render('PraticheEdit', [
+                'pratiche' => $pratiche
+            ]);
         }
 
         /**

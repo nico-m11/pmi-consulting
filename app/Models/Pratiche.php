@@ -4,31 +4,20 @@
 
     use Illuminate\Database\Eloquent\Factories\HasFactory;
     use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
     class Pratiche extends Model
     {
         use HasFactory;
+        protected $fillable = ['name'];
 
-        public function index(): array
+        public function aziende(): BelongsTo
         {
-            $data = [
-                [
-                    'A' => 'paco',
-                    'B' => 'ccocs',
-                    'C' => 'dsjkda',
-                    'D' => 'dnsjk',
-                    'N' => 'nicola'
-                ],
-                [
-                    'C' => 'nsjdks',
-                    'B' => 'nskdjha'
-                ],
-                [
-                    'C' => 'nsjdbh',
-                    'B' => 'mskjd'
-                ],
-            ];
+            return $this->belongsTo(Aziende::class, 'id_azienda');
+        }
 
-            return $data;
+        public function user(): BelongsTo
+        {
+            return $this->belongsTo(User::class, 'id_user');
         }
     }

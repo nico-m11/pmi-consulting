@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import Board from '@asseinfo/react-kanban';
-import '@asseinfo/react-kanban/dist/styles.css';
+//import Board from '@asseinfo/react-kanban';
+//import '@asseinfo/react-kanban/dist/styles.css';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 

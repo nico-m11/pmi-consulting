@@ -210,10 +210,9 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                                         </td>
                                         <th className="px-3 py-2 text-100 text-nowrap hover:underline">
                                             <Link
-                                                   // href={route("project.show", aziende.id)}
+                                                    href={route("aziende.show", az.id)}
                                             >
                                                 {az.name}
-
                                             </Link>
                                         </th>
                                         <td className="px-3 py-2">

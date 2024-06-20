@@ -17,6 +17,7 @@ class AziendeController extends Controller
     public function index(): Response
     {
         $aziende = Aziende::all();
+
         return Inertia::render('Aziende', [
             'aziende' => Json::encode($aziende),
         ]);
@@ -43,7 +44,9 @@ class AziendeController extends Controller
      */
     public function show(Aziende $aziende)
     {
-        //
+        return Inertia::render('AziendeShow', [
+            'aziende' => $aziende
+        ]);
     }
 
     /**

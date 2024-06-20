@@ -1,297 +1,254 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
-import InputLabel from '@/Components/InputLabel';
-import TextInput from '@/Components/TextInput';
-import { useState } from 'react';
+import SelectInput from "@/Components/SelectInput";
+import TextInput from "@/Components/TextInput";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import {Head, Link, router} from "@inertiajs/react";
+import TableHeading from "@/Components/TableHeading";
+import * as ExcelJS from "exceljs";
+import { saveAs } from 'file-saver';
 
-export default function Pratiche({ auth }) {
-    const { data, setData, post, processing, errors } = useForm({
-        financingType: 'azienda',
-        fullName: '',
-        email: '',
-        phone: '',
-        address: '',
-        companyName: '',
-        businessType: '',
-        vatNumber: '',
-        profession: '',
-        amount: '',
-        purpose: '',
-        income: '',
-        employmentType: '',
-        employerName: '',
-        yearsOfService: '',
-    });
+export default function Pratiche({auth, pratiche, queryParams = null, success}) {
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        post('/pratiche');
+    const pratica = JSON.parse(pratiche);
+    queryParams = queryParams || {};
+    const searchFieldChanged = (name, value) => {
+        if (value) {
+            queryParams[name] = value;
+        } else {
+            delete queryParams[name];
+        }
+
+        router.get(route("pratiche.index"), queryParams);
     };
 
-    const handleFinancingTypeChange = (event) => {
-        setData('financingType', event.target.value);
+    const handleDownloadExcel = async () => {
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Pratiche');
+
+        worksheet.columns = [
+            { header: 'id', key: 'id', width: 30 },
+            { header: 'name', key: 'name', width: 30 },
+            // { header: 'indirizzo', key: 'indirizzo', width: 30 },
+        ];
+
+        pratica.forEach((item) => {
+            worksheet.addRow(item);
+        });
+
+        const buffer = await workbook.xlsx.writeBuffer();
+        const blob = new Blob([buffer], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+        saveAs(blob, 'pratiche.xlsx');
+    };
+
+    const onKeyPress = (name, e) => {
+        if (e.key !== "Enter") return;
+        searchFieldChanged(name, e.target.value);
+    };
+
+    const sortChanged = (name) => {
+        if (name === queryParams.sort_field) {
+            if (queryParams.sort_direction === "asc") {
+                queryParams.sort_direction = "desc";
+            } else {
+                queryParams.sort_direction = "asc";
+            }
+        } else {
+            queryParams.sort_field = name;
+            queryParams.sort_direction = "asc";
+        }
+        router.get(route("pratiche.index"), queryParams);
+    };
+
+    const deleteProject = (project) => {
+        if (!window.confirm("Are you sure you want to delete the project?")) {
+            return;
+        }
+        router.delete(
+            route("pratiche.destroy", project.id)
+        );
     };
 
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Pratiche</h2>}
+            header={
+                <div className="flex justify-between items-center">
+                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                        Pratiche
+                    </h2>
+                    <div className='flex justify-end items-center'>
+                        <Link
+                            className="bg-red-500 py-1 mr-2 px-3 text-white rounded shadow transition-all hover:bg-red-600"
+                            onClick={handleDownloadExcel}
+                        >
+                            Scarica Excel
+                        </Link>
+                        <Link
+                            href={route("pratiche.create")}
+                            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+                        >
+                            Add new
+                        </Link>
+                    </div>
+                </div>
+            }
         >
-            <Head title="Pratiche" />
-
+            <Head title="Pratiche"/>
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                            <form className="grid grid-cols-1 sm:grid-cols-2 gap-6" onSubmit={handleSubmit}>
-                                <div className="mb-4 col-span-1 sm:col-span-2">
-                                    <InputLabel value="Tipo di finanziamento" />
-                                    <div className="flex items-center">
-                                        <input
-                                            className="mr-2 leading-tight"
-                                            type="radio"
-                                            name="financingType"
-                                            value="azienda"
-                                            checked={data.financingType === 'azienda'}
-                                            onChange={handleFinancingTypeChange}
-                                        />
-                                        <span className="text-gray-700">Azienda</span>
-                                        <input
-                                            className="ml-4 mr-2 leading-tight"
-                                            type="radio"
-                                            name="financingType"
-                                            value="piva"
-                                            checked={data.financingType === 'piva'}
-                                            onChange={handleFinancingTypeChange}
-                                        />
-                                        <span className="text-gray-700">P.IVA</span>
-                                    </div>
-                                </div>
+                    {success && (
+                        <div className="bg-emerald-500 py-2 px-4 text-white rounded mb-4">
+                            {success}
+                        </div>
+                    )}
+                    <div className="bg-white  overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="p-6 ">
+                            <div className="overflow-auto">
+                                <table
+                                    className="w-full text-sm text-left rtl:text-right ">
+                                    <thead
+                                        className="text-xs text-gray-700 uppercase ">
+                                    <tr className="text-nowrap">
+                                        <TableHeading
+                                            name="id"
+                                            sort_field={queryParams.sort_field}
+                                            sort_direction={queryParams.sort_direction}
+                                            sortChanged={sortChanged}
+                                        >
+                                            ID
+                                        </TableHeading>
+                                        <th className="px-3 py-3">Image</th>
+                                        <TableHeading
+                                            name="name"
+                                            sort_field={queryParams.sort_field}
+                                            sort_direction={queryParams.sort_direction}
+                                            sortChanged={sortChanged}
+                                        >
+                                            Name
+                                        </TableHeading>
 
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="fullName" value="Nome completo" />
-                                    <TextInput
-                                        id="fullName"
-                                        name="fullName"
-                                        value={data.fullName}
-                                        onChange={(e) => setData('fullName', e.target.value)}
-                                        type="text"
-                                        className="mt-1 block w-full"
-                                        placeholder="Nome completo"
-                                    />
-                                    {errors.fullName && <div className="text-red-600">{errors.fullName}</div>}
-                                </div>
+                                        <TableHeading
+                                            name="status"
+                                            sort_field={queryParams.sort_field}
+                                            sort_direction={queryParams.sort_direction}
+                                            sortChanged={sortChanged}
+                                        >
+                                            Status
+                                        </TableHeading>
 
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="email" value="Indirizzo email" />
-                                    <TextInput
-                                        id="email"
-                                        name="email"
-                                        value={data.email}
-                                        onChange={(e) => setData('email', e.target.value)}
-                                        type="email"
-                                        className="mt-1 block w-full"
-                                        placeholder="Email"
-                                    />
-                                    {errors.email && <div className="text-red-600">{errors.email}</div>}
-                                </div>
+                                        <TableHeading
+                                            name="created_at"
+                                            sort_field={queryParams.sort_field}
+                                            sort_direction={queryParams.sort_direction}
+                                            sortChanged={sortChanged}
+                                        >
+                                            Create Date
+                                        </TableHeading>
 
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="phone" value="Numero di telefono" />
-                                    <TextInput
-                                        id="phone"
-                                        name="phone"
-                                        value={data.phone}
-                                        onChange={(e) => setData('phone', e.target.value)}
-                                        type="tel"
-                                        className="mt-1 block w-full"
-                                        placeholder="Telefono"
-                                    />
-                                    {errors.phone && <div className="text-red-600">{errors.phone}</div>}
-                                </div>
-
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="address" value="Indirizzo di residenza" />
-                                    <TextInput
-                                        id="address"
-                                        name="address"
-                                        value={data.address}
-                                        onChange={(e) => setData('address', e.target.value)}
-                                        type="text"
-                                        className="mt-1 block w-full"
-                                        placeholder="Indirizzo"
-                                    />
-                                    {errors.address && <div className="text-red-600">{errors.address}</div>}
-                                </div>
-
-                                {data.financingType === 'azienda' && (
-                                    <>
-                                        <div className="mb-4">
-                                            <InputLabel htmlFor="companyName" value="Nome dell'azienda" />
+                                        <TableHeading
+                                            name="indirizzo"
+                                            sort_field={queryParams.sort_field}
+                                            sort_direction={queryParams.sort_direction}
+                                            sortChanged={sortChanged}
+                                        >
+                                            Indirizzo
+                                        </TableHeading>
+                                        <th className="px-3 py-3">Created By</th>
+                                        <th className="px-3 py-3 text-right">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <thead
+                                        className="text-xs text-gray-700 uppercase bg-gray-50 dark:text-gray-400 border-b-2 border-gray-500">
+                                    <tr className="text-nowrap">
+                                        <th className="px-3 py-3"></th>
+                                        <th className="px-3 py-3"></th>
+                                        <th className="px-3 py-3">
                                             <TextInput
-                                                id="companyName"
-                                                name="companyName"
-                                                value={data.companyName}
-                                                onChange={(e) => setData('companyName', e.target.value)}
-                                                type="text"
-                                                className="mt-1 block w-full"
-                                                placeholder="Nome dell'azienda"
+                                                className="w-full"
+                                                defaultValue={queryParams.name}
+                                                placeholder="Project Name"
+                                                onBlur={(e) =>
+                                                    searchFieldChanged("name", e.target.value)
+                                                }
+                                                onKeyPress={(e) => onKeyPress("name", e)}
                                             />
-                                            {errors.companyName && <div className="text-red-600">{errors.companyName}</div>}
-                                        </div>
-                                        <div className="mb-4">
-                                            <InputLabel htmlFor="businessType" value="Tipo di attività" />
-                                            <TextInput
-                                                id="businessType"
-                                                name="businessType"
-                                                value={data.businessType}
-                                                onChange={(e) => setData('businessType', e.target.value)}
-                                                type="text"
-                                                className="mt-1 block w-full"
-                                                placeholder="Tipo di attività"
-                                            />
-                                            {errors.businessType && <div className="text-red-600">{errors.businessType}</div>}
-                                        </div>
-                                    </>
-                                )}
+                                        </th>
+                                        <th className="px-3 py-3">
+                                            <SelectInput
+                                                className="w-full"
+                                                defaultValue={queryParams.status}
+                                                onChange={(e) =>
+                                                    searchFieldChanged("status", e.target.value)
+                                                }
+                                            >
+                                                <option value="">Select Status</option>
+                                                <option value="pending">Pending</option>
+                                                <option value="in_progress">In Progress</option>
+                                                <option value="completed">Completed</option>
+                                            </SelectInput>
+                                        </th>
+                                        <th className="px-3 py-3"></th>
+                                        <th className="px-3 py-3"></th>
+                                        <th className="px-3 py-3"></th>
+                                        <th className="px-3 py-3"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {pratica.map((pr) => (
 
-                                {data.financingType === 'piva' && (
-                                    <>
-                                        <div className="mb-4">
-                                            <InputLabel htmlFor="vatNumber" value="Numero di Partita IVA" />
-                                            <TextInput
-                                                id="vatNumber"
-                                                name="vatNumber"
-                                                value={data.vatNumber}
-                                                onChange={(e) => setData('vatNumber', e.target.value)}
-                                                type="text"
-                                                className="mt-1 block w-full"
-                                                placeholder="Numero di Partita IVA"
-                                            />
-                                            {errors.vatNumber && <div className="text-red-600">{errors.vatNumber}</div>}
-                                        </div>
-                                        <div className="mb-4">
-                                            <InputLabel htmlFor="profession" value="Professione" />
-                                            <TextInput
-                                                id="profession"
-                                                name="profession"
-                                                value={data.profession}
-                                                onChange={(e) => setData('profession', e.target.value)}
-                                                type="text"
-                                                className="mt-1 block w-full"
-                                                placeholder="Professione"
-                                            />
-                                            {errors.profession && <div className="text-red-600">{errors.profession}</div>}
-                                        </div>
-                                    </>
-                                )}
+                                        <tr
+                                            className="bg-white border-b  border-gray-700"
+                                            key={pr.id}
+                                        >
+                                            <td className="px-3 py-2">
+                                                {pr.id}
+                                            </td>
+                                            <td className="px-3 py-2">
+                                                <img
+                                                    //    src={project.image_path} style={{ width: 60 }}
+                                                />
+                                            </td>
+                                            <th className="px-3 py-2 text-100 text-nowrap hover:underline">
+                                                <Link
+                                                    href={route("pratiche.show", pr.id)}
+                                                >
+                                                    {pr.name}
+                                                </Link>
+                                            </th>
+                                            <td className="px-3 py-2">
+                                                {'Pending'}
+                                            </td>
+                                            <td className="px-3 py-2 text-nowrap">
+                                                {/*{project.created_at}*/}
+                                                {'data di creazione'}
+                                            </td>
+                                            <td className="px-3 py-2 text-nowrap">
+                                                {pr.indirizzo}
 
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="amount" value="Importo del finanziamento richiesto" />
-                                    <TextInput
-                                        id="amount"
-                                        name="amount"
-                                        value={data.amount}
-                                        onChange={(e) => setData('amount', e.target.value)}
-                                        type="number"
-                                        className="mt-1 block w-full"
-                                        placeholder="Importo"
-                                    />
-                                    {errors.amount && <div className="text-red-600">{errors.amount}</div>}
-                                </div>
+                                            </td>
+                                            <td className="px-3 py-2">
+                                                {/*{project.createdBy.name}*/}
+                                                {'data created by'}
+                                            </td>
+                                            <td className="px-3 py-2 text-nowrap">
+                                                <Link
+                                                    href={route("pratiche.edit", pr.id)}
+                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
+                                                >
+                                                    Edit
+                                                </Link>
+                                                <button
+                                                    //onClick={(e) => deleteProject(aziende)}
+                                                    className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            </div>
 
-                                <div className="mb-4 col-span-1 sm:col-span-2">
-                                    <InputLabel htmlFor="purpose" value="Finalità del finanziamento" />
-                                    <textarea
-                                        id="purpose"
-                                        name="purpose"
-                                        value={data.purpose}
-                                        onChange={(e) => setData('purpose', e.target.value)}
-                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-1"
-                                        placeholder="Finalità"
-                                    />
-                                    {errors.purpose && <div className="text-red-600">{errors.purpose}</div>}
-                                </div>
-
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="income" value="Reddito mensile" />
-                                    <TextInput
-                                        id="income"
-                                        name="income"
-                                        value={data.income}
-                                        onChange={(e) => setData('income', e.target.value)}
-                                        type="number"
-                                        className="mt-1 block w-full"
-                                        placeholder="Reddito"
-                                    />
-                                    {errors.income && <div className="text-red-600">{errors.income}</div>}
-                                </div>
-
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="employmentType" value="Tipo di impiego" />
-                                    <select
-                                        id="employmentType"
-                                        name="employmentType"
-                                        value={data.employmentType}
-                                        onChange={(e) => setData('employmentType', e.target.value)}
-                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-1"
-                                    >
-                                        <option value="full-time">Tempo pieno</option>
-                                        <option value="part-time">Part-time</option>
-                                        <option value="self-employed">Autonomo</option>
-                                    </select>
-                                    {errors.employmentType && <div className="text-red-600">{errors.employmentType}</div>}
-                                </div>
-
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="employerName" value="Nome del datore di lavoro" />
-                                    <TextInput
-                                        id="employerName"
-                                        name="employerName"
-                                        value={data.employerName}
-                                        onChange={(e) => setData('employerName', e.target.value)}
-                                        type="text"
-                                        className="mt-1 block w-full"
-                                        placeholder="Datore di lavoro"
-                                    />
-                                    {errors.employerName && <div className="text-red-600">{errors.employerName}</div>}
-                                </div>
-
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="yearsOfService" value="Anni di servizio" />
-                                    <TextInput
-                                        id="yearsOfService"
-                                        name="yearsOfService"
-                                        value={data.yearsOfService}
-                                        onChange={(e) => setData('yearsOfService', e.target.value)}
-                                        type="number"
-                                        className="mt-1 block w-full"
-                                        placeholder="Anni di servizio"
-                                    />
-                                    {errors.yearsOfService && <div className="text-red-600">{errors.yearsOfService}</div>}
-                                </div>
-
-                                <div className="mb-4 col-span-1 sm:col-span-2">
-                                    <InputLabel htmlFor="documents" value="Documenti richiesti" />
-                                    <input
-                                        id="documents"
-                                        name="documents"
-                                        type="file"
-                                        multiple
-                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-1"
-                                    />
-                                </div>
-
-                                <div className="flex items-center justify-between col-span-1 sm:col-span-2">
-                                    <button
-                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                        type="submit"
-                                        disabled={processing}
-                                    >
-                                        Invia
-                                    </button>
-                                </div>
-                            </form>
                         </div>
                     </div>
                 </div>

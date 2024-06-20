@@ -53,13 +53,12 @@
         // -----
         // AZIENDE
         // -----
-        Route::get('/aziende', [AziendeController::class, 'index'])->name('aziende.index');
+        Route::resource('/aziende', AziendeController::class);
 
         // -----
         // PRATICHE
         // -----
-        Route::get('/pratiche', [PraticheController::class, 'index'])
-             ->name('pratiche.index');
+        Route::resource('/pratiche', PraticheController::class);
     });
 
 
