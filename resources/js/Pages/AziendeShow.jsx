@@ -11,16 +11,24 @@ export default function Show({auth, success, aziende, tasks, queryParams}) {
                     <h2 className="font-semibold text-xl text-800 dark:text-200 leading-tight">
                         {`Azienda "${aziende.name}"`}
                     </h2>
-                    <Link
-                        //href={route("project.edit", aziende.id)}
-                        className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
-                    >
-                        Edit
-                    </Link>
+                    <div className='flex justify-end items-center'>
+                        <Link
+                            className="bg-red-500 py-1 mr-2 px-3 text-white rounded shadow transition-all hover:bg-blue-600"
+                            href={route("aziende.index")}
+                        >
+                            indietro
+                        </Link>
+                        <Link
+                            href={route("aziende.edit", aziende.id)}
+                            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+                        >
+                            Edit
+                        </Link>
+                    </div>
                 </div>
             }
         >
-            <Head title={`Project "${aziende.name}"`}/>
+            <Head title={`Azienda "${aziende.name}"`}/>
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">

@@ -84,7 +84,7 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                             Scarica Excel
                         </Link>
                         <Link
-                            // href={route("aziende.create")}
+                            href={route("aziende.create")}
                             className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
                         >
                             Add new
@@ -232,7 +232,7 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                                         </td>
                                         <td className="px-3 py-2 text-nowrap">
                                             <Link
-                                                //href={route("project.edit", aziende.id)}
+                                                href={route("aziende.edit", az.id)}
                                                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                                             >
                                                 Edit
