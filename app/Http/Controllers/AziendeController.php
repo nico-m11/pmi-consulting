@@ -32,12 +32,16 @@
 
         /**
          * Show the form for creating a new resource.
+         *
+         * @param null $data
+         *
+         * @return Response
          */
-        public function create($data)
+        public function create($request = null)
         {
 
             return Inertia::render('AziendeCreate', [
-                'aziende' => $data
+                'aziende' => $request
             ]);
         }
 
