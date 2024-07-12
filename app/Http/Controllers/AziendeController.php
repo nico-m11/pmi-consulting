@@ -2,6 +2,7 @@
 
     namespace App\Http\Controllers;
 
+    use App\Enum\CreditSafeUrlEnum\CreditSafeUrl;
     use App\Http\Requests\StoreAziendeRequest;
     use App\Http\Requests\UpdateAziendeRequest;
     use App\Models\Aziende;
@@ -12,10 +13,10 @@
 
     class AziendeController extends Controller
     {
-        private const  URL_AUTENTICATION = 'https://connect.creditsafe.com/v1/authenticate';
-
         /**
          * Display a listing of the resource.
+         *
+         * @return Response
          */
         public function index(): Response
         {
@@ -29,11 +30,11 @@
         /**
          * Show the form for creating a new resource.
          *
-         * @param null $data
+         * @param null $request
          *
          * @return Response
          */
-        public function create($request = null)
+        public function create($request = null): Response
         {
             $result = [];
             if ($request !== null) {
@@ -80,7 +81,7 @@
         /**
          * Display the specified resource.
          */
-        public function show(Aziende $aziende)
+        public function show(Aziende $aziende): Response
         {
             return Inertia::render('AziendeShow', [
                 'aziende' => $aziende
@@ -90,7 +91,7 @@
         /**
          * Show the form for editing the specified resource.
          */
-        public function edit(Aziende $aziende)
+        public function edit(Aziende $aziende): Response
         {
             return Inertia::render(
                 'AziendeEdit',
@@ -126,10 +127,10 @@
             $vatNo = $request->vatNO;
             $token = $this->creditSaveToken();
             $curl  = curl_init();
-            $link  = 'https://connect.creditsafe.com/v1/companies?page=1&countries=IT&vatNo=';
+            $link  = '?page=1&countries=IT&vatNo=';
 
             curl_setopt_array($curl, array(
-                CURLOPT_URL            => $link . $vatNo,
+                CURLOPT_URL            => CreditSafeUrl::UrlCompaines->value . $link . $vatNo,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING       => '',
                 CURLOPT_MAXREDIRS      => 10,
@@ -155,7 +156,7 @@
         {
             $username     = $_ENV['CREDIT_SAFE_USERNAME'];
             $password     = $_ENV['CREDIT_SAFE_PASSWORD'];
-            $url          = self::URL_AUTENTICATION;
+            $url          = CreditSafeUrl::UrlAutenticazione->value;
             $method       = 'POST';
             $json_prepare = json_encode(
                 [

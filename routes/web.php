@@ -54,13 +54,13 @@
         // AZIENDE
         // -----
         Route::resource('/aziende', AziendeController::class);
+        Route::post('/azienda-create-2', [AziendeController::class, 'callCreditSafeService']);
 
         // -----
         // PRATICHE
         // -----
         Route::resource('/pratiche', PraticheController::class);
 
-        Route::post('/azienda-create-2', [AziendeController::class, 'callCreditSafeService']);
     });
 
 
