@@ -12,11 +12,7 @@
 
     class AziendeController extends Controller
     {
-
-
-        const  USERNAME_CREDIT_SAVE = "p.marasca@peels.it";
-        const  PASSWORD_CREDIT_SAVE = '7c$r2&FH*$`J#)6So7CYl#';
-        const  URL_AUTENTICATION    = 'https://connect.creditsafe.com/v1/authenticate';
+        private const  URL_AUTENTICATION = 'https://connect.creditsafe.com/v1/authenticate';
 
         /**
          * Display a listing of the resource.
@@ -39,10 +35,38 @@
          */
         public function create($request = null)
         {
-
-            return Inertia::render('AziendeCreate', [
-                'aziende' => $request
-            ]);
+            $result = [];
+            if ($request !== null) {
+                try {
+                    $array = $request->companies;
+                } catch (\Throwable) {
+                    $array = [];
+                }
+                foreach ($array as $value) {
+                    $result[] = [
+                        "id"           => $value->id,
+                        "country"      => $value->country,
+                        "regNo"        => $value->regNo,
+                        "safeNo"       => $value->safeNo,
+                        "name"         => $value->name,
+                        "type"         => $value->type,
+                        "simpleValue"  => $value->address->simpleValue,
+                        "street"       => $value->address->street,
+                        "city"         => $value->address->city,
+                        "postCode"     => $value->address->postCode,
+                        "province"     => $value->address->postCode,
+                        "houseNo"      => $value->address->houseNo,
+                        "phoneNumbers" => $value->phoneNumbers[0]
+                    ];
+                }
+                return Inertia::render('AziendeCreate', [
+                    'aziende' => $result
+                ]);
+            } else {
+                return Inertia::render('AziendeCreate', [
+                    'aziende' => null
+                ]);
+            }
         }
 
         /**
@@ -129,8 +153,8 @@
          */
         private function creditSaveToken(): string
         {
-            $username     = self::USERNAME_CREDIT_SAVE;
-            $password     = self::PASSWORD_CREDIT_SAVE;
+            $username     = $_ENV['CREDIT_SAFE_USERNAME'];
+            $password     = $_ENV['CREDIT_SAFE_PASSWORD'];
             $url          = self::URL_AUTENTICATION;
             $method       = 'POST';
             $json_prepare = json_encode(

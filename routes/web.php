@@ -60,7 +60,7 @@
         // -----
         Route::resource('/pratiche', PraticheController::class);
 
-        Route::post('/test', [AziendeController::class, 'callCreditSafeService']);
+        Route::post('/azienda-create-2', [AziendeController::class, 'callCreditSafeService']);
     });
 
 

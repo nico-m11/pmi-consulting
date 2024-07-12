@@ -6,29 +6,66 @@ import {useState} from 'react';
 
 export default function create({auth, aziende}) {
 
+    let id;
+    let city;
+    let country;
+    let houseNo;
+    let fullName;
+    let phoneNumbers;
+    let postCode;
+    let province;
+    let regNo;
+    let safeNo;
+    let simpleValue;
+    //let street;
 
-    console.log(aziende);
+    aziende?.map(({
+                      city: city1,
+                      country: country1,
+                      houseNo: houseNo1,
+                      id: id1,
+                      name,
+                      phoneNumbers: phoneNumbers1,
+                      postCode: postCode1,
+                      province: province1,
+                      regNo: regNo1,
+                      safeNo: safeNo1,
+                      simpleValue: simpleValue1
+                  }) => {
+        return (
+            id = id1,
+                city = city1,
+                country = country1,
+                houseNo = houseNo1,
+                fullName = name,
+                phoneNumbers = phoneNumbers1,
+                postCode = postCode1,
+                province = province1,
+                regNo = regNo1,
+                safeNo = safeNo1,
+                simpleValue = simpleValue1
+            //street = u.streets
+        );
+    });
+
     const {data, setData, post, get, processing, errors} = useForm({
-        financingType: 'azienda',
-        vatNO:'',
+        vatNO: '',
         fullName: '',
         email: '',
-        phone: '',
+        phoneNumbers: '',
         address: '',
-        companyName: '',
-        businessType: '',
-        vatNumber: '',
-        profession: '',
-        amount: '',
-        purpose: '',
-        income: '',
-        employmentType: '',
-        employerName: '',
-        yearsOfService: '',
+        postCode: '',
+        province: '',
+        city: '',
+        country: '',
+        houseNo: '',
+        regNo: '',
+        safeNo: '',
+        simpleValue: '',
     });
     const handleSubmitVatNo = (e) => {
         e.preventDefault();
-        post('/test');
+        post('/azienda-create-2');
     };
 
 
@@ -86,36 +123,14 @@ export default function create({auth, aziende}) {
                                 </div>
                             </form>
                             <form className="grid grid-cols-1 sm:grid-cols-2 gap-6" onSubmit={handleSubmit}>
-                                <div className="mb-4 col-span-1 sm:col-span-2">
-                                    <InputLabel value="Tipo di finanziamento"/>
-                                    <div className="flex items-center">
-                                        <input
-                                            className="mr-2 leading-tight"
-                                            type="radio"
-                                            name="financingType"
-                                            value="azienda"
-                                            checked={data.financingType === 'azienda'}
-                                            onChange={handleFinancingTypeChange}
-                                        />
-                                        <span className="text-gray-700">Azienda</span>
-                                        <input
-                                            className="ml-4 mr-2 leading-tight"
-                                            type="radio"
-                                            name="financingType"
-                                            value="piva"
-                                            checked={data.financingType === 'piva'}
-                                            onChange={handleFinancingTypeChange}
-                                        />
-                                        <span className="text-gray-700">P.IVA</span>
-                                    </div>
-                                </div>
+
 
                                 <div className="mb-4">
                                     <InputLabel htmlFor="fullName" value="Nome completo"/>
                                     <TextInput
                                         id="fullName"
                                         name="fullName"
-                                        value={data.fullName}
+                                        value={fullName === null ? data.fullName : fullName}
                                         onChange={(e) => setData('fullName', e.target.value)}
                                         type="text"
                                         className="mt-1 block w-full"
@@ -125,31 +140,17 @@ export default function create({auth, aziende}) {
                                 </div>
 
                                 <div className="mb-4">
-                                    <InputLabel htmlFor="email" value="Indirizzo email"/>
-                                    <TextInput
-                                        id="email"
-                                        name="email"
-                                        value={data.email}
-                                        onChange={(e) => setData('email', e.target.value)}
-                                        type="email"
-                                        className="mt-1 block w-full"
-                                        placeholder="Email"
-                                    />
-                                    {errors.email && <div className="text-red-600">{errors.email}</div>}
-                                </div>
-
-                                <div className="mb-4">
                                     <InputLabel htmlFor="phone" value="Numero di telefono"/>
                                     <TextInput
                                         id="phone"
                                         name="phone"
-                                        value={data.phone}
+                                        value={phoneNumbers === null ? data.phoneNumbers : phoneNumbers}
                                         onChange={(e) => setData('phone', e.target.value)}
                                         type="tel"
                                         className="mt-1 block w-full"
                                         placeholder="Telefono"
                                     />
-                                    {errors.phone && <div className="text-red-600">{errors.phone}</div>}
+                                    {errors.phoneNumbers && <div className="text-red-600">{errors.phoneNumbers}</div>}
                                 </div>
 
                                 <div className="mb-4">
@@ -157,7 +158,7 @@ export default function create({auth, aziende}) {
                                     <TextInput
                                         id="address"
                                         name="address"
-                                        value={data.address}
+                                        value={simpleValue === null ? data.address : simpleValue}
                                         onChange={(e) => setData('address', e.target.value)}
                                         type="text"
                                         className="mt-1 block w-full"
@@ -165,170 +166,109 @@ export default function create({auth, aziende}) {
                                     />
                                     {errors.address && <div className="text-red-600">{errors.address}</div>}
                                 </div>
-
-                                {data.financingType === 'azienda' && (
-                                    <>
-                                        <div className="mb-4">
-                                            <InputLabel htmlFor="companyName" value="Nome dell'azienda"/>
-                                            <TextInput
-                                                id="companyName"
-                                                name="companyName"
-                                                value={data.companyName}
-                                                onChange={(e) => setData('companyName', e.target.value)}
-                                                type="text"
-                                                className="mt-1 block w-full"
-                                                placeholder="Nome dell'azienda"
-                                            />
-                                            {errors.companyName &&
-                                                <div className="text-red-600">{errors.companyName}</div>}
-                                        </div>
-                                        <div className="mb-4">
-                                            <InputLabel htmlFor="businessType" value="Tipo di attività"/>
-                                            <TextInput
-                                                id="businessType"
-                                                name="businessType"
-                                                value={data.businessType}
-                                                onChange={(e) => setData('businessType', e.target.value)}
-                                                type="text"
-                                                className="mt-1 block w-full"
-                                                placeholder="Tipo di attività"
-                                            />
-                                            {errors.businessType &&
-                                                <div className="text-red-600">{errors.businessType}</div>}
-                                        </div>
-                                    </>
-                                )}
-
-                                {data.financingType === 'piva' && (
-                                    <>
-                                        <div className="mb-4">
-                                            <InputLabel htmlFor="vatNumber" value="Numero di Partita IVA"/>
-                                            <TextInput
-                                                id="vatNumber"
-                                                name="vatNumber"
-                                                value={data.vatNumber}
-                                                onChange={(e) => setData('vatNumber', e.target.value)}
-                                                type="text"
-                                                className="mt-1 block w-full"
-                                                placeholder="Numero di Partita IVA"
-                                            />
-                                            {errors.vatNumber &&
-                                                <div className="text-red-600">{errors.vatNumber}</div>}
-                                        </div>
-                                        <div className="mb-4">
-                                            <InputLabel htmlFor="profession" value="Professione"/>
-                                            <TextInput
-                                                id="profession"
-                                                name="profession"
-                                                value={data.profession}
-                                                onChange={(e) => setData('profession', e.target.value)}
-                                                type="text"
-                                                className="mt-1 block w-full"
-                                                placeholder="Professione"
-                                            />
-                                            {errors.profession &&
-                                                <div className="text-red-600">{errors.profession}</div>}
-                                        </div>
-                                    </>
-                                )}
-
                                 <div className="mb-4">
-                                    <InputLabel htmlFor="amount" value="Importo del finanziamento richiesto"/>
+                                    <InputLabel htmlFor="postCode" value="Post Code"/>
                                     <TextInput
-                                        id="amount"
-                                        name="amount"
-                                        value={data.amount}
-                                        onChange={(e) => setData('amount', e.target.value)}
-                                        type="number"
-                                        className="mt-1 block w-full"
-                                        placeholder="Importo"
-                                    />
-                                    {errors.amount && <div className="text-red-600">{errors.amount}</div>}
-                                </div>
-
-                                <div className="mb-4 col-span-1 sm:col-span-2">
-                                    <InputLabel htmlFor="purpose" value="Finalità del finanziamento"/>
-                                    <textarea
-                                        id="purpose"
-                                        name="purpose"
-                                        value={data.purpose}
-                                        onChange={(e) => setData('purpose', e.target.value)}
-                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-1"
-                                        placeholder="Finalità"
-                                    />
-                                    {errors.purpose && <div className="text-red-600">{errors.purpose}</div>}
-                                </div>
-
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="income" value="Reddito mensile"/>
-                                    <TextInput
-                                        id="income"
-                                        name="income"
-                                        value={data.income}
-                                        onChange={(e) => setData('income', e.target.value)}
-                                        type="number"
-                                        className="mt-1 block w-full"
-                                        placeholder="Reddito"
-                                    />
-                                    {errors.income && <div className="text-red-600">{errors.income}</div>}
-                                </div>
-
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="employmentType" value="Tipo di impiego"/>
-                                    <select
-                                        id="employmentType"
-                                        name="employmentType"
-                                        value={data.employmentType}
-                                        onChange={(e) => setData('employmentType', e.target.value)}
-                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-1"
-                                    >
-                                        <option value="full-time">Tempo pieno</option>
-                                        <option value="part-time">Part-time</option>
-                                        <option value="self-employed">Autonomo</option>
-                                    </select>
-                                    {errors.employmentType &&
-                                        <div className="text-red-600">{errors.employmentType}</div>}
-                                </div>
-
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="employerName" value="Nome del datore di lavoro"/>
-                                    <TextInput
-                                        id="employerName"
-                                        name="employerName"
-                                        value={data.employerName}
-                                        onChange={(e) => setData('employerName', e.target.value)}
+                                        id="postCode"
+                                        name="postCode"
+                                        value={postCode === null ? data.postCode : postCode}
+                                        onChange={(e) => setData('postCode', e.target.value)}
                                         type="text"
                                         className="mt-1 block w-full"
-                                        placeholder="Datore di lavoro"
+                                        placeholder="Post Code"
                                     />
-                                    {errors.employerName &&
-                                        <div className="text-red-600">{errors.employerName}</div>}
+                                    {errors.postCode && <div className="text-red-600">{errors.postCode}</div>}
                                 </div>
-
                                 <div className="mb-4">
-                                    <InputLabel htmlFor="yearsOfService" value="Anni di servizio"/>
+                                    <InputLabel htmlFor="province" value="Post Code"/>
                                     <TextInput
-                                        id="yearsOfService"
-                                        name="yearsOfService"
-                                        value={data.yearsOfService}
-                                        onChange={(e) => setData('yearsOfService', e.target.value)}
-                                        type="number"
+                                        id="province"
+                                        name="province"
+                                        value={province === null ? data.province : province}
+                                        onChange={(e) => setData('province', e.target.value)}
+                                        type="text"
                                         className="mt-1 block w-full"
-                                        placeholder="Anni di servizio"
+                                        placeholder="province"
                                     />
-                                    {errors.yearsOfService &&
-                                        <div className="text-red-600">{errors.yearsOfService}</div>}
+                                    {errors.province && <div className="text-red-600">{errors.province}</div>}
                                 </div>
-
-                                <div className="mb-4 col-span-1 sm:col-span-2">
-                                    <InputLabel htmlFor="documents" value="Documenti richiesti"/>
-                                    <input
-                                        id="documents"
-                                        name="documents"
-                                        type="file"
-                                        multiple
-                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-1"
+                                <div className="mb-4">
+                                    <InputLabel htmlFor="city" value="city"/>
+                                    <TextInput
+                                        id="city"
+                                        name="city"
+                                        value={city === null ? data.city : city}
+                                        onChange={(e) => setData('city', e.target.value)}
+                                        type="text"
+                                        className="mt-1 block w-full"
+                                        placeholder="city"
                                     />
+                                    {errors.city && <div className="text-red-600">{errors.city}</div>}
+                                </div>
+                                <div className="mb-4">
+                                    <InputLabel htmlFor="country" value="country"/>
+                                    <TextInput
+                                        id="country"
+                                        name="country"
+                                        value={country === null ? data.country : country}
+                                        onChange={(e) => setData('country', e.target.value)}
+                                        type="text"
+                                        className="mt-1 block w-full"
+                                        placeholder="country"
+                                    />
+                                    {errors.country && <div className="text-red-600">{errors.country}</div>}
+                                </div>
+                                <div className="mb-4">
+                                    <InputLabel htmlFor="houseNo" value="houseNo"/>
+                                    <TextInput
+                                        id="houseNo"
+                                        name="houseNo"
+                                        value={houseNo === null ? data.houseNo : houseNo}
+                                        onChange={(e) => setData('houseNo', e.target.value)}
+                                        type="text"
+                                        className="mt-1 block w-full"
+                                        placeholder="houseNo"
+                                    />
+                                    {errors.houseNo && <div className="text-red-600">{errors.houseNo}</div>}
+                                </div>
+                                <div className="mb-4">
+                                    <InputLabel htmlFor="regNo" value="regNo"/>
+                                    <TextInput
+                                        id="regNo"
+                                        name="regNo"
+                                        value={regNo === null ? data.regNo : regNo}
+                                        onChange={(e) => setData('regNo', e.target.value)}
+                                        type="text"
+                                        className="mt-1 block w-full"
+                                        placeholder="regNo"
+                                    />
+                                    {errors.regNo && <div className="text-red-600">{errors.regNo}</div>}
+                                </div>
+                                <div className="mb-4">
+                                    <InputLabel htmlFor="safeNo" value="safeNo"/>
+                                    <TextInput
+                                        id="safeNo"
+                                        name="safeNo"
+                                        value={safeNo === null ? data.safeNo : safeNo}
+                                        onChange={(e) => setData('safeNo', e.target.value)}
+                                        type="text"
+                                        className="mt-1 block w-full"
+                                        placeholder="safeNo"
+                                    />
+                                    {errors.safeNo && <div className="text-red-600">{errors.safeNo}</div>}
+                                </div>
+                                <div className="mb-4">
+                                    <InputLabel htmlFor="simpleValue" value="simpleValue"/>
+                                    <TextInput
+                                        id="simpleValue"
+                                        name="simpleValue"
+                                        value={simpleValue === null ? data.simpleValue : simpleValue}
+                                        onChange={(e) => setData('simpleValue', e.target.value)}
+                                        type="text"
+                                        className="mt-1 block w-full"
+                                        placeholder="simpleValue"
+                                    />
+                                    {errors.simpleValue && <div className="text-red-600">{errors.simpleValue}</div>}
                                 </div>
 
                                 <div className="flex items-center justify-between col-span-1 sm:col-span-2">
