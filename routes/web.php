@@ -34,7 +34,7 @@
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::get('/user_list', [UserController::class, 'index'])
-           //  ->middleware(RoleAmministratoreValidate::class, RoleAgenteValidate::class)
+            //  ->middleware(RoleAmministratoreValidate::class, RoleAgenteValidate::class)
              ->name('listaUtenti.index');
 
         // -----
@@ -59,6 +59,8 @@
         // PRATICHE
         // -----
         Route::resource('/pratiche', PraticheController::class);
+
+        Route::post('/test', [AziendeController::class, 'callCreditSafeService']);
     });
 
 

@@ -6,8 +6,11 @@ import {useState} from 'react';
 
 export default function create({auth, aziende}) {
 
-    const {data, setData, post, processing, errors} = useForm({
+
+    console.log(aziende);
+    const {data, setData, post, get, processing, errors} = useForm({
         financingType: 'azienda',
+        vatNO:'',
         fullName: '',
         email: '',
         phone: '',
@@ -23,6 +26,11 @@ export default function create({auth, aziende}) {
         employerName: '',
         yearsOfService: '',
     });
+    const handleSubmitVatNo = (e) => {
+        e.preventDefault();
+        post('/test');
+    };
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -53,6 +61,30 @@ export default function create({auth, aziende}) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
+                            <form className="grid grid-cols-1 sm:grid-cols-2 gap-6" onSubmit={handleSubmitVatNo}>
+                                <div className="mb-4">
+                                    <InputLabel htmlFor="vatNo" value="Vat Number"/>
+                                    <TextInput
+                                        id="vatNo"
+                                        name="vatNo"
+                                        value={data.vatNO}
+                                        onChange={(e) => setData('vatNO', e.target.value)}
+                                        type="text"
+                                        className="mt-1 block w-full"
+                                        placeholder="Vat Number"
+                                    />
+                                    {errors.vatNO && <div className="text-red-600">{errors.vatNO}</div>}
+                                </div>
+                                <div className="flex items-center justify-between col-span-1 sm:col-span-2">
+                                    <button
+                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                        type="submit"
+                                        disabled={processing}
+                                    >
+                                        Invia
+                                    </button>
+                                </div>
+                            </form>
                             <form className="grid grid-cols-1 sm:grid-cols-2 gap-6" onSubmit={handleSubmit}>
                                 <div className="mb-4 col-span-1 sm:col-span-2">
                                     <InputLabel value="Tipo di finanziamento"/>
@@ -180,7 +212,8 @@ export default function create({auth, aziende}) {
                                                 className="mt-1 block w-full"
                                                 placeholder="Numero di Partita IVA"
                                             />
-                                            {errors.vatNumber && <div className="text-red-600">{errors.vatNumber}</div>}
+                                            {errors.vatNumber &&
+                                                <div className="text-red-600">{errors.vatNumber}</div>}
                                         </div>
                                         <div className="mb-4">
                                             <InputLabel htmlFor="profession" value="Professione"/>
@@ -268,7 +301,8 @@ export default function create({auth, aziende}) {
                                         className="mt-1 block w-full"
                                         placeholder="Datore di lavoro"
                                     />
-                                    {errors.employerName && <div className="text-red-600">{errors.employerName}</div>}
+                                    {errors.employerName &&
+                                        <div className="text-red-600">{errors.employerName}</div>}
                                 </div>
 
                                 <div className="mb-4">
