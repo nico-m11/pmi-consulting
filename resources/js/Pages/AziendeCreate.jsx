@@ -5,7 +5,6 @@ import TextInput from '@/Components/TextInput';
 import {useState} from 'react';
 
 export default function create({auth, aziende}) {
-
     let id;
     let city;
     let country;
@@ -13,7 +12,7 @@ export default function create({auth, aziende}) {
     let fullName;
     let phoneNumbers;
     let postCode;
-    let province;
+    let province ='';
     let regNo;
     let safeNo;
     let simpleValue;
@@ -51,7 +50,6 @@ export default function create({auth, aziende}) {
     const {data, setData, post, get, processing, errors} = useForm({
         vatNO: '',
         fullName: '',
-        email: '',
         phoneNumbers: '',
         address: '',
         postCode: '',
@@ -72,10 +70,6 @@ export default function create({auth, aziende}) {
     const handleSubmit = (e) => {
         e.preventDefault();
         post('/aziende');
-    };
-
-    const handleFinancingTypeChange = (event) => {
-        setData('financingType', event.target.value);
     };
 
     return (
@@ -122,165 +116,163 @@ export default function create({auth, aziende}) {
                                     </button>
                                 </div>
                             </form>
-                            <form className="grid grid-cols-1 sm:grid-cols-2 gap-6" onSubmit={handleSubmit}>
+                            {
+                                data.vatNO !== '' ?
+                                    <>
+                                        <form className="grid grid-cols-1 sm:grid-cols-2 gap-6" onSubmit={handleSubmit}>
+                                            <div className="mb-4">
+                                                <InputLabel htmlFor="fullName" value="Nome completo"/>
+                                                <TextInput
+                                                    id="fullName"
+                                                    name="fullName"
+                                                    value={data.fullName = fullName}
+                                                    onChange={(e) => setData('fullName', e.target.value)}
+                                                    type="text"
+                                                    className="mt-1 block w-full"
+                                                    placeholder="Nome completo"
+                                                />
+                                                {errors.fullName &&
+                                                    <div className="text-red-600">{errors.fullName}</div>}
+                                            </div>
+
+                                            <div className="mb-4">
+                                                <InputLabel htmlFor="phoneNumbers" value="Numero di telefono"/>
+                                                <TextInput
+                                                    id="phoneNumbers"
+                                                    name="phoneNumbers"
+                                                    value={data.phoneNumbers = phoneNumbers}
+                                                    onChange={(e) => setData('phoneNumbers', e.target.value)}
+                                                    type="tel"
+                                                    className="mt-1 block w-full"
+                                                    placeholder="Telefono"
+                                                />
+                                                {errors.phoneNumbers &&
+                                                    <div className="text-red-600">{errors.phoneNumbers}</div>}
+                                            </div>
+
+                                            <div className="mb-4">
+                                                <InputLabel htmlFor="address" value="Indirizzo di residenza"/>
+                                                <TextInput
+                                                    id="address"
+                                                    name="address"
+                                                    value={data.address = simpleValue}
+                                                    onChange={(e) => setData('address', e.target.value)}
+                                                    type="text"
+                                                    className="mt-1 block w-full"
+                                                    placeholder="Indirizzo"
+                                                />
+                                                {errors.address && <div className="text-red-600">{errors.address}</div>}
+                                            </div>
+                                            <div className="mb-4">
+                                                <InputLabel htmlFor="postCode" value="Post Code"/>
+                                                <TextInput
+                                                    id="postCode"
+                                                    name="postCode"
+                                                    value={data.postCode = postCode}
+                                                    onChange={(e) => setData('postCode', e.target.value)}
+                                                    type="text"
+                                                    className="mt-1 block w-full"
+                                                    placeholder="Post Code"
+                                                />
+                                                {errors.postCode &&
+                                                    <div className="text-red-600">{errors.postCode}</div>}
+                                            </div>
+                                            <div className="mb-4">
+                                                <InputLabel htmlFor="province" value="Post Code"/>
+                                                <TextInput
+                                                    id="province"
+                                                    name="province"
+                                                    value={data.province = province}
+                                                    onChange={(e) => setData('province', e.target.value)}
+                                                    type="text"
+                                                    className="mt-1 block w-full"
+                                                    placeholder="province"
+                                                />
+                                                {errors.province &&
+                                                    <div className="text-red-600">{errors.province}</div>}
+                                            </div>
+                                            <div className="mb-4">
+                                                <InputLabel htmlFor="city" value="city"/>
+                                                <TextInput
+                                                    id="city"
+                                                    name="city"
+                                                    value={data.city = city}
+                                                    onChange={(e) => setData('city', e.target.value)}
+                                                    type="text"
+                                                    className="mt-1 block w-full"
+                                                    placeholder="city"
+                                                />
+                                                {errors.city && <div className="text-red-600">{errors.city}</div>}
+                                            </div>
+                                            <div className="mb-4">
+                                                <InputLabel htmlFor="country" value="country"/>
+                                                <TextInput
+                                                    id="country"
+                                                    name="country"
+                                                    value={data.country = country}
+                                                    onChange={(e) => setData('country', e.target.value)}
+                                                    type="text"
+                                                    className="mt-1 block w-full"
+                                                    placeholder="country"
+                                                />
+                                                {errors.country && <div className="text-red-600">{errors.country}</div>}
+                                            </div>
+                                            <div className="mb-4">
+                                                <InputLabel htmlFor="houseNo" value="houseNo"/>
+                                                <TextInput
+                                                    id="houseNo"
+                                                    name="houseNo"
+                                                    value={data.houseNo = houseNo}
+                                                    onChange={(e) => setData('houseNo', e.target.value)}
+                                                    type="text"
+                                                    className="mt-1 block w-full"
+                                                    placeholder="houseNo"
+                                                />
+                                                {errors.houseNo && <div className="text-red-600">{errors.houseNo}</div>}
+                                            </div>
+                                            <div className="mb-4">
+                                                <InputLabel htmlFor="regNo" value="regNo"/>
+                                                <TextInput
+                                                    id="regNo"
+                                                    name="regNo"
+                                                    value={data.regNo = regNo}
+                                                    onChange={(e) => setData('regNo', e.target.value)}
+                                                    type="text"
+                                                    className="mt-1 block w-full"
+                                                    placeholder="regNo"
+                                                />
+                                                {errors.regNo && <div className="text-red-600">{errors.regNo}</div>}
+                                            </div>
+                                            <div className="mb-4">
+                                                <InputLabel htmlFor="safeNo" value="safeNo"/>
+                                                <TextInput
+                                                    id="safeNo"
+                                                    name="safeNo"
+                                                    value={data.safeNo = safeNo}
+                                                    onChange={(e) => setData('safeNo', e.target.value)}
+                                                    type="text"
+                                                    className="mt-1 block w-full"
+                                                    placeholder="safeNo"
+                                                />
+                                                {errors.safeNo && <div className="text-red-600">{errors.safeNo}</div>}
+                                            </div>
 
 
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="fullName" value="Nome completo"/>
-                                    <TextInput
-                                        id="fullName"
-                                        name="fullName"
-                                        value={fullName === null ? data.fullName : fullName}
-                                        onChange={(e) => setData('fullName', e.target.value)}
-                                        type="text"
-                                        className="mt-1 block w-full"
-                                        placeholder="Nome completo"
-                                    />
-                                    {errors.fullName && <div className="text-red-600">{errors.fullName}</div>}
-                                </div>
-
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="phone" value="Numero di telefono"/>
-                                    <TextInput
-                                        id="phone"
-                                        name="phone"
-                                        value={phoneNumbers === null ? data.phoneNumbers : phoneNumbers}
-                                        onChange={(e) => setData('phone', e.target.value)}
-                                        type="tel"
-                                        className="mt-1 block w-full"
-                                        placeholder="Telefono"
-                                    />
-                                    {errors.phoneNumbers && <div className="text-red-600">{errors.phoneNumbers}</div>}
-                                </div>
-
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="address" value="Indirizzo di residenza"/>
-                                    <TextInput
-                                        id="address"
-                                        name="address"
-                                        value={simpleValue === null ? data.address : simpleValue}
-                                        onChange={(e) => setData('address', e.target.value)}
-                                        type="text"
-                                        className="mt-1 block w-full"
-                                        placeholder="Indirizzo"
-                                    />
-                                    {errors.address && <div className="text-red-600">{errors.address}</div>}
-                                </div>
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="postCode" value="Post Code"/>
-                                    <TextInput
-                                        id="postCode"
-                                        name="postCode"
-                                        value={postCode === null ? data.postCode : postCode}
-                                        onChange={(e) => setData('postCode', e.target.value)}
-                                        type="text"
-                                        className="mt-1 block w-full"
-                                        placeholder="Post Code"
-                                    />
-                                    {errors.postCode && <div className="text-red-600">{errors.postCode}</div>}
-                                </div>
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="province" value="Post Code"/>
-                                    <TextInput
-                                        id="province"
-                                        name="province"
-                                        value={province === null ? data.province : province}
-                                        onChange={(e) => setData('province', e.target.value)}
-                                        type="text"
-                                        className="mt-1 block w-full"
-                                        placeholder="province"
-                                    />
-                                    {errors.province && <div className="text-red-600">{errors.province}</div>}
-                                </div>
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="city" value="city"/>
-                                    <TextInput
-                                        id="city"
-                                        name="city"
-                                        value={city === null ? data.city : city}
-                                        onChange={(e) => setData('city', e.target.value)}
-                                        type="text"
-                                        className="mt-1 block w-full"
-                                        placeholder="city"
-                                    />
-                                    {errors.city && <div className="text-red-600">{errors.city}</div>}
-                                </div>
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="country" value="country"/>
-                                    <TextInput
-                                        id="country"
-                                        name="country"
-                                        value={country === null ? data.country : country}
-                                        onChange={(e) => setData('country', e.target.value)}
-                                        type="text"
-                                        className="mt-1 block w-full"
-                                        placeholder="country"
-                                    />
-                                    {errors.country && <div className="text-red-600">{errors.country}</div>}
-                                </div>
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="houseNo" value="houseNo"/>
-                                    <TextInput
-                                        id="houseNo"
-                                        name="houseNo"
-                                        value={houseNo === null ? data.houseNo : houseNo}
-                                        onChange={(e) => setData('houseNo', e.target.value)}
-                                        type="text"
-                                        className="mt-1 block w-full"
-                                        placeholder="houseNo"
-                                    />
-                                    {errors.houseNo && <div className="text-red-600">{errors.houseNo}</div>}
-                                </div>
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="regNo" value="regNo"/>
-                                    <TextInput
-                                        id="regNo"
-                                        name="regNo"
-                                        value={regNo === null ? data.regNo : regNo}
-                                        onChange={(e) => setData('regNo', e.target.value)}
-                                        type="text"
-                                        className="mt-1 block w-full"
-                                        placeholder="regNo"
-                                    />
-                                    {errors.regNo && <div className="text-red-600">{errors.regNo}</div>}
-                                </div>
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="safeNo" value="safeNo"/>
-                                    <TextInput
-                                        id="safeNo"
-                                        name="safeNo"
-                                        value={safeNo === null ? data.safeNo : safeNo}
-                                        onChange={(e) => setData('safeNo', e.target.value)}
-                                        type="text"
-                                        className="mt-1 block w-full"
-                                        placeholder="safeNo"
-                                    />
-                                    {errors.safeNo && <div className="text-red-600">{errors.safeNo}</div>}
-                                </div>
-                                <div className="mb-4">
-                                    <InputLabel htmlFor="simpleValue" value="simpleValue"/>
-                                    <TextInput
-                                        id="simpleValue"
-                                        name="simpleValue"
-                                        value={simpleValue === null ? data.simpleValue : simpleValue}
-                                        onChange={(e) => setData('simpleValue', e.target.value)}
-                                        type="text"
-                                        className="mt-1 block w-full"
-                                        placeholder="simpleValue"
-                                    />
-                                    {errors.simpleValue && <div className="text-red-600">{errors.simpleValue}</div>}
-                                </div>
-
-                                <div className="flex items-center justify-between col-span-1 sm:col-span-2">
-                                    <button
-                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                        type="submit"
-                                        disabled={processing}
-                                    >
-                                        Invia
-                                    </button>
-                                </div>
-                            </form>
+                                            <div className="flex items-center justify-between col-span-1 sm:col-span-2">
+                                                <button
+                                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                    type="submit"
+                                                    disabled={processing}
+                                                >
+                                                    Invia
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </>
+                                    :
+                                    <>
+                                    </>
+                            }
                         </div>
                     </div>
                 </div>

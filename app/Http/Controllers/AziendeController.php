@@ -74,7 +74,7 @@
          */
         public function store(StoreAziendeRequest $request)
         {
-            //
+            dd($request);
         }
 
         /**
