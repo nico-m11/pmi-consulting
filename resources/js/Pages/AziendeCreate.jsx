@@ -51,7 +51,6 @@ export default function create({auth, aziende}) {
         vatNO: '',
         fullName: '',
         phoneNumbers: '',
-        address: '',
         postCode: '',
         province: '',
         city: '',
@@ -151,17 +150,17 @@ export default function create({auth, aziende}) {
                                             </div>
 
                                             <div className="mb-4">
-                                                <InputLabel htmlFor="address" value="Indirizzo di residenza"/>
+                                                <InputLabel htmlFor="simpleValue" value="Indirizzo di residenza"/>
                                                 <TextInput
-                                                    id="address"
-                                                    name="address"
-                                                    value={data.address = simpleValue}
-                                                    onChange={(e) => setData('address', e.target.value)}
+                                                    id="simpleValue"
+                                                    name="simpleValue"
+                                                    value={data.simpleValue = simpleValue}
+                                                    onChange={(e) => setData('simpleValue', e.target.value)}
                                                     type="text"
                                                     className="mt-1 block w-full"
                                                     placeholder="Indirizzo"
                                                 />
-                                                {errors.address && <div className="text-red-600">{errors.address}</div>}
+                                                {errors.simpleValue && <div className="text-red-600">{errors.simpleValue}</div>}
                                             </div>
                                             <div className="mb-4">
                                                 <InputLabel htmlFor="postCode" value="Post Code"/>
