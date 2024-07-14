@@ -165,7 +165,7 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                                             <TextInput
                                                 className="w-full"
                                                 defaultValue={queryParams.name}
-                                                placeholder="Project Name"
+                                                placeholder="Nome Azienda"
                                                 onBlur={(e) =>
                                                     searchFieldChanged("name", e.target.value)
                                                 }
