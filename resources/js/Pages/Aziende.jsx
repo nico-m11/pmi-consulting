@@ -109,15 +109,15 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                                     <thead
                                         className="text-xs text-gray-700 uppercase ">
                                     <tr className="text-nowrap">
-                                        <TableHeading
-                                            name="id"
-                                            sort_field={queryParams.sort_field}
-                                            sort_direction={queryParams.sort_direction}
-                                            sortChanged={sortChanged}
-                                        >
-                                            ID
-                                        </TableHeading>
-                                        <th className="px-3 py-3">Image</th>
+                                        {/*<TableHeading*/}
+                                        {/*    name="id"*/}
+                                        {/*    sort_field={queryParams.sort_field}*/}
+                                        {/*    sort_direction={queryParams.sort_direction}*/}
+                                        {/*    sortChanged={sortChanged}*/}
+                                        {/*>*/}
+                                        {/*    ID*/}
+                                        {/*</TableHeading>*/}
+                                        {/*<th className="px-3 py-3">Image</th>*/}
                                         <TableHeading
                                             name="name"
                                             sort_field={queryParams.sort_field}
@@ -127,14 +127,14 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                                             Name
                                         </TableHeading>
 
-                                        <TableHeading
-                                            name="status"
-                                            sort_field={queryParams.sort_field}
-                                            sort_direction={queryParams.sort_direction}
-                                            sortChanged={sortChanged}
-                                        >
-                                            Status
-                                        </TableHeading>
+                                        {/*<TableHeading*/}
+                                        {/*    name="status"*/}
+                                        {/*    sort_field={queryParams.sort_field}*/}
+                                        {/*    sort_direction={queryParams.sort_direction}*/}
+                                        {/*    sortChanged={sortChanged}*/}
+                                        {/*>*/}
+                                        {/*    Status*/}
+                                        {/*</TableHeading>*/}
 
                                         <TableHeading
                                             name="created_at"
@@ -142,7 +142,7 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                                             sort_direction={queryParams.sort_direction}
                                             sortChanged={sortChanged}
                                         >
-                                            Create Date
+                                            Data di creazione
                                         </TableHeading>
 
                                         <TableHeading
@@ -151,9 +151,8 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                                             sort_direction={queryParams.sort_direction}
                                             sortChanged={sortChanged}
                                         >
-                                            Indirizzo
+                                            Indirizzo completo
                                         </TableHeading>
-                                        <th className="px-3 py-3">Created By</th>
                                         <th className="px-3 py-3 text-right">Actions</th>
                                     </tr>
                                     </thead>
@@ -173,20 +172,20 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                                                 onKeyPress={(e) => onKeyPress("name", e)}
                                             />
                                         </th>
-                                        <th className="px-3 py-3">
-                                            <SelectInput
-                                                className="w-full"
-                                                defaultValue={queryParams.status}
-                                                onChange={(e) =>
-                                                    searchFieldChanged("status", e.target.value)
-                                                }
-                                            >
-                                                <option value="">Select Status</option>
-                                                <option value="pending">Pending</option>
-                                                <option value="in_progress">In Progress</option>
-                                                <option value="completed">Completed</option>
-                                            </SelectInput>
-                                        </th>
+                                        {/*<th className="px-3 py-3">*/}
+                                        {/*    <SelectInput*/}
+                                        {/*        className="w-full"*/}
+                                        {/*        defaultValue={queryParams.status}*/}
+                                        {/*        onChange={(e) =>*/}
+                                        {/*            searchFieldChanged("status", e.target.value)*/}
+                                        {/*        }*/}
+                                        {/*    >*/}
+                                        {/*        <option value="">Select Status</option>*/}
+                                        {/*        <option value="pending">Pending</option>*/}
+                                        {/*        <option value="in_progress">In Progress</option>*/}
+                                        {/*        <option value="completed">Completed</option>*/}
+                                        {/*    </SelectInput>*/}
+                                        {/*</th>*/}
                                         <th className="px-3 py-3"></th>
                                         <th className="px-3 py-3"></th>
                                         <th className="px-3 py-3"></th>
@@ -200,14 +199,14 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                                         className="bg-white border-b  border-gray-700"
                                         key={az.id}
                                     >
-                                        <td className="px-3 py-2">
-                                            {az.id}
-                                        </td>
-                                        <td className="px-3 py-2">
-                                            <img
-                                                //    src={project.image_path} style={{ width: 60 }}
-                                            />
-                                        </td>
+                                        {/*<td className="px-3 py-2">*/}
+                                        {/*    {az.id}*/}
+                                        {/*</td>*/}
+                                        {/*<td className="px-3 py-2">*/}
+                                        {/*    <img*/}
+                                        {/*        //    src={project.image_path} style={{ width: 60 }}*/}
+                                        {/*    />*/}
+                                        {/*</td>*/}
                                         <th className="px-3 py-2 text-100 text-nowrap hover:underline">
                                             <Link
                                                     href={route("aziende.show", az.id)}
@@ -215,20 +214,13 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                                                 {az.name}
                                             </Link>
                                         </th>
-                                        <td className="px-3 py-2">
-                                            {'Pending'}
-                                        </td>
                                         <td className="px-3 py-2 text-nowrap">
-                                            {/*{project.created_at}*/}
-                                            {'data di creazione'}
-                                        </td>
-                                        <td className="px-3 py-2 text-nowrap">
-                                            {az.indirizzo}
+                                            {az.created_at}
 
                                         </td>
-                                        <td className="px-3 py-2">
-                                            {/*{project.createdBy.name}*/}
-                                            {'data created by'}
+                                        <td className="px-3 py-2 text-nowrap">
+                                            {az.address_complete}
+
                                         </td>
                                         <td className="px-3 py-2 text-nowrap">
                                             <Link
