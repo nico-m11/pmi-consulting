@@ -144,6 +144,7 @@ export default function create({auth, aziende}) {
                                             <div className="mb-4">
                                                 <InputLabel htmlFor="correlationId" value="correlationId"/>
                                                 <TextInput
+                                                    hidden={true}
                                                     id="correlationId"
                                                     name="correlationId"
                                                     value={data.correlationId = correlationId}

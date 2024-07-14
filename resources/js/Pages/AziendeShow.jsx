@@ -2,7 +2,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import {Head, Link} from "@inertiajs/react";
 
 export default function Show({auth, success, aziende, tasks, queryParams}) {
-
+console.log(aziende);
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -42,13 +42,33 @@ export default function Show({auth, success, aziende, tasks, queryParams}) {
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="grid gap-1 grid-cols-2 mt-2">
                                 <div>
-                                    <div>
-                                        <label className="font-bold text-lg">Project ID</label>
-                                        <p className="mt-1">{aziende.id}</p>
+                                    <div className="mt-4">
+                                        <label className="font-bold text-lg">Nome Azienda</label>
+                                        <p className="mt-1">{aziende.name}</p>
                                     </div>
                                     <div className="mt-4">
                                         <label className="font-bold text-lg">Project Name</label>
-                                        <p className="mt-1">{aziende.name}</p>
+                                        <p className="mt-1">{aziende.phone_number}</p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="font-bold text-lg">Recapito Azienda</label>
+                                        <p className="mt-1">{aziende.phone_number}</p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="font-bold text-lg">Indirizzo completo Azienda</label>
+                                        <p className="mt-1">{aziende.address_complete}</p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="font-bold text-lg">Reg No Azienda</label>
+                                        <p className="mt-1">{aziende.reg_no}</p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="font-bold text-lg">Saf No Azienda</label>
+                                        <p className="mt-1">{aziende.safe_no}</p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="font-bold text-lg">Activity Code Azienda</label>
+                                        <p className="mt-1">{aziende.activity_code}</p>
                                     </div>
                                 </div>
                             </div>

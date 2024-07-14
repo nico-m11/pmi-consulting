@@ -82,7 +82,6 @@
          */
         public function store(StoreAziendeRequest $request)
         {
-
             $vat_no        = $request->request->get('vatNO');
             $full_name     = $request->request->get('fullName');
             $phone_numbers = $request->request->get('phoneNumbers');
@@ -117,7 +116,6 @@
                 'activity_code'       => $activityCode,
                 'created_at'          => now()
             ]);
-
 
             return redirect(route('aziende.index', absolute: false));
         }
