@@ -5,20 +5,25 @@ import TextInput from '@/Components/TextInput';
 import {useState} from 'react';
 
 export default function create({auth, aziende}) {
+
+
     let id;
+    let correlationId;
+    let activityCode;
     let city;
     let country;
     let houseNo;
     let fullName;
     let phoneNumbers;
     let postCode;
-    let province ='';
+    let province;
     let regNo;
     let safeNo;
     let simpleValue;
-    //let street;
-
+    console.log(aziende);
     aziende?.map(({
+                      activityCode: activityCode1,
+                      correlationId: correlationId1,
                       city: city1,
                       country: country1,
                       houseNo: houseNo1,
@@ -29,10 +34,12 @@ export default function create({auth, aziende}) {
                       province: province1,
                       regNo: regNo1,
                       safeNo: safeNo1,
-                      simpleValue: simpleValue1
+                      simpleValue: simpleValue1,
                   }) => {
         return (
-            id = id1,
+            activityCode = activityCode1,
+                correlationId = correlationId1,
+                id = id1,
                 city = city1,
                 country = country1,
                 houseNo = houseNo1,
@@ -43,7 +50,6 @@ export default function create({auth, aziende}) {
                 regNo = regNo1,
                 safeNo = safeNo1,
                 simpleValue = simpleValue1
-            //street = u.streets
         );
     });
 
@@ -59,6 +65,8 @@ export default function create({auth, aziende}) {
         regNo: '',
         safeNo: '',
         simpleValue: '',
+        activityCode: '',
+        correlationId:'',
     });
     const handleSubmitVatNo = (e) => {
         e.preventDefault();
@@ -120,6 +128,34 @@ export default function create({auth, aziende}) {
                                     <>
                                         <form className="grid grid-cols-1 sm:grid-cols-2 gap-6" onSubmit={handleSubmit}>
                                             <div className="mb-4">
+                                                <InputLabel htmlFor="activityCode" value="activityCode"/>
+                                                <TextInput
+                                                    id="activityCode"
+                                                    name="activityCode"
+                                                    value={data.activityCode = activityCode}
+                                                    onChange={(e) => setData('activityCode', e.target.value)}
+                                                    type="text"
+                                                    className="mt-1 block w-full"
+                                                    placeholder="activityCode"
+                                                />
+                                                {errors.activityCode &&
+                                                    <div className="text-red-600">{errors.activityCode}</div>}
+                                            </div>
+                                            <div className="mb-4">
+                                                <InputLabel htmlFor="correlationId" value="correlationId"/>
+                                                <TextInput
+                                                    id="correlationId"
+                                                    name="correlationId"
+                                                    value={data.correlationId = correlationId}
+                                                    onChange={(e) => setData('correlationId', e.target.value)}
+                                                    type="text"
+                                                    className="mt-1 block w-full"
+                                                    placeholder="correlationId"
+                                                />
+                                                {errors.correlationId &&
+                                                    <div className="text-red-600">{errors.correlationId}</div>}
+                                            </div>
+                                            <div className="mb-4">
                                                 <InputLabel htmlFor="fullName" value="Nome completo"/>
                                                 <TextInput
                                                     id="fullName"
@@ -160,7 +196,8 @@ export default function create({auth, aziende}) {
                                                     className="mt-1 block w-full"
                                                     placeholder="Indirizzo"
                                                 />
-                                                {errors.simpleValue && <div className="text-red-600">{errors.simpleValue}</div>}
+                                                {errors.simpleValue &&
+                                                    <div className="text-red-600">{errors.simpleValue}</div>}
                                             </div>
                                             <div className="mb-4">
                                                 <InputLabel htmlFor="postCode" value="Post Code"/>

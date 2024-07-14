@@ -7,12 +7,16 @@
     use Illuminate\Database\Eloquent\Model;
     use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     class Aziende extends Model
     {
         use HasFactory;
 
         protected $fillable = [
-            'id',
             'correlation_id',
             'id_company_received',
             'country',
@@ -28,9 +32,12 @@
             'house_number',
             'type_azienda',
             'phone_number',
-            'activity_code',
-            'created_at'
+            'activityCode',
+            'created_at',
+            'updated_at'
         ];
+
+
 
         public function pratiche(): BelongsTo
         {

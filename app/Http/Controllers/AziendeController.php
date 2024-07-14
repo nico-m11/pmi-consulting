@@ -3,11 +3,15 @@
     namespace App\Http\Controllers;
 
     use App\Enum\CreditSafeUrlEnum\CreditSafeUrl;
+    use App\Enum\UserRole\UserRole;
     use App\Http\Requests\StoreAziendeRequest;
     use App\Http\Requests\UpdateAziendeRequest;
     use App\Models\Aziende;
+    use App\Models\User;
     use Illuminate\Database\Eloquent\Casts\Json;
     use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\Facades\Hash;
     use Inertia\Inertia;
     use Inertia\Response;
 
@@ -45,19 +49,22 @@
                 }
                 foreach ($array as $value) {
                     $result[] = [
-                        "id"           => $value->id,
-                        "country"      => $value->country,
-                        "regNo"        => $value->regNo,
-                        "safeNo"       => $value->safeNo,
-                        "name"         => $value->name,
-                        "type"         => $value->type,
-                        "simpleValue"  => $value->address->simpleValue,
-                        "street"       => $value->address->street,
-                        "city"         => $value->address->city,
-                        "postCode"     => $value->address->postCode,
-                        "province"     => $value->address->postCode,
-                        "houseNo"      => $value->address->houseNo,
-                        "phoneNumbers" => $value->phoneNumbers[0]
+                        'correlationId' => $request->correlationId,
+                        "id"            => $value->id,
+                        "country"       => $value->country,
+                        "regNo"         => $value->regNo,
+                        "safeNo"        => $value->safeNo,
+                        "name"          => $value->name,
+                        "type"          => $value->type,
+                        "simpleValue"   => $value->address->simpleValue,
+                        "street"        => $value->address->street,
+                        "city"          => $value->address->city,
+                        "postCode"      => $value->address->postCode,
+                        "province"      => $value->address->postCode,
+                        "houseNo"       => $value->address->houseNo,
+                        "phoneNumbers"  => $value->phoneNumbers[0],
+                        'activityCode'  => $value->activityCode,
+                        'status'        => $value->status,
                     ];
                 }
                 return Inertia::render('AziendeCreate', [
@@ -75,7 +82,44 @@
          */
         public function store(StoreAziendeRequest $request)
         {
-            dd($request);
+
+            $vat_no        = $request->request->get('vatNO');
+            $full_name     = $request->request->get('fullName');
+            $phone_numbers = $request->request->get('phoneNumbers');
+            $post_code     = $request->request->get('postCode');
+            $province      = $request->request->get('province');
+            $city          = $request->request->get('city');
+            $country       = $request->request->get('country');
+            $house_no      = $request->request->get('houseNo');
+            $reg_no        = $request->request->get('regNo');
+            $safe_no       = $request->request->get('safeNo');
+            $simple_value  = $request->request->get('simpleValue');
+            $status        = $request->request->get('status');
+            $activityCode  = $request->request->get('activityCode');
+            $correlationId = $request->request->get('correlationId');
+
+            DB::table('aziendes')->insert([
+                'correlation_id'      => $correlationId,
+                'id_company_received' => 'sbjdjaksd',
+                'country'             => $country,
+                'reg_no'              => $reg_no,
+                'vat_no'              => $vat_no,
+                'safe_no'             => $safe_no,
+                'name'                => $full_name,
+                'address_complete'    => $simple_value,
+                'address_simple'      => $simple_value,
+                'city'                => $city,
+                'postal_code'         => $post_code,
+                'province'            => $province,
+                'house_number'        => $house_no,
+                'type_azienda'        => 'Booh',
+                'phone_number'        => $phone_numbers,
+                'activity_code'       => $activityCode,
+                'created_at'          => now()
+            ]);
+
+
+            return redirect(route('aziende.index', absolute: false));
         }
 
         /**
