@@ -6,6 +6,14 @@ import {useState} from 'react';
 
 export default function create({auth, aziende}) {
 
+    const [step, setStep] = useState(1);
+    const handleNext = () => {
+        setStep(step + 1);
+    };
+
+    const handleBack = () => {
+        setStep(step - 1);
+    };
 
     let id;
     let correlationId;
@@ -66,7 +74,7 @@ export default function create({auth, aziende}) {
         safeNo: '',
         simpleValue: '',
         activityCode: '',
-        correlationId:'',
+        correlationId: '',
     });
     const handleSubmitVatNo = (e) => {
         e.preventDefault();
@@ -99,7 +107,9 @@ export default function create({auth, aziende}) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <form className="grid grid-cols-1 sm:grid-cols-2 gap-6" onSubmit={handleSubmitVatNo}>
+
+                            <form className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+                                  onSubmit={handleSubmitVatNo}>
                                 <div className="mb-4">
                                     <InputLabel htmlFor="vatNo" value="Vat Number"/>
                                     <TextInput
@@ -113,207 +123,258 @@ export default function create({auth, aziende}) {
                                     />
                                     {errors.vatNO && <div className="text-red-600">{errors.vatNO}</div>}
                                 </div>
-                                <div className="flex items-center justify-between col-span-1 sm:col-span-2">
-                                    <button
-                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                        type="submit"
-                                        disabled={processing}
-                                    >
-                                        Invia
-                                    </button>
-                                </div>
+                                {
+                                    data.vatNO === '' ? (<>
+                                    </>) : (<>
+                                        {step === 1 && (
+                                            <>
+                                                <div
+                                                    className="flex items-center justify-between col-span-1 sm:col-span-2">
+                                                    <button
+                                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                        type="submit"
+                                                        disabled={processing}
+                                                    >
+                                                        Auto Compila
+                                                    </button>
+                                                </div>
+                                            </>
+                                        )}
+
+                                    </>)
+                                }
                             </form>
-                            {
-                                data.vatNO !== '' ?
+
+
+                            <form className="grid grid-cols-1 sm:grid-cols-2 gap-6" onSubmit={handleSubmit}>
+                                {step === 1 && (
                                     <>
-                                        <form className="grid grid-cols-1 sm:grid-cols-2 gap-6" onSubmit={handleSubmit}>
-                                            <div className="mb-4">
-                                                <InputLabel htmlFor="activityCode" value="activityCode"/>
-                                                <TextInput
-                                                    id="activityCode"
-                                                    name="activityCode"
-                                                    value={data.activityCode = activityCode}
-                                                    onChange={(e) => setData('activityCode', e.target.value)}
-                                                    type="text"
-                                                    className="mt-1 block w-full"
-                                                    placeholder="activityCode"
-                                                />
-                                                {errors.activityCode &&
-                                                    <div className="text-red-600">{errors.activityCode}</div>}
-                                            </div>
-                                            <div className="mb-4">
-                                                <InputLabel htmlFor="correlationId" value="correlationId"/>
-                                                <TextInput
-                                                    hidden={true}
-                                                    id="correlationId"
-                                                    name="correlationId"
-                                                    value={data.correlationId = correlationId}
-                                                    onChange={(e) => setData('correlationId', e.target.value)}
-                                                    type="text"
-                                                    className="mt-1 block w-full"
-                                                    placeholder="correlationId"
-                                                />
-                                                {errors.correlationId &&
-                                                    <div className="text-red-600">{errors.correlationId}</div>}
-                                            </div>
-                                            <div className="mb-4">
-                                                <InputLabel htmlFor="fullName" value="Nome completo"/>
-                                                <TextInput
-                                                    id="fullName"
-                                                    name="fullName"
-                                                    value={data.fullName = fullName}
-                                                    onChange={(e) => setData('fullName', e.target.value)}
-                                                    type="text"
-                                                    className="mt-1 block w-full"
-                                                    placeholder="Nome completo"
-                                                />
-                                                {errors.fullName &&
-                                                    <div className="text-red-600">{errors.fullName}</div>}
-                                            </div>
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="activityCode" value="activityCode"/>
+                                            <TextInput
+                                                id="activityCode"
+                                                name="activityCode"
+                                                value={data.activityCode = activityCode}
+                                                onChange={(e) => setData('activityCode', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="activityCode"
+                                            />
+                                            {errors.activityCode &&
+                                                <div className="text-red-600">{errors.activityCode}</div>}
+                                        </div>
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="correlationId" value="correlationId"/>
+                                            <TextInput
+                                                hidden={true}
+                                                id="correlationId"
+                                                name="correlationId"
+                                                value={data.correlationId = correlationId}
+                                                onChange={(e) => setData('correlationId', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="correlationId"
+                                            />
+                                            {errors.correlationId &&
+                                                <div className="text-red-600">{errors.correlationId}</div>}
+                                        </div>
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="fullName" value="Nome completo"/>
+                                            <TextInput
+                                                id="fullName"
+                                                name="fullName"
+                                                value={data.fullName = fullName}
+                                                onChange={(e) => setData('fullName', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="Nome completo"
+                                            />
+                                            {errors.fullName &&
+                                                <div className="text-red-600">{errors.fullName}</div>}
+                                        </div>
 
-                                            <div className="mb-4">
-                                                <InputLabel htmlFor="phoneNumbers" value="Numero di telefono"/>
-                                                <TextInput
-                                                    id="phoneNumbers"
-                                                    name="phoneNumbers"
-                                                    value={data.phoneNumbers = phoneNumbers}
-                                                    onChange={(e) => setData('phoneNumbers', e.target.value)}
-                                                    type="tel"
-                                                    className="mt-1 block w-full"
-                                                    placeholder="Telefono"
-                                                />
-                                                {errors.phoneNumbers &&
-                                                    <div className="text-red-600">{errors.phoneNumbers}</div>}
-                                            </div>
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="phoneNumbers" value="Numero di telefono"/>
+                                            <TextInput
+                                                id="phoneNumbers"
+                                                name="phoneNumbers"
+                                                value={data.phoneNumbers = phoneNumbers}
+                                                onChange={(e) => setData('phoneNumbers', e.target.value)}
+                                                type="tel"
+                                                className="mt-1 block w-full"
+                                                placeholder="Telefono"
+                                            />
+                                            {errors.phoneNumbers &&
+                                                <div className="text-red-600">{errors.phoneNumbers}</div>}
+                                        </div>
 
-                                            <div className="mb-4">
-                                                <InputLabel htmlFor="simpleValue" value="Indirizzo di residenza"/>
-                                                <TextInput
-                                                    id="simpleValue"
-                                                    name="simpleValue"
-                                                    value={data.simpleValue = simpleValue}
-                                                    onChange={(e) => setData('simpleValue', e.target.value)}
-                                                    type="text"
-                                                    className="mt-1 block w-full"
-                                                    placeholder="Indirizzo"
-                                                />
-                                                {errors.simpleValue &&
-                                                    <div className="text-red-600">{errors.simpleValue}</div>}
-                                            </div>
-                                            <div className="mb-4">
-                                                <InputLabel htmlFor="postCode" value="Post Code"/>
-                                                <TextInput
-                                                    id="postCode"
-                                                    name="postCode"
-                                                    value={data.postCode = postCode}
-                                                    onChange={(e) => setData('postCode', e.target.value)}
-                                                    type="text"
-                                                    className="mt-1 block w-full"
-                                                    placeholder="Post Code"
-                                                />
-                                                {errors.postCode &&
-                                                    <div className="text-red-600">{errors.postCode}</div>}
-                                            </div>
-                                            <div className="mb-4">
-                                                <InputLabel htmlFor="province" value="Post Code"/>
-                                                <TextInput
-                                                    id="province"
-                                                    name="province"
-                                                    value={data.province = province}
-                                                    onChange={(e) => setData('province', e.target.value)}
-                                                    type="text"
-                                                    className="mt-1 block w-full"
-                                                    placeholder="province"
-                                                />
-                                                {errors.province &&
-                                                    <div className="text-red-600">{errors.province}</div>}
-                                            </div>
-                                            <div className="mb-4">
-                                                <InputLabel htmlFor="city" value="city"/>
-                                                <TextInput
-                                                    id="city"
-                                                    name="city"
-                                                    value={data.city = city}
-                                                    onChange={(e) => setData('city', e.target.value)}
-                                                    type="text"
-                                                    className="mt-1 block w-full"
-                                                    placeholder="city"
-                                                />
-                                                {errors.city && <div className="text-red-600">{errors.city}</div>}
-                                            </div>
-                                            <div className="mb-4">
-                                                <InputLabel htmlFor="country" value="country"/>
-                                                <TextInput
-                                                    id="country"
-                                                    name="country"
-                                                    value={data.country = country}
-                                                    onChange={(e) => setData('country', e.target.value)}
-                                                    type="text"
-                                                    className="mt-1 block w-full"
-                                                    placeholder="country"
-                                                />
-                                                {errors.country && <div className="text-red-600">{errors.country}</div>}
-                                            </div>
-                                            <div className="mb-4">
-                                                <InputLabel htmlFor="houseNo" value="houseNo"/>
-                                                <TextInput
-                                                    id="houseNo"
-                                                    name="houseNo"
-                                                    value={data.houseNo = houseNo}
-                                                    onChange={(e) => setData('houseNo', e.target.value)}
-                                                    type="text"
-                                                    className="mt-1 block w-full"
-                                                    placeholder="houseNo"
-                                                />
-                                                {errors.houseNo && <div className="text-red-600">{errors.houseNo}</div>}
-                                            </div>
-                                            <div className="mb-4">
-                                                <InputLabel htmlFor="regNo" value="regNo"/>
-                                                <TextInput
-                                                    id="regNo"
-                                                    name="regNo"
-                                                    value={data.regNo = regNo}
-                                                    onChange={(e) => setData('regNo', e.target.value)}
-                                                    type="text"
-                                                    className="mt-1 block w-full"
-                                                    placeholder="regNo"
-                                                />
-                                                {errors.regNo && <div className="text-red-600">{errors.regNo}</div>}
-                                            </div>
-                                            <div className="mb-4">
-                                                <InputLabel htmlFor="safeNo" value="safeNo"/>
-                                                <TextInput
-                                                    id="safeNo"
-                                                    name="safeNo"
-                                                    value={data.safeNo = safeNo}
-                                                    onChange={(e) => setData('safeNo', e.target.value)}
-                                                    type="text"
-                                                    className="mt-1 block w-full"
-                                                    placeholder="safeNo"
-                                                />
-                                                {errors.safeNo && <div className="text-red-600">{errors.safeNo}</div>}
-                                            </div>
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="simpleValue" value="Indirizzo di residenza"/>
+                                            <TextInput
+                                                id="simpleValue"
+                                                name="simpleValue"
+                                                value={data.simpleValue = simpleValue}
+                                                onChange={(e) => setData('simpleValue', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="Indirizzo"
+                                            />
+                                            {errors.simpleValue &&
+                                                <div className="text-red-600">{errors.simpleValue}</div>}
+                                        </div>
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="postCode" value="Post Code"/>
+                                            <TextInput
+                                                id="postCode"
+                                                name="postCode"
+                                                value={data.postCode = postCode}
+                                                onChange={(e) => setData('postCode', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="Post Code"
+                                            />
+                                            {errors.postCode &&
+                                                <div className="text-red-600">{errors.postCode}</div>}
+                                        </div>
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="province" value="Post Code"/>
+                                            <TextInput
+                                                id="province"
+                                                name="province"
+                                                value={data.province = province}
+                                                onChange={(e) => setData('province', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="province"
+                                            />
+                                            {errors.province &&
+                                                <div className="text-red-600">{errors.province}</div>}
+                                        </div>
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="city" value="city"/>
+                                            <TextInput
+                                                id="city"
+                                                name="city"
+                                                value={data.city = city}
+                                                onChange={(e) => setData('city', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="city"
+                                            />
+                                            {errors.city && <div className="text-red-600">{errors.city}</div>}
+                                        </div>
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="country" value="country"/>
+                                            <TextInput
+                                                id="country"
+                                                name="country"
+                                                value={data.country = country}
+                                                onChange={(e) => setData('country', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="country"
+                                            />
+                                            {errors.country && <div className="text-red-600">{errors.country}</div>}
+                                        </div>
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="houseNo" value="houseNo"/>
+                                            <TextInput
+                                                id="houseNo"
+                                                name="houseNo"
+                                                value={data.houseNo = houseNo}
+                                                onChange={(e) => setData('houseNo', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="houseNo"
+                                            />
+                                            {errors.houseNo && <div className="text-red-600">{errors.houseNo}</div>}
+                                        </div>
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="regNo" value="regNo"/>
+                                            <TextInput
+                                                id="regNo"
+                                                name="regNo"
+                                                value={data.regNo = regNo}
+                                                onChange={(e) => setData('regNo', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="regNo"
+                                            />
+                                            {errors.regNo && <div className="text-red-600">{errors.regNo}</div>}
+                                        </div>
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="safeNo" value="safeNo"/>
+                                            <TextInput
+                                                id="safeNo"
+                                                name="safeNo"
+                                                value={data.safeNo = safeNo}
+                                                onChange={(e) => setData('safeNo', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="safeNo"
+                                            />
+                                            {errors.safeNo && <div className="text-red-600">{errors.safeNo}</div>}
+                                        </div>
 
+                                        <button
+                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                            type="button"
+                                            onClick={handleNext}
+                                        >
+                                            Next
+                                        </button>
 
-                                            <div className="flex items-center justify-between col-span-1 sm:col-span-2">
-                                                <button
-                                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                                    type="submit"
-                                                    disabled={processing}
-                                                >
-                                                    Invia
-                                                </button>
-                                            </div>
-                                        </form>
                                     </>
-                                    :
+                                )}
+                                {step === 2 && (
                                     <>
+
+                                        <div className="flex items-center justify-between col-span-1 sm:col-span-2">
+                                            <button
+                                                className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                type="button"
+                                                onClick={handleBack}
+                                            >
+                                                Back
+                                            </button>
+                                            <button
+                                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                type="button"
+                                                onClick={handleNext}
+                                            >
+                                                Next
+                                            </button>
+
+                                        </div>
                                     </>
-                            }
+                                )}
+                                {step === 3 && (
+                                    <>
+                                        <div className="flex items-center justify-between col-span-1 sm:col-span-2">
+                                            <button
+                                                className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                type="button"
+                                                onClick={handleBack}
+                                            >
+                                                Back
+                                            </button>
+                                            <button
+                                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                type="submit"
+                                                disabled={processing}
+                                            >
+                                                Salva Azienda
+                                            </button>
+                                        </div>
+                                    </>
+                                )}
+                            </form>
+
                         </div>
                     </div>
                 </div>
             </div>
         </AuthenticatedLayout>
-    );
+    )
+        ;
 }
