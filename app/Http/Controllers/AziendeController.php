@@ -3,20 +3,24 @@
     namespace App\Http\Controllers;
 
     use App\Enum\CreditSafeUrlEnum\CreditSafeUrl;
-    use App\Enum\UserRole\UserRole;
     use App\Http\Requests\StoreAziendeRequest;
     use App\Http\Requests\UpdateAziendeRequest;
     use App\Models\Aziende;
-    use App\Models\User;
     use Illuminate\Database\Eloquent\Casts\Json;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\DB;
-    use Illuminate\Support\Facades\Hash;
     use Inertia\Inertia;
     use Inertia\Response;
 
     class AziendeController extends Controller
     {
+        public string $key;
+
+        public function __construct()
+        {
+            $this->key = $this->creditSaveToken();
+        }
+
         /**
          * Display a listing of the resource.
          *
@@ -167,27 +171,30 @@
         public function callCreditSafeService(?Request $request): mixed
         {
             $vatNo = $request->vatNO;
-            $token = $this->creditSaveToken();
-            $curl  = curl_init();
-            $link  = '?page=1&countries=IT&vatNo=';
+            try {
+                $token = $this->key;
+                $curl  = curl_init();
+                $link  = '?page=1&countries=IT&vatNo=';
 
-            curl_setopt_array($curl, array(
-                CURLOPT_URL            => CreditSafeUrl::UrlCompaines->value . $link . $vatNo,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING       => '',
-                CURLOPT_MAXREDIRS      => 10,
-                CURLOPT_TIMEOUT        => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST  => 'GET',
-                CURLOPT_HTTPHEADER     => array(
-                    "Authorization: Bearer $token"
-                ),
-            ));
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL            => CreditSafeUrl::UrlCompaines->value . $link . $vatNo,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING       => '',
+                    CURLOPT_MAXREDIRS      => 10,
+                    CURLOPT_TIMEOUT        => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST  => 'GET',
+                    CURLOPT_HTTPHEADER     => array(
+                        "Authorization: Bearer $token"
+                    ),
+                ));
+                $response = json_decode(curl_exec($curl));
+                curl_close($curl);
 
-            $response = json_decode(curl_exec($curl));
-
-            curl_close($curl);
+            } catch (\Throwable) {
+                $this->key = $this->creditSaveToken();
+            }
             return $this->create($response);
         }
 

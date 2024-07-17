@@ -315,15 +315,15 @@ export default function create({auth, aziende}) {
                                             />
                                             {errors.safeNo && <div className="text-red-600">{errors.safeNo}</div>}
                                         </div>
-
-                                        <button
-                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                            type="button"
-                                            onClick={handleNext}
-                                        >
-                                            Next
-                                        </button>
-
+                                        <div className="flex items-center justify-between col-span-1 sm:col-span-2">
+                                            <button
+                                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                type="button"
+                                                onClick={handleNext}
+                                            >
+                                                Next
+                                            </button>
+                                        </div>
                                     </>
                                 )}
                                 {step === 2 && (
