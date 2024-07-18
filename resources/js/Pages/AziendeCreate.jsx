@@ -5,7 +5,7 @@ import TextInput from '@/Components/TextInput';
 import {useState} from 'react';
 
 export default function create({auth, aziende}) {
-
+    console.log(aziende);
     const [step, setStep] = useState(1);
     const handleNext = () => {
         setStep(step + 1);
@@ -75,12 +75,16 @@ export default function create({auth, aziende}) {
         simpleValue: '',
         activityCode: '',
         correlationId: '',
+        id: ''
     });
     const handleSubmitVatNo = (e) => {
         e.preventDefault();
         post('/azienda-create-2');
     };
-
+    const handleSubmit2 = (e) => {
+        e.preventDefault();
+        post('/azienda-create-3');
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -145,39 +149,64 @@ export default function create({auth, aziende}) {
                                 }
                             </form>
 
+                            <form className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+                                  onSubmit={handleSubmit2}>
+                                <TextInput
+                                    hidden={true}
+                                    id="id"
+                                    name="id"
+                                    value={data.id = id}
+                                    onChange={(e) => setData('id', e.target.value)}
+                                    type="text"
+                                    className="mt-1 block w-full"
+                                    placeholder="id"
+                                />
+                                <div
+                                    className="flex items-center justify-between col-span-1 sm:col-span-2">
+                                    <button
+                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                        type="submit"
+                                        disabled={processing}
+                                    >
+                                        Auto Compila 2
+                                    </button>
+                                </div>
+                            </form>
+
 
                             <form className="grid grid-cols-1 sm:grid-cols-2 gap-6" onSubmit={handleSubmit}>
                                 {step === 1 && (
                                     <>
-                                        <div className="mb-4">
-                                            <InputLabel htmlFor="activityCode" value="activityCode"/>
-                                            <TextInput
-                                                id="activityCode"
-                                                name="activityCode"
-                                                value={data.activityCode = activityCode}
-                                                onChange={(e) => setData('activityCode', e.target.value)}
-                                                type="text"
-                                                className="mt-1 block w-full"
-                                                placeholder="activityCode"
-                                            />
-                                            {errors.activityCode &&
-                                                <div className="text-red-600">{errors.activityCode}</div>}
-                                        </div>
-                                        <div className="mb-4">
-                                            <InputLabel htmlFor="correlationId" value="correlationId"/>
-                                            <TextInput
-                                                hidden={true}
-                                                id="correlationId"
-                                                name="correlationId"
-                                                value={data.correlationId = correlationId}
-                                                onChange={(e) => setData('correlationId', e.target.value)}
-                                                type="text"
-                                                className="mt-1 block w-full"
-                                                placeholder="correlationId"
-                                            />
-                                            {errors.correlationId &&
-                                                <div className="text-red-600">{errors.correlationId}</div>}
-                                        </div>
+                                        {/*<div className="mb-4">*/}
+                                        {/*    <InputLabel htmlFor="activityCode" value="activityCode"/>*/}
+                                        <TextInput
+                                            id="activityCode"
+                                            name="activityCode"
+                                            value={data.activityCode = activityCode}
+                                            onChange={(e) => setData('activityCode', e.target.value)}
+                                            type="text"
+                                            className="mt-1 block w-full invisible"
+                                            placeholder="activityCode"
+                                        />
+                                        {/*{errors.activityCode &&*/}
+                                        {/*    <div className="text-red-600">{errors.activityCode}</div>}*/}
+                                        {/*</div>*/}
+                                        {/*<div className="mb-4">*/}
+                                        {/*    <InputLabel htmlFor="correlationId" value="correlationId"/>*/}
+                                        <TextInput
+                                            hidden={true}
+                                            id="correlationId"
+                                            name="correlationId"
+                                            value={data.correlationId = correlationId}
+                                            onChange={(e) => setData('correlationId', e.target.value)}
+                                            type="text"
+                                            className="mt-1 block w-full invisible"
+                                            placeholder="correlationId"
+                                        />
+
+                                        {/*    {errors.correlationId &&*/}
+                                        {/*        <div className="text-red-600">{errors.correlationId}</div>}*/}
+                                        {/*</div>*/}
                                         <div className="mb-4">
                                             <InputLabel htmlFor="fullName" value="Nome completo"/>
                                             <TextInput

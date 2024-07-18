@@ -44,6 +44,7 @@
          */
         public function create($request = null): Response
         {
+            dd($request);
             $result = [];
             if ($request !== null) {
                 try {
@@ -71,8 +72,9 @@
                         'status'        => $value->status,
                     ];
                 }
+
                 return Inertia::render('AziendeCreate', [
-                    'aziende' => $result
+                    'aziende' => $result,
                 ]);
             } else {
                 return Inertia::render('AziendeCreate', [
@@ -100,10 +102,11 @@
             $status        = $request->request->get('status');
             $activityCode  = $request->request->get('activityCode');
             $correlationId = $request->request->get('correlationId');
+            $id            = $request->request->get('id');
 
             DB::table('aziendes')->insert([
                 'correlation_id'      => $correlationId,
-                'id_company_received' => 'sbjdjaksd',
+                'id_company_received' => $id,
                 'country'             => $country,
                 'reg_no'              => $reg_no,
                 'vat_no'              => $vat_no,
@@ -191,12 +194,47 @@
                 ));
                 $response = json_decode(curl_exec($curl));
                 curl_close($curl);
-
             } catch (\Throwable) {
                 $this->key = $this->creditSaveToken();
             }
             return $this->create($response);
         }
+
+
+        /**
+         * @param Request|null $request
+         *
+         * @return mixed
+         */
+        public function callCreditSafeServiceCompanies(?Request $request): mixed
+        {
+            try {
+                $link          = 'https://connect.creditsafe.com/v1/companies/';
+                $continue_link = '?language=it&template=Financial&includeIndicators=false';
+                $curl          = curl_init();
+
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL            => $link . $request->id . $continue_link,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING       => '',
+                    CURLOPT_MAXREDIRS      => 10,
+                    CURLOPT_TIMEOUT        => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST  => 'GET',
+                    CURLOPT_HTTPHEADER     => array(
+                        'Authorization: Bearer ' . $this->key,
+                    ),
+                ));
+
+                $response = curl_exec($curl);
+                curl_close($curl);
+            } catch (\Throwable) {
+                $this->key = $this->creditSaveToken();
+            }
+            return $this->create(json_decode($response));
+        }
+
 
         /**
          * @return string
