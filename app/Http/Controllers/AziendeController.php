@@ -97,7 +97,7 @@
          */
         public function store(StoreAziendeRequest $request)
         {
-            dd($request);
+
             $vat_no        = $request->request->get('vatNO');
             $full_name     = $request->request->get('fullName');
             $phone_numbers = $request->request->get('phoneNumbers');
@@ -114,31 +114,36 @@
             $correlationId = $request->request->get('correlationId');
             $id            = $request->request->get('id');
 
-            $credit_rating_value       = $request->request->get('$credit_rating_value');
-            $credit_rating_description = $request->request->get('credit_rating_description');
+            $credit_rating_value          = $request->request->get('credit_rating_value');
+            $credit_rating_description    = $request->request->get('credit_rating_description');
             $credit_rating_limit_value    = $request->request->get('credit_rating_limit_value');
             $credit_rating_limit_currency = $request->request->get('credit_rating_limit_currency');
             $credit_rating_provider_value = $request->request->get('credit_rating_provider_value');
 
 
             DB::table('aziendes')->insert([
-                'correlation_id'      => $correlationId,
-                'id_company_received' => $id,
-                'country'             => $country,
-                'reg_no'              => $reg_no,
-                'vat_no'              => $vat_no,
-                'safe_no'             => $safe_no,
-                'name'                => $full_name,
-                'address_complete'    => $simple_value,
-                'address_simple'      => $simple_value,
-                'city'                => $city,
-                'postal_code'         => $post_code,
-                'province'            => $province,
-                'house_number'        => $house_no,
-                'type_azienda'        => 'Booh',
-                'phone_number'        => $phone_numbers,
-                'activity_code'       => $activityCode,
-                'created_at'          => now()
+                'correlation_id'               => $correlationId,
+                'id_company_received'          => $id,
+                'country'                      => $country,
+                'reg_no'                       => $reg_no,
+                'vat_no'                       => $vat_no,
+                'safe_no'                      => $safe_no,
+                'name'                         => $full_name,
+                'address_complete'             => $simple_value,
+                'address_simple'               => $simple_value,
+                'city'                         => $city,
+                'postal_code'                  => $post_code,
+                'province'                     => $province,
+                'house_number'                 => $house_no,
+                'type_azienda'                 => 'Booh',
+                'phone_number'                 => $phone_numbers,
+                'activity_code'                => $activityCode,
+                'credit_rating_value'          => $credit_rating_value,
+                'credit_rating_description'    => $credit_rating_description,
+                'credit_rating_limit_value'    => $credit_rating_limit_value,
+                'credit_rating_limit_currency' => $credit_rating_limit_currency,
+                'credit_rating_provider_value' => $credit_rating_provider_value,
+                'created_at'                   => now()
             ]);
 
             return redirect(route('aziende.index', absolute: false));

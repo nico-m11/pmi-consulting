@@ -28,7 +28,13 @@
                 $table->string('type_azienda');
                 $table->string('phone_number');
                 $table->string('activity_code');
+                $table->string('credit_rating_value');
+                $table->string('credit_rating_description');
+                $table->string('credit_rating_limit_value');
+                $table->string('credit_rating_limit_currency');
+                $table->string('credit_rating_provider_value');
                 $table->dateTime('created_at');
+
             });
         }
 

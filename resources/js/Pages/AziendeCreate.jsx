@@ -5,7 +5,7 @@ import TextInput from '@/Components/TextInput';
 import {useState} from 'react';
 
 export default function create({auth, aziende}) {
-    console.log(aziende);
+
     const [step, setStep] = useState(1);
     const handleNext = () => {
         setStep(step + 1);

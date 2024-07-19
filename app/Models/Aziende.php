@@ -34,9 +34,14 @@
             'phone_number',
             'activityCode',
             'created_at',
-            'updated_at'
-        ];
+            'updated_at',
 
+            'credit_rating_value',
+            'credit_rating_description',
+            'credit_rating_limit_value',
+            'credit_rating_limit_currency',
+            'credit_rating_provider_value',
+        ];
 
 
         public function pratiche(): BelongsTo
