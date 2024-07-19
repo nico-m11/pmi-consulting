@@ -55,14 +55,12 @@
         // -----
         Route::resource('/aziende', AziendeController::class);
         Route::post('/azienda-create-2', [AziendeController::class, 'callCreditSafeService']);
-        Route::post('/azienda-create-3', [AziendeController::class, 'callCreditSafeServiceCompanies']);
 
 
         // -----
         // PRATICHE
         // -----
         Route::resource('/pratiche', PraticheController::class);
-
     });
 
 

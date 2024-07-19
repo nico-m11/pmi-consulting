@@ -28,7 +28,14 @@ export default function create({auth, aziende}) {
     let regNo;
     let safeNo;
     let simpleValue;
-    console.log(aziende);
+
+    let credit_rating_description;
+    let credit_rating_limit_currency;
+    let credit_rating_limit_value;
+    let credit_rating_provider_value;
+    let credit_rating_value;
+
+
     aziende?.map(({
                       activityCode: activityCode1,
                       correlationId: correlationId1,
@@ -43,6 +50,12 @@ export default function create({auth, aziende}) {
                       regNo: regNo1,
                       safeNo: safeNo1,
                       simpleValue: simpleValue1,
+
+                      credit_rating_description: credit_rating_description1,
+                      credit_rating_limit_currency: credit_rating_limit_currency1,
+                      credit_rating_limit_value: credit_rating_limit_value1,
+                      credit_rating_provider_value: credit_rating_provider_value1,
+                      credit_rating_value: credit_rating_value1
                   }) => {
         return (
             activityCode = activityCode1,
@@ -57,7 +70,13 @@ export default function create({auth, aziende}) {
                 province = province1,
                 regNo = regNo1,
                 safeNo = safeNo1,
-                simpleValue = simpleValue1
+                simpleValue = simpleValue1,
+
+                credit_rating_description = credit_rating_description1,
+                credit_rating_limit_currency = credit_rating_limit_currency1,
+                credit_rating_limit_value = credit_rating_limit_value1,
+                credit_rating_provider_value = credit_rating_provider_value1,
+                credit_rating_value = credit_rating_value1
         );
     });
 
@@ -75,15 +94,17 @@ export default function create({auth, aziende}) {
         simpleValue: '',
         activityCode: '',
         correlationId: '',
-        id: ''
+        id: '',
+
+        credit_rating_description: '',
+        credit_rating_limit_currency: '',
+        credit_rating_limit_value: '',
+        credit_rating_provider_value: '',
+        credit_rating_value: '',
     });
     const handleSubmitVatNo = (e) => {
         e.preventDefault();
         post('/azienda-create-2');
-    };
-    const handleSubmit2 = (e) => {
-        e.preventDefault();
-        post('/azienda-create-3');
     };
 
     const handleSubmit = (e) => {
@@ -149,30 +170,6 @@ export default function create({auth, aziende}) {
                                 }
                             </form>
 
-                            <form className="grid grid-cols-1 sm:grid-cols-2 gap-6"
-                                  onSubmit={handleSubmit2}>
-                                <TextInput
-                                    hidden={true}
-                                    id="id"
-                                    name="id"
-                                    value={data.id = id}
-                                    onChange={(e) => setData('id', e.target.value)}
-                                    type="text"
-                                    className="mt-1 block w-full"
-                                    placeholder="id"
-                                />
-                                <div
-                                    className="flex items-center justify-between col-span-1 sm:col-span-2">
-                                    <button
-                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                        type="submit"
-                                        disabled={processing}
-                                    >
-                                        Auto Compila 2
-                                    </button>
-                                </div>
-                            </form>
-
 
                             <form className="grid grid-cols-1 sm:grid-cols-2 gap-6" onSubmit={handleSubmit}>
                                 {step === 1 && (
@@ -193,6 +190,7 @@ export default function create({auth, aziende}) {
                                         {/*</div>*/}
                                         {/*<div className="mb-4">*/}
                                         {/*    <InputLabel htmlFor="correlationId" value="correlationId"/>*/}
+
                                         <TextInput
                                             hidden={true}
                                             id="correlationId"
@@ -203,9 +201,22 @@ export default function create({auth, aziende}) {
                                             className="mt-1 block w-full invisible"
                                             placeholder="correlationId"
                                         />
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="id" value="id"/>
+                                            <TextInput
+                                                hidden={true}
+                                                id="id"
+                                                name="id"
+                                                value={data.id = id}
+                                                onChange={(e) => setData('id', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="id"
+                                            />
+                                        </div>
 
-                                        {/*    {errors.correlationId &&*/}
-                                        {/*        <div className="text-red-600">{errors.correlationId}</div>}*/}
+                                        {errors.id &&
+                                            <div className="text-red-600">{errors.id}</div>}
                                         {/*</div>*/}
                                         <div className="mb-4">
                                             <InputLabel htmlFor="fullName" value="Nome completo"/>
@@ -357,28 +368,92 @@ export default function create({auth, aziende}) {
                                 )}
                                 {step === 2 && (
                                     <>
+                                        {/*credit_rating_value: '',*/}
 
-                                        <div className="flex items-center justify-between col-span-1 sm:col-span-2">
-                                            <button
-                                                className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                                type="button"
-                                                onClick={handleBack}
-                                            >
-                                                Back
-                                            </button>
-                                            <button
-                                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                                type="button"
-                                                onClick={handleNext}
-                                            >
-                                                Next
-                                            </button>
-
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="credit_rating_description"
+                                                        value="credit_rating_description"/>
+                                            <TextInput
+                                                id="credit_rating_description"
+                                                name="credit_rating_description"
+                                                value={data.credit_rating_description = credit_rating_description}
+                                                onChange={(e) => setData('credit_rating_description', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="credit_rating_description"
+                                            />
+                                            {errors.credit_rating_description &&
+                                                <div className="text-red-600">{errors.credit_rating_description}</div>}
                                         </div>
-                                    </>
-                                )}
-                                {step === 3 && (
-                                    <>
+
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="credit_rating_limit_currency"
+                                                        value="credit_rating_limit_currency"/>
+                                            <TextInput
+                                                id="credit_rating_limit_currency"
+                                                name="credit_rating_limit_currency"
+                                                value={data.credit_rating_limit_currency = credit_rating_limit_currency}
+                                                onChange={(e) => setData('credit_rating_limit_currency', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="credit_rating_limit_currency"
+                                            />
+                                            {errors.credit_rating_limit_currency &&
+                                                <div
+                                                    className="text-red-600">{errors.credit_rating_limit_currency}</div>}
+                                        </div>
+
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="credit_rating_limit_value"
+                                                        value="credit_rating_limit_value"/>
+                                            <TextInput
+                                                id="credit_rating_limit_value"
+                                                name="credit_rating_limit_value"
+                                                value={data.credit_rating_limit_value = credit_rating_limit_value}
+                                                onChange={(e) => setData('credit_rating_limit_value', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="credit_rating_limit_value"
+                                            />
+                                            {errors.credit_rating_limit_value &&
+                                                <div
+                                                    className="text-red-600">{errors.credit_rating_limit_value}</div>}
+                                        </div>
+
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="credit_rating_provider_value"
+                                                        value="credit_rating_provider_value"/>
+                                            <TextInput
+                                                id="credit_rating_provider_value"
+                                                name="credit_rating_provider_value"
+                                                value={data.credit_rating_provider_value = credit_rating_provider_value}
+                                                onChange={(e) => setData('credit_rating_provider_value', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="credit_rating_provider_value"
+                                            />
+                                            {errors.credit_rating_provider_value &&
+                                                <div
+                                                    className="text-red-600">{errors.credit_rating_provider_value}</div>}
+                                        </div>
+
+                                        <div className="mb-4">
+                                            <InputLabel htmlFor="credit_rating_value"
+                                                        value="credit_rating_value"/>
+                                            <TextInput
+                                                id="credit_rating_value"
+                                                name="credit_rating_value"
+                                                value={data.credit_rating_value = credit_rating_value}
+                                                onChange={(e) => setData('credit_rating_value', e.target.value)}
+                                                type="text"
+                                                className="mt-1 block w-full"
+                                                placeholder="credit_rating_value"
+                                            />
+                                            {errors.credit_rating_value &&
+                                                <div
+                                                    className="text-red-600">{errors.credit_rating_value}</div>}
+                                        </div>
+
                                         <div className="flex items-center justify-between col-span-1 sm:col-span-2">
                                             <button
                                                 className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -394,6 +469,7 @@ export default function create({auth, aziende}) {
                                             >
                                                 Salva Azienda
                                             </button>
+
                                         </div>
                                     </>
                                 )}

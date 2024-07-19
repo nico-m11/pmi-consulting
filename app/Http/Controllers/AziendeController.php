@@ -44,34 +44,43 @@
          */
         public function create($request = null): Response
         {
-            dd($request);
-            $result = [];
             if ($request !== null) {
                 try {
-                    $array = $request->companies;
+                    $result_first = $request['value_company'];
                 } catch (\Throwable) {
-                    $array = [];
+                    $result_first = [];
                 }
-                foreach ($array as $value) {
-                    $result[] = [
-                        'correlationId' => $request->correlationId,
-                        "id"            => $value->id,
-                        "country"       => $value->country,
-                        "regNo"         => $value->regNo,
-                        "safeNo"        => $value->safeNo,
-                        "name"          => $value->name,
-                        "type"          => $value->type,
-                        "simpleValue"   => $value->address->simpleValue,
-                        "street"        => $value->address->street,
-                        "city"          => $value->address->city,
-                        "postCode"      => $value->address->postCode,
-                        "province"      => $value->address->postCode,
-                        "houseNo"       => $value->address->houseNo,
-                        "phoneNumbers"  => $value->phoneNumbers[0],
-                        'activityCode'  => $value->activityCode,
-                        'status'        => $value->status,
-                    ];
+
+                try {
+                    $array_second = $request['value_credit'];
+                } catch (\Throwable) {
+                    $array_second = [];
                 }
+
+                $result[] = [
+                    'correlationId'                => $result_first->correlationId,
+                    "id"                           => $result_first->companies[0]->id,
+                    "country"                      => $result_first->companies[0]->country,
+                    "regNo"                        => $result_first->companies[0]->regNo,
+                    "safeNo"                       => $result_first->companies[0]->safeNo,
+                    "name"                         => $result_first->companies[0]->name,
+                    "type"                         => $result_first->companies[0]->type,
+                    "simpleValue"                  => $result_first->companies[0]->address->simpleValue,
+                    "street"                       => $result_first->companies[0]->address->street,
+                    "city"                         => $result_first->companies[0]->address->city,
+                    "postCode"                     => $result_first->companies[0]->address->postCode,
+                    "province"                     => $result_first->companies[0]->address->postCode,
+                    "houseNo"                      => $result_first->companies[0]->address->houseNo,
+                    "phoneNumbers"                 => $result_first->companies[0]->phoneNumbers[0],
+                    'activityCode'                 => $result_first->companies[0]->activityCode,
+                    'status'                       => $result_first->companies[0]->status,
+                    'credit_rating_value'          => $array_second->report->creditScore->currentCreditRating->commonValue,
+                    'credit_rating_description'    => $array_second->report->creditScore->currentCreditRating->commonDescription,
+                    'credit_rating_limit_value'    => $array_second->report->creditScore->currentCreditRating->creditLimit->value,
+                    'credit_rating_limit_currency' => $array_second->report->creditScore->currentCreditRating->creditLimit->currency,
+                    'credit_rating_provider_value' => $array_second->report->creditScore->currentCreditRating->providerValue->value,
+                ];
+
 
                 return Inertia::render('AziendeCreate', [
                     'aziende' => $result,
@@ -88,6 +97,7 @@
          */
         public function store(StoreAziendeRequest $request)
         {
+            dd($request);
             $vat_no        = $request->request->get('vatNO');
             $full_name     = $request->request->get('fullName');
             $phone_numbers = $request->request->get('phoneNumbers');
@@ -103,6 +113,13 @@
             $activityCode  = $request->request->get('activityCode');
             $correlationId = $request->request->get('correlationId');
             $id            = $request->request->get('id');
+
+            $credit_rating_value       = $request->request->get('$credit_rating_value');
+            $credit_rating_description = $request->request->get('credit_rating_description');
+            $credit_rating_limit_value    = $request->request->get('credit_rating_limit_value');
+            $credit_rating_limit_currency = $request->request->get('credit_rating_limit_currency');
+            $credit_rating_provider_value = $request->request->get('credit_rating_provider_value');
+
 
             DB::table('aziendes')->insert([
                 'correlation_id'      => $correlationId,
@@ -173,66 +190,81 @@
          */
         public function callCreditSafeService(?Request $request): mixed
         {
-            $vatNo = $request->vatNO;
             try {
                 $token = $this->key;
-                $curl  = curl_init();
-                $link  = '?page=1&countries=IT&vatNo=';
-
-                curl_setopt_array($curl, array(
-                    CURLOPT_URL            => CreditSafeUrl::UrlCompaines->value . $link . $vatNo,
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING       => '',
-                    CURLOPT_MAXREDIRS      => 10,
-                    CURLOPT_TIMEOUT        => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST  => 'GET',
-                    CURLOPT_HTTPHEADER     => array(
-                        "Authorization: Bearer $token"
-                    ),
-                ));
-                $response = json_decode(curl_exec($curl));
-                curl_close($curl);
             } catch (\Throwable) {
                 $this->key = $this->creditSaveToken();
             }
-            return $this->create($response);
+
+            $vatNo = $request->vatNO;
+
+            $curl = curl_init();
+            $link = '?page=1&countries=IT&vatNo=';
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL            => CreditSafeUrl::UrlCompaines->value . $link . $vatNo,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING       => '',
+                CURLOPT_MAXREDIRS      => 10,
+                CURLOPT_TIMEOUT        => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST  => 'GET',
+                CURLOPT_HTTPHEADER     => array(
+                    "Authorization: Bearer $token"
+                ),
+            ));
+
+            curl_close($curl);
+            $response = json_decode(curl_exec($curl));
+
+            try {
+                $result_company = $this->callCreditSafeServiceCompanies($response->companies[0]->id);
+            } catch (\Throwable) {
+                $result_company = [];
+            }
+
+            return $this->create(
+                [
+                    'value_company' => $response,
+                    'value_credit'  => $result_company
+                ]
+            );
         }
 
 
         /**
-         * @param Request|null $request
+         * @param string $id
          *
          * @return mixed
          */
-        public function callCreditSafeServiceCompanies(?Request $request): mixed
+        public function callCreditSafeServiceCompanies(?string $id): mixed
         {
             try {
-                $link          = 'https://connect.creditsafe.com/v1/companies/';
-                $continue_link = '?language=it&template=Financial&includeIndicators=false';
-                $curl          = curl_init();
-
-                curl_setopt_array($curl, array(
-                    CURLOPT_URL            => $link . $request->id . $continue_link,
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING       => '',
-                    CURLOPT_MAXREDIRS      => 10,
-                    CURLOPT_TIMEOUT        => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST  => 'GET',
-                    CURLOPT_HTTPHEADER     => array(
-                        'Authorization: Bearer ' . $this->key,
-                    ),
-                ));
-
-                $response = curl_exec($curl);
-                curl_close($curl);
+                $token = $this->key;
             } catch (\Throwable) {
                 $this->key = $this->creditSaveToken();
             }
-            return $this->create(json_decode($response));
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL            => 'https://connect.creditsafe.com/v1/companies/' . $id . '?language=it&template=Financial&includeIndicators=false',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING       => '',
+                CURLOPT_MAXREDIRS      => 10,
+                CURLOPT_TIMEOUT        => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST  => 'GET',
+                CURLOPT_HTTPHEADER     => array(
+                    "Authorization: Bearer $token"
+                ),
+            ));
+
+            $response = curl_exec($curl);
+            curl_close($curl);
+            return json_decode($response);
         }
 
 
