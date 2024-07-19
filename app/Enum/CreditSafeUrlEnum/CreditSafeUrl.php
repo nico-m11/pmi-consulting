@@ -20,4 +20,6 @@
         #[Type('UrlCompaines')]
         case UrlCompaines = 'https://connect.creditsafe.com/v1/companies';
 
+
+
     }

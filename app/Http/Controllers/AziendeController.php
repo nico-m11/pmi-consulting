@@ -97,23 +97,21 @@
          */
         public function store(StoreAziendeRequest $request)
         {
-
-            $vat_no        = $request->request->get('vatNO');
-            $full_name     = $request->request->get('fullName');
-            $phone_numbers = $request->request->get('phoneNumbers');
-            $post_code     = $request->request->get('postCode');
-            $province      = $request->request->get('province');
-            $city          = $request->request->get('city');
-            $country       = $request->request->get('country');
-            $house_no      = $request->request->get('houseNo');
-            $reg_no        = $request->request->get('regNo');
-            $safe_no       = $request->request->get('safeNo');
-            $simple_value  = $request->request->get('simpleValue');
-            $status        = $request->request->get('status');
-            $activityCode  = $request->request->get('activityCode');
-            $correlationId = $request->request->get('correlationId');
-            $id            = $request->request->get('id');
-
+            $vat_no                       = $request->request->get('vatNO');
+            $full_name                    = $request->request->get('fullName');
+            $phone_numbers                = $request->request->get('phoneNumbers');
+            $post_code                    = $request->request->get('postCode');
+            $province                     = $request->request->get('province');
+            $city                         = $request->request->get('city');
+            $country                      = $request->request->get('country');
+            $house_no                     = $request->request->get('houseNo');
+            $reg_no                       = $request->request->get('regNo');
+            $safe_no                      = $request->request->get('safeNo');
+            $simple_value                 = $request->request->get('simpleValue');
+            $status                       = $request->request->get('status');
+            $activityCode                 = $request->request->get('activityCode');
+            $correlationId                = $request->request->get('correlationId');
+            $id                           = $request->request->get('id');
             $credit_rating_value          = $request->request->get('credit_rating_value');
             $credit_rating_description    = $request->request->get('credit_rating_description');
             $credit_rating_limit_value    = $request->request->get('credit_rating_limit_value');
@@ -207,7 +205,7 @@
             $link = '?page=1&countries=IT&vatNo=';
 
             curl_setopt_array($curl, array(
-                CURLOPT_URL            => CreditSafeUrl::UrlCompaines->value . $link . $vatNo,
+                CURLOPT_URL            => sprintf("%s%s%s", CreditSafeUrl::UrlCompaines->value, $link, $vatNo),
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING       => '',
                 CURLOPT_MAXREDIRS      => 10,
@@ -239,7 +237,7 @@
 
 
         /**
-         * @param string $id
+         * @param string|null $id
          *
          * @return mixed
          */
@@ -251,10 +249,11 @@
                 $this->key = $this->creditSaveToken();
             }
 
-            $curl = curl_init();
+            $link_second = '?language=it&template=Financial&includeIndicators=false';
+            $curl        = curl_init();
 
             curl_setopt_array($curl, array(
-                CURLOPT_URL            => 'https://connect.creditsafe.com/v1/companies/' . $id . '?language=it&template=Financial&includeIndicators=false',
+                CURLOPT_URL            => sprintf("%s/%s%s", CreditSafeUrl::UrlCompaines->value, $id, $link_second),
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING       => '',
                 CURLOPT_MAXREDIRS      => 10,
