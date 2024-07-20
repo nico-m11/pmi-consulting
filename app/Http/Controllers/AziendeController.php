@@ -69,7 +69,7 @@
                     "street"                       => $result_first->companies[0]->address->street,
                     "city"                         => $result_first->companies[0]->address->city,
                     "postCode"                     => $result_first->companies[0]->address->postCode,
-                    "province"                     => $result_first->companies[0]->address->postCode,
+                    "province"                     => $result_first->companies[0]->address->province,
                     "houseNo"                      => $result_first->companies[0]->address->houseNo,
                     "phoneNumbers"                 => $result_first->companies[0]->phoneNumbers[0] ?? '',
                     'activityCode'                 => $result_first->companies[0]->activityCode,
