@@ -65,12 +65,12 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
          router.get(route("aziende.index"), queryParams);
     };
 
-    const deleteProject = (project) => {
+    const deleteProject = (azienda) => {
         if (!window.confirm("Are you sure you want to delete the project?")) {
             return;
         }
         router.delete(
-            route("aziende.destroy", project.id)
+            route("aziende.destroy", azienda.id)
         );
     };
 
@@ -236,7 +236,7 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                                                 Edit
                                             </Link> */}
                                             <button
-                                                //onClick={(e) => deleteProject(aziende)}
+                                                onClick={(e) => deleteProject(az)}
                                                 className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                                             >
                                                 Delete

@@ -99,7 +99,7 @@
         {
             $vat_no                       = $request->request->get('vatNO');
             $full_name                    = $request->request->get('fullName');
-            $phone_numbers                = $request->request->get('phoneNumbers');
+            $phone_numbers                = $request->request->get('phoneNumbers') ?? 'Nessun Numero';
             $post_code                    = $request->request->get('postCode');
             $province                     = $request->request->get('province');
             $city                         = $request->request->get('city');
@@ -184,7 +184,10 @@
          */
         public function destroy(Aziende $aziende)
         {
-            //
+            $name = $aziende->name;
+            $aziende->delete();
+            return to_route('aziende.index')
+                ->with('success', "Azienda \"$name\" was deleted");
         }
 
         /**
