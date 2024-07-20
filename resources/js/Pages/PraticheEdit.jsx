@@ -7,7 +7,6 @@ import {useState} from 'react';
 export default function edit({auth, pratiche}) {
 
     const {data, setData, post, processing, errors} = useForm({
-        financingType: 'azienda',
         fullName: pratiche.name,
         email: '',
         phone: '',

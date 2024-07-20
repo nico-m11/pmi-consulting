@@ -6,7 +6,6 @@ import { useState } from 'react';
 
 export default function craete({ auth }) {
     const { data, setData, post, processing, errors } = useForm({
-        financingType: 'azienda',
         fullName: '',
         email: '',
         phone: '',

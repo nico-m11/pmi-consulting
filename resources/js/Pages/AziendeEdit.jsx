@@ -7,7 +7,6 @@ import {useState} from 'react';
 export default function edit({auth, aziende}) {
 
     const {data, setData, post, processing, errors} = useForm({
-        financingType: 'azienda',
         fullName: aziende.name,
         email: '',
         phone: '',

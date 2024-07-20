@@ -374,8 +374,6 @@ export default function create({auth, aziende}) {
                                 )}
                                 {step === 2 && (
                                     <>
-                                        {/*credit_rating_value: '',*/}
-
                                         <div className="mb-4">
                                             <InputLabel htmlFor="credit_rating_description"
                                                         value="credit_rating_description"/>
@@ -449,7 +447,7 @@ export default function create({auth, aziende}) {
                                             <TextInput
                                                 id="credit_rating_value"
                                                 name="credit_rating_value"
-                                                value={data.credit_rating_value = 'A'}
+                                                value={data.credit_rating_value = credit_rating_value}
                                                 onChange={(e) => setData('credit_rating_value', e.target.value)}
                                                 type="text"
                                                 className="mt-1 block w-full"
@@ -480,6 +478,99 @@ export default function create({auth, aziende}) {
                                 )}
                                 {step === 3 && (
                                     <>
+                                        {
+                                            data.credit_rating_value === 'A' ? (
+                                                <>
+                                                    <div className="mb-4 col-span-1 sm:col-span-2">
+                                                        <InputLabel value="Tipo di finanziamento"/>
+                                                        <div className="flex items-center">
+                                                            <input
+                                                                className="mr-2 leading-tight"
+                                                                type="radio"
+                                                                name="financingType"
+                                                                value="finanziamento"
+                                                                checked={data.financingType === 'finanziamento'}
+                                                                onChange={handleFinancingTypeChange}
+                                                            />
+                                                            <span className="text-gray-700">Finanziamento</span>
+                                                            <input
+                                                                className="mr-2 leading-tight"
+                                                                type="radio"
+                                                                name="financingType"
+                                                                value="leasing"
+                                                                checked={data.financingType === 'leasing'}
+                                                                onChange={handleFinancingTypeChange}
+                                                            />
+                                                            <span className="text-gray-700">Leasing</span>
+                                                            <input
+                                                                className="ml-4 mr-2 leading-tight"
+                                                                type="radio"
+                                                                name="financingType"
+                                                                value="noleggio"
+                                                                checked={data.financingType === 'noleggio'}
+                                                                onChange={handleFinancingTypeChange}
+                                                            />
+                                                            <span className="text-gray-700">Noleggio</span>
+                                                        </div>
+                                                    </div>
+                                                    {data.financingType === 'finanziamento' || data.financingType === 'noleggio' ? (
+                                                            <>
+                                                                <div className="mb-4">
+                                                                    <InputLabel htmlFor="credit_rating_value"
+                                                                                value="credit_rating_value"/>
+                                                                    <textarea
+                                                                        id="credit_rating_value"
+                                                                        name="credit_rating_value"
+                                                                        value={data.credit_rating_value = credit_rating_value}
+                                                                        onChange={(e) => setData('credit_rating_value', e.target.value)}
+                                                                        className="mt-1 block w-full"
+                                                                        placeholder="credit_rating_value"
+                                                                    />
+                                                                    {errors.credit_rating_value &&
+                                                                        <div
+                                                                            className="text-red-600">{errors.credit_rating_value}</div>}
+                                                                </div>
+                                                            </>
+                                                        ) :
+                                                        (
+                                                            <>
+                                                                <div className="mb-4">
+                                                                    <InputLabel htmlFor="credit_rating_provider_value"
+                                                                                value="credit_rating_provider_value"/>
+                                                                    <textarea
+                                                                        id="credit_rating_provider_value"
+                                                                        name="credit_rating_provider_value"
+                                                                        value={data.credit_rating_provider_value = credit_rating_provider_value}
+                                                                        onChange={(e) => setData('credit_rating_value', e.target.value)}
+                                                                        className="mt-1 block w-full"
+                                                                        placeholder="credit_rating_provider_value"
+                                                                    />
+                                                                    {errors.credit_rating_provider_value &&
+                                                                        <div
+                                                                            className="text-red-600">{errors.credit_rating_provider_value}</div>}
+                                                                </div>
+                                                            </>
+                                                        )}
+                                                    <div
+                                                        className="flex items-center justify-between col-span-1 sm:col-span-2">
+                                                        <button
+                                                            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                            type="button"
+                                                            onClick={handleBack}
+                                                        >
+                                                            Back
+                                                        </button>
+                                                        <button
+                                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                            type="submit"
+                                                            disabled={processing}
+                                                        >
+                                                            Salva Azienda
+                                                        </button>
+                                                    </div>
+                                                </>
+                                            ) : (<></>)
+                                        }
                                         {
                                             data.credit_rating_value === 'B' ? (
                                                 <>
