@@ -199,7 +199,7 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {azienda.map((az) => (
+                                    {azienda.data.map((az) => (
 
                                     <tr
                                         className="bg-white border-b  border-gray-700"

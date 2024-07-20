@@ -28,10 +28,23 @@
          */
         public function index(): Response
         {
-            $aziende = Aziende::all();
+            $aziende = Aziende::query();
+
+            $sortField = request("sort_field", 'created_at');
+            $sortDirection = request("sort_direction", "desc");
+
+            if (request("name")) {
+                $aziende->where("name", "like", "%" . request("name") . "%");
+            }
+
+            $result = $aziende->orderBy($sortField, $sortDirection)
+                              ->paginate(10)
+                              ->onEachSide(1);
 
             return Inertia::render('Aziende', [
-                'aziende' => Json::encode($aziende),
+                'aziende' => Json::encode($result),
+                'queryParams' => request()->query() ?: null,
+                'success' => session('success'),
             ]);
         }
 
