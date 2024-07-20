@@ -6,8 +6,11 @@
     use App\Http\Requests\StoreAziendeRequest;
     use App\Http\Requests\UpdateAziendeRequest;
     use App\Models\Aziende;
+    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Database\Eloquent\Casts\Json;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
+    use Illuminate\Routing\Redirector;
     use Illuminate\Support\Facades\DB;
     use Inertia\Inertia;
     use Inertia\Response;
@@ -30,7 +33,7 @@
         {
             $aziende = Aziende::query();
 
-            $sortField = request("sort_field", 'created_at');
+            $sortField     = request("sort_field", 'created_at');
             $sortDirection = request("sort_direction", "desc");
 
             if (request("name")) {
@@ -42,9 +45,9 @@
                               ->onEachSide(1);
 
             return Inertia::render('Aziende', [
-                'aziende' => Json::encode($result),
+                'aziende'     => Json::encode($result),
                 'queryParams' => request()->query() ?: null,
-                'success' => session('success'),
+                'success'     => session('success'),
             ]);
         }
 
@@ -107,6 +110,10 @@
 
         /**
          * Store a newly created resource in storage.
+         *
+         * @param StoreAziendeRequest $request
+         *
+         * @return Application|\Illuminate\Foundation\Application|RedirectResponse|Redirector
          */
         public function store(StoreAziendeRequest $request)
         {
@@ -218,8 +225,9 @@
 
             $vatNo = $request->vatNO;
 
-            $curl = curl_init();
-            $link = '?page=1&countries=IT&vatNo=';
+            $curl   = curl_init();
+            $link   = '?page=1&countries=IT&vatNo=';
+            $method = 'GET';
 
             curl_setopt_array($curl, array(
                 CURLOPT_URL            => sprintf("%s%s%s", CreditSafeUrl::UrlCompaines->value, $link, $vatNo),
@@ -229,7 +237,7 @@
                 CURLOPT_TIMEOUT        => 0,
                 CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST  => 'GET',
+                CURLOPT_CUSTOMREQUEST  => $method,
                 CURLOPT_HTTPHEADER     => array(
                     "Authorization: Bearer $token"
                 ),
