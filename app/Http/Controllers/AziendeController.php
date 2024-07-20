@@ -6,14 +6,14 @@
     use App\Http\Requests\StoreAziendeRequest;
     use App\Http\Requests\UpdateAziendeRequest;
     use App\Models\Aziende;
-    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Database\Eloquent\Casts\Json;
     use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Routing\Redirector;
+    use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\DB;
     use Inertia\Inertia;
     use Inertia\Response;
+    use PHPUnit\Event\Code\Throwable;
 
     class AziendeController extends Controller
     {
@@ -61,49 +61,44 @@
         public function create($request = null): Response
         {
             if ($request !== null) {
+                $result_first = $request['value_company'];
+                $array_second = $request['value_credit'];
                 try {
-                    $result_first = $request['value_company'];
+                    $result[] = [
+                        'correlationId'                => $result_first->correlationId,
+                        "id"                           => $result_first->companies[0]->id,
+                        "country"                      => $result_first->companies[0]->country,
+                        "regNo"                        => $result_first->companies[0]->regNo,
+                        "safeNo"                       => $result_first->companies[0]->safeNo,
+                        "name"                         => $result_first->companies[0]->name,
+                        "type"                         => $result_first->companies[0]->type,
+                        "simpleValue"                  => $result_first->companies[0]->address->simpleValue,
+                        "street"                       => $result_first->companies[0]->address->street,
+                        "city"                         => $result_first->companies[0]->address->city,
+                        "postCode"                     => $result_first->companies[0]->address->postCode,
+                        "province"                     => $result_first->companies[0]->address->province,
+                        "houseNo"                      => $result_first->companies[0]->address->houseNo,
+                        "phoneNumbers"                 => $result_first->companies[0]->phoneNumbers[0] ?? '',
+                        'activityCode'                 => $result_first->companies[0]->activityCode,
+                        'status'                       => $result_first->companies[0]->status,
+                        'credit_rating_value'          => $array_second->report->creditScore->currentCreditRating->commonValue,
+                        'credit_rating_description'    => $array_second->report->creditScore->currentCreditRating->commonDescription,
+                        'credit_rating_limit_value'    => $array_second->report->creditScore->currentCreditRating->creditLimit->value,
+                        'credit_rating_limit_currency' => $array_second->report->creditScore->currentCreditRating->creditLimit->currency,
+                        'credit_rating_provider_value' => $array_second->report->creditScore->currentCreditRating->providerValue->value,
+                    ];
                 } catch (\Throwable) {
-                    $result_first = [];
+                    return Inertia::render('Aziende', [
+                        'error' => 'Error Generic Credit Safe!'
+                    ]);
                 }
-
-                try {
-                    $array_second = $request['value_credit'];
-                } catch (\Throwable) {
-                    $array_second = [];
-                }
-
-                $result[] = [
-                    'correlationId'                => $result_first->correlationId,
-                    "id"                           => $result_first->companies[0]->id,
-                    "country"                      => $result_first->companies[0]->country,
-                    "regNo"                        => $result_first->companies[0]->regNo,
-                    "safeNo"                       => $result_first->companies[0]->safeNo,
-                    "name"                         => $result_first->companies[0]->name,
-                    "type"                         => $result_first->companies[0]->type,
-                    "simpleValue"                  => $result_first->companies[0]->address->simpleValue,
-                    "street"                       => $result_first->companies[0]->address->street,
-                    "city"                         => $result_first->companies[0]->address->city,
-                    "postCode"                     => $result_first->companies[0]->address->postCode,
-                    "province"                     => $result_first->companies[0]->address->province,
-                    "houseNo"                      => $result_first->companies[0]->address->houseNo,
-                    "phoneNumbers"                 => $result_first->companies[0]->phoneNumbers[0] ?? '',
-                    'activityCode'                 => $result_first->companies[0]->activityCode,
-                    'status'                       => $result_first->companies[0]->status,
-                    'credit_rating_value'          => $array_second->report->creditScore->currentCreditRating->commonValue,
-                    'credit_rating_description'    => $array_second->report->creditScore->currentCreditRating->commonDescription,
-                    'credit_rating_limit_value'    => $array_second->report->creditScore->currentCreditRating->creditLimit->value,
-                    'credit_rating_limit_currency' => $array_second->report->creditScore->currentCreditRating->creditLimit->currency,
-                    'credit_rating_provider_value' => $array_second->report->creditScore->currentCreditRating->providerValue->value,
-                ];
-
 
                 return Inertia::render('AziendeCreate', [
                     'aziende' => $result,
                 ]);
             } else {
-                return Inertia::render('AziendeCreate', [
-                    'aziende' => null
+                return Inertia::render('Aziende', [
+                    'error' => 'Error Generic!'
                 ]);
             }
         }
@@ -113,10 +108,27 @@
          *
          * @param StoreAziendeRequest $request
          *
-         * @return Application|\Illuminate\Foundation\Application|RedirectResponse|Redirector
+         * @return RedirectResponse
          */
         public function store(StoreAziendeRequest $request)
         {
+            $financingType = $request->request->get('financingType');
+
+            switch ($financingType) {
+                case 'finanziamento':
+                    $request_type = $request->request->get('request_finanziamento');
+                    break;
+                case 'leasing':
+                    $request_type = $request->request->get('request_leasing');
+                    break;
+                case 'noleggio':
+                    $request_type = $request->request->get('request_noleggio');
+                    break;
+                default:
+                    break;
+            }
+
+
             $vat_no                       = $request->request->get('vatNO');
             $full_name                    = $request->request->get('fullName');
             $phone_numbers                = $request->request->get('phoneNumbers') ?? 'Nessun Numero';
@@ -138,8 +150,11 @@
             $credit_rating_limit_currency = $request->request->get('credit_rating_limit_currency');
             $credit_rating_provider_value = $request->request->get('credit_rating_provider_value');
 
+            $save_request_pratica = RequestPraticaController::store($financingType, $request_type);
 
             DB::table('aziendes')->insert([
+                'id_request_pratica'           => $save_request_pratica,
+                'id_user_insert'               => Auth::id(),
                 'correlation_id'               => $correlationId,
                 'id_company_received'          => $id,
                 'country'                      => $country,
@@ -165,7 +180,11 @@
                 'updated_at'                   => null,
             ]);
 
-            return redirect(route('aziende.index', absolute: false));
+            return to_route('aziende.index')
+                ->with(
+                    'success',
+                    "Azienda \"$full_name\" aggiunta e richiesta pratica per tipo \"$financingType\""
+                );
         }
 
         /**
@@ -207,7 +226,7 @@
             $name = $aziende->name;
             $aziende->delete();
             return to_route('aziende.index')
-                ->with('success', "Azienda \"$name\" was deleted");
+                ->with('success', "Azienda \"$name\" eliminata");
         }
 
         /**
@@ -265,6 +284,7 @@
          * @param string|null $id
          *
          * @return mixed
+         * @throws \Exception
          */
         public function callCreditSafeServiceCompanies(?string $id): mixed
         {
@@ -276,23 +296,26 @@
 
             $link_second = '?language=it&template=Financial&includeIndicators=false';
             $curl        = curl_init();
+            try {
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL            => sprintf("%s/%s%s", CreditSafeUrl::UrlCompaines->value, $id, $link_second),
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING       => '',
+                    CURLOPT_MAXREDIRS      => 10,
+                    CURLOPT_TIMEOUT        => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST  => 'GET',
+                    CURLOPT_HTTPHEADER     => array(
+                        "Authorization: Bearer $token"
+                    ),
+                ));
 
-            curl_setopt_array($curl, array(
-                CURLOPT_URL            => sprintf("%s/%s%s", CreditSafeUrl::UrlCompaines->value, $id, $link_second),
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING       => '',
-                CURLOPT_MAXREDIRS      => 10,
-                CURLOPT_TIMEOUT        => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST  => 'GET',
-                CURLOPT_HTTPHEADER     => array(
-                    "Authorization: Bearer $token"
-                ),
-            ));
-
-            $response = curl_exec($curl);
-            curl_close($curl);
+                $response = curl_exec($curl);
+                curl_close($curl);
+            } catch (\Throwable) {
+                throw new \Exception('ERror credi save');
+            }
             return json_decode($response);
         }
 

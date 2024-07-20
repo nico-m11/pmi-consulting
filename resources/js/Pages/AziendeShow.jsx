@@ -1,7 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import {Head, Link} from "@inertiajs/react";
 
-export default function Show({auth, success, aziende, tasks, queryParams}) {
+export default function Show({auth, aziende}) {
     console.log(aziende);
     return (
         <AuthenticatedLayout
@@ -13,7 +13,7 @@ export default function Show({auth, success, aziende, tasks, queryParams}) {
                     </h2>
                     <div className='flex justify-end items-center'>
                         <Link
-                            className="bg-red-500 py-1 mr-2 px-3 text-white rounded shadow transition-all hover:bg-blue-600"
+                            className="bg-emerald-500 py-1 mr-2 px-3 text-white rounded shadow transition-all hover:bg-blue-600"
                             href={route("aziende.index")}
                         >
                             indietro
