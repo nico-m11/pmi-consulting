@@ -7,8 +7,8 @@ import * as ExcelJS from "exceljs";
 import { saveAs } from 'file-saver';
 
 export default function Aziende({auth, aziende, queryParams = null, success}) {
-
     const azienda = JSON.parse(aziende);
+    console.log(azienda);
 
     queryParams = queryParams || {};
     const searchFieldChanged = (name, value) => {
@@ -26,9 +26,15 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
         const worksheet = workbook.addWorksheet('Aziende');
 
         worksheet.columns = [
-            { header: 'id', key: 'id', width: 30 },
-            { header: 'name', key: 'name', width: 30 },
-            { header: 'indirizzo', key: 'indirizzo', width: 30 },
+            { header: 'Nome', key: 'name', width: 30 },
+            { header: 'Partita Iva', key: 'vat_no', width: 20 },
+            { header: 'Numero di telefono', key: 'phone_number', width: 20 },
+            { header: 'Indirizzo', key: 'address_complete', width: 50 },
+            { header: 'Livello di Rischio', key: 'credit_rating_description', width: 18 },
+            { header: 'Punteggio di Rating', key: 'credit_rating_provider_value', width: 10 },
+            { header: 'Categoria di Rating', key: 'credit_rating_value', width: 10 },
+
+
         ];
 
         azienda.forEach((item) => {
@@ -137,12 +143,12 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                                         {/*</TableHeading>*/}
 
                                         <TableHeading
-                                            name="created_at"
+                                            name="phone_number"
                                             sort_field={queryParams.sort_field}
                                             sort_direction={queryParams.sort_direction}
                                             sortChanged={sortChanged}
                                         >
-                                            Data di creazione
+                                            Numero di Telefono
                                         </TableHeading>
 
                                         <TableHeading
@@ -215,7 +221,7 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                                             </Link>
                                         </th>
                                         <td className="px-3 py-2 text-nowrap">
-                                            {az.created_at}
+                                            {az.phone_number}
 
                                         </td>
                                         <td className="px-3 py-2 text-nowrap">
