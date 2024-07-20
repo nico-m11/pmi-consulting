@@ -14,7 +14,7 @@
 
     class AziendeController extends Controller
     {
-        public string $key;
+        protected string $key;
 
         public function __construct()
         {
@@ -71,7 +71,7 @@
                     "postCode"                     => $result_first->companies[0]->address->postCode,
                     "province"                     => $result_first->companies[0]->address->postCode,
                     "houseNo"                      => $result_first->companies[0]->address->houseNo,
-                    "phoneNumbers"                 => $result_first->companies[0]->phoneNumbers[0],
+                    "phoneNumbers"                 => $result_first->companies[0]->phoneNumbers[0] ?? '',
                     'activityCode'                 => $result_first->companies[0]->activityCode,
                     'status'                       => $result_first->companies[0]->status,
                     'credit_rating_value'          => $array_second->report->creditScore->currentCreditRating->commonValue,
@@ -141,7 +141,8 @@
                 'credit_rating_limit_value'    => $credit_rating_limit_value,
                 'credit_rating_limit_currency' => $credit_rating_limit_currency,
                 'credit_rating_provider_value' => $credit_rating_provider_value,
-                'created_at'                   => now()
+                'created_at'                   => now(),
+                'updated_at'                   => null,
             ]);
 
             return redirect(route('aziende.index', absolute: false));

@@ -34,7 +34,7 @@
                 $table->string('credit_rating_limit_currency');
                 $table->string('credit_rating_provider_value');
                 $table->dateTime('created_at');
-                $table->dateTime('updated_at');
+                $table->dateTime('updated_at')->nullable();
             });
         }
 
