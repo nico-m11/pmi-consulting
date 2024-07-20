@@ -2,7 +2,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import {Head, Link} from "@inertiajs/react";
 
 export default function Show({auth, success, aziende, tasks, queryParams}) {
-console.log(aziende);
+    console.log(aziende);
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -42,17 +42,13 @@ console.log(aziende);
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="grid gap-1 grid-cols-2 mt-2">
                                 <div>
-                                <div className="mt-4">
+                                    <div className="mt-4">
                                         <label className="font-bold text-lg">Partita Iva</label>
                                         <p className="mt-1">{aziende.vat_no}</p>
                                     </div>
                                     <div className="mt-4">
                                         <label className="font-bold text-lg">Nome Azienda</label>
                                         <p className="mt-1">{aziende.name}</p>
-                                    </div>
-                                    <div className="mt-4">
-                                        <label className="font-bold text-lg">Project Name</label>
-                                        <p className="mt-1">{aziende.phone_number}</p>
                                     </div>
                                     <div className="mt-4">
                                         <label className="font-bold text-lg">Recapito Azienda</label>

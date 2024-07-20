@@ -26,7 +26,7 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
         const worksheet = workbook.addWorksheet('Aziende');
 
         worksheet.columns = [
-            { header: 'Nome', key: 'name', width: 30 },
+            { header: 'Nome', key: 'name', width: 50 },
             { header: 'Partita Iva', key: 'vat_no', width: 20 },
             { header: 'Numero di telefono', key: 'phone_number', width: 20 },
             { header: 'Indirizzo', key: 'address_complete', width: 50 },
@@ -37,7 +37,7 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
 
         ];
 
-        azienda.forEach((item) => {
+        azienda.data.forEach((item) => {
             worksheet.addRow(item);
         });
 
