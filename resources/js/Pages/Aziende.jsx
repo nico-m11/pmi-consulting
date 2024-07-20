@@ -1,4 +1,3 @@
-import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import {Head, Link, router} from "@inertiajs/react";
@@ -6,7 +5,7 @@ import TableHeading from "@/Components/TableHeading";
 import * as ExcelJS from "exceljs";
 import { saveAs } from 'file-saver';
 
-export default function Aziende({auth, aziende, queryParams = null, success}) {
+export default function Aziende({auth, aziende, queryParams = null, success, error}) {
     const azienda = JSON.parse(aziende);
     console.log(azienda);
 
@@ -107,6 +106,11 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                             {success}
                         </div>
                     )}
+                    {error && (
+                        <div className="bg-red-500 py-2 px-4 text-white rounded mb-4">
+                            {error}
+                        </div>
+                    )}
                     <div className="bg-white  overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 ">
                             <div className="overflow-auto">
@@ -152,7 +156,7 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                                         </TableHeading>
 
                                         <TableHeading
-                                            name="indirizzo"
+                                            name="address_complete"
                                             sort_field={queryParams.sort_field}
                                             sort_direction={queryParams.sort_direction}
                                             sortChanged={sortChanged}
@@ -236,7 +240,7 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
                                                 Edit
                                             </Link> */}
                                             <button
-                                                onClick={(e) => deleteProject(az)}
+                                                onClick={() => deleteProject(az)}
                                                 className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                                             >
                                                 Delete

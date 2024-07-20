@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -44,5 +45,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function pratiche_request(): BelongsTo
+    {
+        return $this->belongsTo(RequestPratica::class, 'id_request_pratica');
+    }
+
+    public function aziende(): BelongsTo
+    {
+        return $this->belongsTo(Aziende::class, 'id_aziende');
     }
 }

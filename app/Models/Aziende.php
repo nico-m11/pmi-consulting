@@ -2,8 +2,6 @@
 
     namespace App\Models;
 
-
-    use Illuminate\Database\Eloquent\Factories\HasFactory;
     use Illuminate\Database\Eloquent\Model;
     use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -14,9 +12,9 @@
      */
     class Aziende extends Model
     {
-        use HasFactory;
-
         protected $fillable = [
+            'id_request_pratica',
+            'id_user_insert',
             'correlation_id',
             'id_company_received',
             'country',
@@ -43,9 +41,9 @@
         ];
 
 
-        public function pratiche(): BelongsTo
+        public function pratiche_request(): BelongsTo
         {
-            return $this->belongsTo(Pratiche::class, 'id_pratica');
+            return $this->belongsTo(RequestPratica::class, 'id_request_pratica');
         }
 
         public function user(): BelongsTo

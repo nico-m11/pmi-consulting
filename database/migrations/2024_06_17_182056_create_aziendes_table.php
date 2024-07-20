@@ -12,7 +12,9 @@
         {
             Schema::create('aziendes', function (Blueprint $table) {
                 $table->id()->autoIncrement()->unique();
+                $table->foreignId('id_request_pratica');
                 $table->string('correlation_id');
+                $table->integer('id_user_insert');
                 $table->string('id_company_received');
                 $table->string('country');
                 $table->string('reg_no');
