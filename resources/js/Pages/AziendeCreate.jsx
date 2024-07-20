@@ -142,7 +142,7 @@ export default function create({auth, aziende}) {
                             <form className="grid grid-cols-1 sm:grid-cols-2 gap-6"
                                   onSubmit={handleSubmitVatNo}>
                                 <div className="mb-4">
-                                    <InputLabel htmlFor="vatNo" value="Vat Number"/>
+                                    <InputLabel htmlFor="vatNo" value="Partita Iva "/>
                                     <TextInput
                                         id="vatNo"
                                         name="vatNo"
@@ -150,7 +150,7 @@ export default function create({auth, aziende}) {
                                         onChange={(e) => setData('vatNO', e.target.value)}
                                         type="text"
                                         className="mt-1 block w-full"
-                                        placeholder="Vat Number"
+                                        placeholder="partita iva"
                                     />
                                     {errors.vatNO && <div className="text-red-600">{errors.vatNO}</div>}
                                 </div>
@@ -269,7 +269,7 @@ export default function create({auth, aziende}) {
                                                 <div className="text-red-600">{errors.simpleValue}</div>}
                                         </div>
                                         <div className="mb-4">
-                                            <InputLabel htmlFor="postCode" value="Post Code"/>
+                                            <InputLabel htmlFor="postCode" value="Cap"/>
                                             <TextInput
                                                 id="postCode"
                                                 name="postCode"
@@ -277,13 +277,13 @@ export default function create({auth, aziende}) {
                                                 onChange={(e) => setData('postCode', e.target.value)}
                                                 type="text"
                                                 className="mt-1 block w-full"
-                                                placeholder="Post Code"
+                                                placeholder="cap"
                                             />
                                             {errors.postCode &&
                                                 <div className="text-red-600">{errors.postCode}</div>}
                                         </div>
                                         <div className="mb-4">
-                                            <InputLabel htmlFor="province" value="Post Code"/>
+                                            <InputLabel htmlFor="province" value="Provincia"/>
                                             <TextInput
                                                 id="province"
                                                 name="province"
@@ -291,13 +291,13 @@ export default function create({auth, aziende}) {
                                                 onChange={(e) => setData('province', e.target.value)}
                                                 type="text"
                                                 className="mt-1 block w-full"
-                                                placeholder="province"
+                                                placeholder="provincia"
                                             />
                                             {errors.province &&
                                                 <div className="text-red-600">{errors.province}</div>}
                                         </div>
                                         <div className="mb-4">
-                                            <InputLabel htmlFor="city" value="city"/>
+                                            <InputLabel htmlFor="city" value="Città"/>
                                             <TextInput
                                                 id="city"
                                                 name="city"
@@ -305,12 +305,12 @@ export default function create({auth, aziende}) {
                                                 onChange={(e) => setData('city', e.target.value)}
                                                 type="text"
                                                 className="mt-1 block w-full"
-                                                placeholder="city"
+                                                placeholder="città"
                                             />
                                             {errors.city && <div className="text-red-600">{errors.city}</div>}
                                         </div>
                                         <div className="mb-4">
-                                            <InputLabel htmlFor="country" value="country"/>
+                                            <InputLabel htmlFor="country" value="Paese"/>
                                             <TextInput
                                                 id="country"
                                                 name="country"
@@ -318,12 +318,12 @@ export default function create({auth, aziende}) {
                                                 onChange={(e) => setData('country', e.target.value)}
                                                 type="text"
                                                 className="mt-1 block w-full"
-                                                placeholder="country"
+                                                placeholder="paese"
                                             />
                                             {errors.country && <div className="text-red-600">{errors.country}</div>}
                                         </div>
                                         <div className="mb-4">
-                                            <InputLabel htmlFor="houseNo" value="houseNo"/>
+                                            <InputLabel htmlFor="houseNo" value="Numero Civico"/>
                                             <TextInput
                                                 id="houseNo"
                                                 name="houseNo"
@@ -331,12 +331,12 @@ export default function create({auth, aziende}) {
                                                 onChange={(e) => setData('houseNo', e.target.value)}
                                                 type="text"
                                                 className="mt-1 block w-full"
-                                                placeholder="houseNo"
+                                                placeholder="numero civico"
                                             />
                                             {errors.houseNo && <div className="text-red-600">{errors.houseNo}</div>}
                                         </div>
                                         <div className="mb-4">
-                                            <InputLabel htmlFor="regNo" value="regNo"/>
+                                            <InputLabel htmlFor="regNo" value="Numero di Registro"/>
                                             <TextInput
                                                 id="regNo"
                                                 name="regNo"
@@ -344,12 +344,12 @@ export default function create({auth, aziende}) {
                                                 onChange={(e) => setData('regNo', e.target.value)}
                                                 type="text"
                                                 className="mt-1 block w-full"
-                                                placeholder="regNo"
+                                                placeholder="numero di registo"
                                             />
                                             {errors.regNo && <div className="text-red-600">{errors.regNo}</div>}
                                         </div>
                                         <div className="mb-4">
-                                            <InputLabel htmlFor="safeNo" value="safeNo"/>
+                                            <InputLabel htmlFor="safeNo" value="Numero Creditsafe"/>
                                             <TextInput
                                                 id="safeNo"
                                                 name="safeNo"
@@ -357,7 +357,7 @@ export default function create({auth, aziende}) {
                                                 onChange={(e) => setData('safeNo', e.target.value)}
                                                 type="text"
                                                 className="mt-1 block w-full"
-                                                placeholder="safeNo"
+                                                placeholder="numero creditsafe"
                                             />
                                             {errors.safeNo && <div className="text-red-600">{errors.safeNo}</div>}
                                         </div>
@@ -376,7 +376,7 @@ export default function create({auth, aziende}) {
                                     <>
                                         <div className="mb-4">
                                             <InputLabel htmlFor="credit_rating_description"
-                                                        value="credit_rating_description"/>
+                                                        value="Livello Di Rischio"/>
                                             <TextInput
                                                 id="credit_rating_description"
                                                 name="credit_rating_description"
@@ -384,7 +384,7 @@ export default function create({auth, aziende}) {
                                                 onChange={(e) => setData('credit_rating_description', e.target.value)}
                                                 type="text"
                                                 className="mt-1 block w-full"
-                                                placeholder="credit_rating_description"
+                                                placeholder="livello di Rischio"
                                             />
                                             {errors.credit_rating_description &&
                                                 <div className="text-red-600">{errors.credit_rating_description}</div>}
@@ -392,7 +392,7 @@ export default function create({auth, aziende}) {
 
                                         <div className="mb-4">
                                             <InputLabel htmlFor="credit_rating_limit_currency"
-                                                        value="credit_rating_limit_currency"/>
+                                                        value="Valuta "/>
                                             <TextInput
                                                 id="credit_rating_limit_currency"
                                                 name="credit_rating_limit_currency"
@@ -400,7 +400,7 @@ export default function create({auth, aziende}) {
                                                 onChange={(e) => setData('credit_rating_limit_currency', e.target.value)}
                                                 type="text"
                                                 className="mt-1 block w-full"
-                                                placeholder="credit_rating_limit_currency"
+                                                placeholder="valuta"
                                             />
                                             {errors.credit_rating_limit_currency &&
                                                 <div
@@ -409,7 +409,7 @@ export default function create({auth, aziende}) {
 
                                         <div className="mb-4">
                                             <InputLabel htmlFor="credit_rating_limit_value"
-                                                        value="credit_rating_limit_value"/>
+                                                        value="Massimale"/>
                                             <TextInput
                                                 id="credit_rating_limit_value"
                                                 name="credit_rating_limit_value"
@@ -417,7 +417,7 @@ export default function create({auth, aziende}) {
                                                 onChange={(e) => setData('credit_rating_limit_value', e.target.value)}
                                                 type="text"
                                                 className="mt-1 block w-full"
-                                                placeholder="credit_rating_limit_value"
+                                                placeholder="credito disponibile"
                                             />
                                             {errors.credit_rating_limit_value &&
                                                 <div
@@ -426,7 +426,7 @@ export default function create({auth, aziende}) {
 
                                         <div className="mb-4">
                                             <InputLabel htmlFor="credit_rating_provider_value"
-                                                        value="credit_rating_provider_value"/>
+                                                        value="Punteggio di Rating"/>
                                             <TextInput
                                                 id="credit_rating_provider_value"
                                                 name="credit_rating_provider_value"
@@ -434,7 +434,7 @@ export default function create({auth, aziende}) {
                                                 onChange={(e) => setData('credit_rating_provider_value', e.target.value)}
                                                 type="text"
                                                 className="mt-1 block w-full"
-                                                placeholder="credit_rating_provider_value"
+                                                placeholder="punteggio di rating"
                                             />
                                             {errors.credit_rating_provider_value &&
                                                 <div
@@ -443,7 +443,7 @@ export default function create({auth, aziende}) {
 
                                         <div className="mb-4">
                                             <InputLabel htmlFor="credit_rating_value"
-                                                        value="credit_rating_value"/>
+                                                        value="Categoria del Rating"/>
                                             <TextInput
                                                 id="credit_rating_value"
                                                 name="credit_rating_value"
@@ -451,7 +451,7 @@ export default function create({auth, aziende}) {
                                                 onChange={(e) => setData('credit_rating_value', e.target.value)}
                                                 type="text"
                                                 className="mt-1 block w-full"
-                                                placeholder="credit_rating_value"
+                                                placeholder="categoria del rating"
                                             />
                                             {errors.credit_rating_value &&
                                                 <div

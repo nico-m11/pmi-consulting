@@ -223,12 +223,12 @@ export default function Aziende({auth, aziende, queryParams = null, success}) {
 
                                         </td>
                                         <td className="px-3 py-2 text-nowrap">
-                                            <Link
+                                            {/* <Link
                                                 href={route("aziende.edit", az.id)}
                                                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                                             >
                                                 Edit
-                                            </Link>
+                                            </Link> */}
                                             <button
                                                 //onClick={(e) => deleteProject(aziende)}
                                                 className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
