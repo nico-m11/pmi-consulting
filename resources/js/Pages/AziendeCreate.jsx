@@ -80,7 +80,7 @@ export default function create({auth, aziende}) {
         );
     });
 
-    const {data, setData, post, get, processing, errors} = useForm({
+    const {data, setData, post, processing, errors} = useForm({
         vatNO: '',
         fullName: '',
         phoneNumbers: '',
@@ -102,7 +102,11 @@ export default function create({auth, aziende}) {
         credit_rating_provider_value: '',
         credit_rating_value: '',
 
-        financingType: 'finanziamento',
+        financingType: 'noleggio',
+
+        request_noleggio:'',
+        request_leasing:'',
+        request_finanziamento:'',
     });
     const handleSubmitVatNo = (e) => {
         e.preventDefault();
@@ -482,7 +486,7 @@ export default function create({auth, aziende}) {
                                             data.credit_rating_value === 'A' ? (
                                                 <>
                                                     <div className="mb-4 col-span-1 sm:col-span-2">
-                                                        <InputLabel value="Tipo di finanziamento"/>
+                                                        <InputLabel value="Seleziona Tipo"/>
                                                         <div className="flex items-center">
                                                             <input
                                                                 className="mr-2 leading-tight"
@@ -513,41 +517,41 @@ export default function create({auth, aziende}) {
                                                             <span className="text-gray-700">Noleggio</span>
                                                         </div>
                                                     </div>
-                                                    {data.financingType === 'finanziamento' || data.financingType === 'noleggio' ? (
+                                                    {data.financingType === 'leasing' || data.financingType === 'noleggio' ? (
                                                             <>
                                                                 <div className="mb-4">
-                                                                    <InputLabel htmlFor="credit_rating_value"
-                                                                                value="credit_rating_value"/>
+                                                                    <InputLabel htmlFor="request_leasing"
+                                                                                value="request_leasing"/>
                                                                     <textarea
-                                                                        id="credit_rating_value"
+                                                                        id="request_leasing"
                                                                         name="credit_rating_value"
-                                                                        value={data.credit_rating_value = credit_rating_value}
-                                                                        onChange={(e) => setData('credit_rating_value', e.target.value)}
+                                                                        value={data.request_leasing}
+                                                                        onChange={(e) => setData('request_leasing', e.target.value)}
                                                                         className="mt-1 block w-full"
-                                                                        placeholder="credit_rating_value"
+                                                                        placeholder="request_leasing"
                                                                     />
-                                                                    {errors.credit_rating_value &&
+                                                                    {errors.request_leasing &&
                                                                         <div
-                                                                            className="text-red-600">{errors.credit_rating_value}</div>}
+                                                                            className="text-red-600">{errors.request_leasing}</div>}
                                                                 </div>
                                                             </>
                                                         ) :
                                                         (
                                                             <>
                                                                 <div className="mb-4">
-                                                                    <InputLabel htmlFor="credit_rating_provider_value"
-                                                                                value="credit_rating_provider_value"/>
+                                                                    <InputLabel htmlFor="request_finanziamento"
+                                                                                value="request_finanziamento"/>
                                                                     <textarea
-                                                                        id="credit_rating_provider_value"
-                                                                        name="credit_rating_provider_value"
-                                                                        value={data.credit_rating_provider_value = credit_rating_provider_value}
-                                                                        onChange={(e) => setData('credit_rating_value', e.target.value)}
+                                                                        id="request_finanziamento"
+                                                                        name="request_finanziamento"
+                                                                        value={data.request_finanziamento}
+                                                                        onChange={(e) => setData('request_finanziamento', e.target.value)}
                                                                         className="mt-1 block w-full"
-                                                                        placeholder="credit_rating_provider_value"
+                                                                        placeholder="request_finanziamento"
                                                                     />
-                                                                    {errors.credit_rating_provider_value &&
+                                                                    {errors.request_finanziamento &&
                                                                         <div
-                                                                            className="text-red-600">{errors.credit_rating_provider_value}</div>}
+                                                                            className="text-red-600">{errors.request_finanziamento}</div>}
                                                                 </div>
                                                             </>
                                                         )}
@@ -575,19 +579,10 @@ export default function create({auth, aziende}) {
                                             data.credit_rating_value === 'B' ? (
                                                 <>
                                                     <div className="mb-4 col-span-1 sm:col-span-2">
-                                                        <InputLabel value="Tipo di finanziamento"/>
+                                                        <InputLabel value="Seleziona Tipo"/>
                                                         <div className="flex items-center">
                                                             <input
                                                                 className="mr-2 leading-tight"
-                                                                type="radio"
-                                                                name="financingType"
-                                                                value="finanziamento"
-                                                                checked={data.financingType === 'finanziamento'}
-                                                                onChange={handleFinancingTypeChange}
-                                                            />
-                                                            <span className="text-gray-700">Finanziamento</span>
-                                                            <input
-                                                                className="ml-4 mr-2 leading-tight"
                                                                 type="radio"
                                                                 name="financingType"
                                                                 value="noleggio"
@@ -595,43 +590,52 @@ export default function create({auth, aziende}) {
                                                                 onChange={handleFinancingTypeChange}
                                                             />
                                                             <span className="text-gray-700">Noleggio</span>
+                                                            <input
+                                                                className="ml-4 mr-2 leading-tight"
+                                                                type="radio"
+                                                                name="financingType"
+                                                                value="leasing"
+                                                                checked={data.financingType === 'leasing'}
+                                                                onChange={handleFinancingTypeChange}
+                                                            />
+                                                            <span className="text-gray-700">Leasing</span>
                                                         </div>
                                                     </div>
-                                                    {data.financingType === 'finanziamento' ? (
+                                                    {data.financingType === 'noleggio' ? (
                                                             <>
                                                                 <div className="mb-4">
-                                                                    <InputLabel htmlFor="credit_rating_value"
-                                                                                value="credit_rating_value"/>
+                                                                    <InputLabel htmlFor="request_noleggio"
+                                                                                value="request_noleggio"/>
                                                                     <textarea
-                                                                        id="credit_rating_value"
-                                                                        name="credit_rating_value"
-                                                                        value={data.credit_rating_value = credit_rating_value}
-                                                                        onChange={(e) => setData('credit_rating_value', e.target.value)}
+                                                                        id="request_noleggio"
+                                                                        name="request_noleggio"
+                                                                        value={data.request_noleggio}
+                                                                        onChange={(e) => setData('request_noleggio', e.target.value)}
                                                                         className="mt-1 block w-full"
-                                                                        placeholder="credit_rating_value"
+                                                                        placeholder="request_noleggio"
                                                                     />
-                                                                    {errors.credit_rating_value &&
+                                                                    {errors.request_noleggio &&
                                                                         <div
-                                                                            className="text-red-600">{errors.credit_rating_value}</div>}
+                                                                            className="text-red-600">{errors.request_noleggio}</div>}
                                                                 </div>
                                                             </>
                                                         ) :
                                                         (
                                                             <>
                                                                 <div className="mb-4">
-                                                                    <InputLabel htmlFor="credit_rating_provider_value"
-                                                                                value="credit_rating_provider_value"/>
+                                                                    <InputLabel htmlFor="request_leasing"
+                                                                                value="request_leasing"/>
                                                                     <textarea
-                                                                        id="credit_rating_provider_value"
-                                                                        name="credit_rating_provider_value"
-                                                                        value={data.credit_rating_provider_value = credit_rating_provider_value}
-                                                                        onChange={(e) => setData('credit_rating_value', e.target.value)}
+                                                                        id="request_leasing"
+                                                                        name="request_leasing"
+                                                                        value={data.request_leasing}
+                                                                        onChange={(e) => setData('request_leasing', e.target.value)}
                                                                         className="mt-1 block w-full"
-                                                                        placeholder="credit_rating_provider_value"
+                                                                        placeholder="request_leasing"
                                                                     />
-                                                                    {errors.credit_rating_provider_value &&
+                                                                    {errors.request_leasing &&
                                                                         <div
-                                                                            className="text-red-600">{errors.credit_rating_provider_value}</div>}
+                                                                            className="text-red-600">{errors.request_leasing}</div>}
                                                                 </div>
                                                             </>
                                                         )}
@@ -659,35 +663,35 @@ export default function create({auth, aziende}) {
                                             data.credit_rating_value === 'C' ? (
                                                 <>
                                                     <div className="mb-4 col-span-1 sm:col-span-2">
-                                                        <InputLabel value="Tipo di finanziamento"/>
+                                                        <InputLabel value="Seleziona Tipo"/>
                                                         <div className="flex items-center">
                                                             <input
                                                                 className="mr-2 leading-tight"
                                                                 type="radio"
                                                                 name="financingType"
-                                                                value="finanziamento"
-                                                                checked={data.financingType === 'finanziamento'}
+                                                                value="noleggio"
+                                                                checked={data.financingType === 'Noleggio'}
                                                                 onChange={handleFinancingTypeChange}
                                                             />
-                                                            <span className="text-gray-700">Finanziamento</span>
+                                                            <span className="text-gray-700">Noleggio</span>
                                                         </div>
                                                     </div>
-                                                    {data.financingType === 'finanziamento' && (
+                                                    {data.financingType === 'noleggio' && (
                                                         <>
                                                             <div className="mb-4">
-                                                                <InputLabel htmlFor="credit_rating_value"
-                                                                            value="credit_rating_value"/>
+                                                                <InputLabel htmlFor="request_noleggio"
+                                                                            value="request_noleggio"/>
                                                                 <textarea
-                                                                    id="credit_rating_value"
-                                                                    name="credit_rating_value"
-                                                                    value={data.credit_rating_value = credit_rating_value}
-                                                                    onChange={(e) => setData('credit_rating_value', e.target.value)}
+                                                                    id="request_noleggio"
+                                                                    name="request_noleggio"
+                                                                    value={data.request_noleggio}
+                                                                    onChange={(e) => setData('request_noleggio', e.target.value)}
                                                                     className="mt-1 block w-full"
-                                                                    placeholder="credit_rating_value"
+                                                                    placeholder="request_noleggio"
                                                                 />
-                                                                {errors.credit_rating_value &&
+                                                                {errors.request_noleggio &&
                                                                     <div
-                                                                        className="text-red-600">{errors.credit_rating_value}</div>}
+                                                                        className="text-red-600">{errors.request_noleggio}</div>}
                                                             </div>
                                                         </>
                                                     )}
