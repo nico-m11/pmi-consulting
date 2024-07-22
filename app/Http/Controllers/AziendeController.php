@@ -114,20 +114,12 @@
         {
             $financingType = $request->request->get('financingType');
 
-            switch ($financingType) {
-                case 'finanziamento':
-                    $request_type = $request->request->get('request_finanziamento');
-                    break;
-                case 'leasing':
-                    $request_type = $request->request->get('request_leasing');
-                    break;
-                case 'noleggio':
-                    $request_type = $request->request->get('request_noleggio');
-                    break;
-                default:
-                    $request_type = '';
-                    break;
-            }
+            $request_type = match ($financingType) {
+                'finanziamento' => $request->request->get('request_finanziamento'),
+                'leasing'       => $request->request->get('request_leasing'),
+                'noleggio'      => $request->request->get('request_noleggio'),
+                default         => '',
+            };
 
             $vat_no                       = $request->request->get('vatNO');
             $full_name                    = $request->request->get('fullName');

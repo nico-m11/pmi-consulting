@@ -2,6 +2,7 @@
 
     namespace App\Http\Controllers;
 
+    use App\Enum\RequestStatus\RequestPraticaStatus;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\DB;
 
@@ -38,6 +39,7 @@
             DB::table('request_praticas')->insert([
                 'type_richiesta'   => $financingType,
                 'volore_richiesta' => $request_type,
+                'status_request_pratica' => RequestPraticaStatus::richiesta_effettuata,
                 'created_at'       => now()
             ]);
 
