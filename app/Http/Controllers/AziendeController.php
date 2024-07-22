@@ -89,18 +89,16 @@
                     ];
                 } catch (\Throwable) {
                     return Inertia::render('AziendeCreate', [
-                        'error' => 'Error Generic Credit Safe!',
+                        'error'   => 'Error Generic Credit Safe!',
                         'aziende' => []
                     ]);
                 }
-
                 return Inertia::render('AziendeCreate', [
                     'aziende' => $result,
                 ]);
             } else {
                 return Inertia::render('AziendeCreate', [
-                    'aziende' => [],
-                    'error' => 'Generic Error!'
+                    'aziende' => []
                 ]);
             }
         }
