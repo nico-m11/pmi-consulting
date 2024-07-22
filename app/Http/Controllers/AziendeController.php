@@ -6,14 +6,14 @@
     use App\Http\Requests\StoreAziendeRequest;
     use App\Http\Requests\UpdateAziendeRequest;
     use App\Models\Aziende;
-    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Database\Eloquent\Casts\Json;
     use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Routing\Redirector;
+    use Illuminate\Support\Facades\Auth;
     use Illuminate\Support\Facades\DB;
     use Inertia\Inertia;
     use Inertia\Response;
+    use PHPUnit\Event\Code\Throwable;
 
     class AziendeController extends Controller
     {
@@ -88,8 +88,9 @@
                         'credit_rating_provider_value' => $array_second->report->creditScore->currentCreditRating->providerValue->value,
                     ];
                 } catch (\Throwable) {
-                    return Inertia::render('Aziende', [
-                        'error' => 'Error Generic Credit Safe!'
+                    return Inertia::render('AziendeCreate', [
+                        'error' => 'Error Generic Credit Safe!',
+                        'aziende' => []
                     ]);
                 }
 
@@ -97,8 +98,9 @@
                     'aziende' => $result,
                 ]);
             } else {
-                return Inertia::render('Aziende', [
-                    'error' => 'Error Generic!'
+                return Inertia::render('AziendeCreate', [
+                    'aziende' => [],
+                    'error' => 'Generic Error!'
                 ]);
             }
         }
@@ -314,7 +316,7 @@
                 $response = curl_exec($curl);
                 curl_close($curl);
             } catch (\Throwable) {
-                throw new \Exception('ERror credi save');
+                throw new \Exception('Error credi save');
             }
             return json_decode($response);
         }
