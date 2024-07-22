@@ -6,10 +6,11 @@
     use App\Http\Requests\StoreAziendeRequest;
     use App\Http\Requests\UpdateAziendeRequest;
     use App\Models\Aziende;
+    use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Database\Eloquent\Casts\Json;
     use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\Auth;
+    use Illuminate\Routing\Redirector;
     use Illuminate\Support\Facades\DB;
     use Inertia\Inertia;
     use Inertia\Response;
