@@ -4,6 +4,7 @@ import {Head, Link} from "@inertiajs/react";
 export default function RequestPraticaShow({auth, requestPratica}) {
 
     console.log(requestPratica)
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -16,7 +17,7 @@ export default function RequestPraticaShow({auth, requestPratica}) {
                     <div className='flex justify-end items-center'>
                         <Link
                             className="bg-red-500 py-1 mr-2 px-3 text-white rounded shadow transition-all hover:bg-blue-600"
-                            href={route("pratiche.index")}
+                            href={route("requestPratica.index")}
                         >
                             indietro
                         </Link>
