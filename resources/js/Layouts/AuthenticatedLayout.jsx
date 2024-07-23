@@ -33,6 +33,10 @@ export default function Authenticated({user, header, children}) {
                                                      active={route().current('pratiche.index')}>
                                                 Pratiche
                                             </NavLink>
+                                            <NavLink href={route('requestPratica.index')}
+                                                     active={route().current('requestPratica.index')}>
+                                                Reqeust Pratica
+                                            </NavLink>
 
 
                                             <NavLink href={route('aziende.index')}
@@ -68,6 +72,10 @@ export default function Authenticated({user, header, children}) {
                                             <NavLink href={route('listaUtenti.index')}
                                                      active={route().current('listaUtenti.index')}>
                                                 Lista Utenti
+                                            </NavLink>
+                                            <NavLink href={route('requestPratica.index')}
+                                                     active={route().current('requestPratica.index')}>
+                                                Reqeust Pratica
                                             </NavLink>
                                         </>
                                         :

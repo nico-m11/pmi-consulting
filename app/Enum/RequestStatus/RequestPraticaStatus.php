@@ -22,12 +22,12 @@
         case pending = 1;
 
 
-        #[Label('accettata')]
+        #[Label('Accettata')]
         #[Type('accettata')]
         case accettata = 2;
 
 
-        #[Label('rifiutata')]
+        #[Label('Rifiutata')]
         #[Type('rifiutata')]
         case riufiutata = 3;
     }

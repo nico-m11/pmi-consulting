@@ -13,7 +13,6 @@
     use Illuminate\Support\Facades\DB;
     use Inertia\Inertia;
     use Inertia\Response;
-    use PHPUnit\Event\Code\Throwable;
 
     class AziendeController extends Controller
     {
