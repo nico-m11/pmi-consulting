@@ -3,7 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import {Head, Link, router} from "@inertiajs/react";
 import TableHeading from "@/Components/TableHeading";
 import * as ExcelJS from "exceljs";
-import { saveAs } from 'file-saver';
+import {saveAs} from 'file-saver';
 
 export default function Aziende({auth, aziende, queryParams = null, success, error}) {
     const azienda = JSON.parse(aziende);
@@ -25,13 +25,13 @@ export default function Aziende({auth, aziende, queryParams = null, success, err
         const worksheet = workbook.addWorksheet('Aziende');
 
         worksheet.columns = [
-            { header: 'Nome', key: 'name', width: 50 },
-            { header: 'Partita Iva', key: 'vat_no', width: 20 },
-            { header: 'Numero di telefono', key: 'phone_number', width: 20 },
-            { header: 'Indirizzo', key: 'address_complete', width: 50 },
-            { header: 'Livello di Rischio', key: 'credit_rating_description', width: 18 },
-            { header: 'Punteggio di Rating', key: 'credit_rating_provider_value', width: 10 },
-            { header: 'Categoria di Rating', key: 'credit_rating_value', width: 10 },
+            {header: 'Nome', key: 'name', width: 50},
+            {header: 'Partita Iva', key: 'vat_no', width: 20},
+            {header: 'Numero di telefono', key: 'phone_number', width: 20},
+            {header: 'Indirizzo', key: 'address_complete', width: 50},
+            {header: 'Livello di Rischio', key: 'credit_rating_description', width: 18},
+            {header: 'Punteggio di Rating', key: 'credit_rating_provider_value', width: 10},
+            {header: 'Categoria di Rating', key: 'credit_rating_value', width: 10},
 
 
         ];
@@ -61,7 +61,7 @@ export default function Aziende({auth, aziende, queryParams = null, success, err
             queryParams.sort_field = name;
             queryParams.sort_direction = "asc";
         }
-         router.get(route("aziende.index"), queryParams);
+        router.get(route("aziende.index"), queryParams);
     };
 
     const deleteProject = (azienda) => {
@@ -88,18 +88,12 @@ export default function Aziende({auth, aziende, queryParams = null, success, err
                         >
                             Scarica Excel
                         </Link>
-                        <Link
-                            href={route("aziende.create")}
-                            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
-                        >
-                            Add new
-                        </Link>
                     </div>
                 </div>
             }
-            >
-        <Head title="Aziende"/>
-        <div className="py-12">
+        >
+            <Head title="Aziende"/>
+            <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     {success && (
                         <div className="bg-emerald-500 py-2 px-4 text-white rounded mb-4">
@@ -205,48 +199,48 @@ export default function Aziende({auth, aziende, queryParams = null, success, err
                                     <tbody>
                                     {azienda.data.map((az) => (
 
-                                    <tr
-                                        className="bg-white border-b  border-gray-700"
-                                        key={az.id}
-                                    >
-                                        {/*<td className="px-3 py-2">*/}
-                                        {/*    {az.id}*/}
-                                        {/*</td>*/}
-                                        {/*<td className="px-3 py-2">*/}
-                                        {/*    <img*/}
-                                        {/*        //    src={project.image_path} style={{ width: 60 }}*/}
-                                        {/*    />*/}
-                                        {/*</td>*/}
-                                        <th className="px-3 py-2 text-100 text-nowrap hover:underline">
-                                            <Link
+                                        <tr
+                                            className="bg-white border-b  border-gray-700"
+                                            key={az.id}
+                                        >
+                                            {/*<td className="px-3 py-2">*/}
+                                            {/*    {az.id}*/}
+                                            {/*</td>*/}
+                                            {/*<td className="px-3 py-2">*/}
+                                            {/*    <img*/}
+                                            {/*        //    src={project.image_path} style={{ width: 60 }}*/}
+                                            {/*    />*/}
+                                            {/*</td>*/}
+                                            <th className="px-3 py-2 text-100 text-nowrap hover:underline">
+                                                <Link
                                                     href={route("aziende.show", az.id)}
-                                            >
-                                                {az.name}
-                                            </Link>
-                                        </th>
-                                        <td className="px-3 py-2 text-nowrap">
-                                            {az.phone_number}
+                                                >
+                                                    {az.name}
+                                                </Link>
+                                            </th>
+                                            <td className="px-3 py-2 text-nowrap">
+                                                {az.phone_number}
 
-                                        </td>
-                                        <td className="px-3 py-2 text-nowrap">
-                                            {az.address_complete}
+                                            </td>
+                                            <td className="px-3 py-2 text-nowrap">
+                                                {az.address_complete}
 
-                                        </td>
-                                        <td className="px-3 py-2 text-nowrap">
-                                            {/* <Link
+                                            </td>
+                                            <td className="px-3 py-2 text-nowrap">
+                                                {/* <Link
                                                 href={route("aziende.edit", az.id)}
                                                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                                             >
                                                 Edit
                                             </Link> */}
-                                            <button
-                                                onClick={() => deleteProject(az)}
-                                                className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
-                                            >
-                                                Delete
-                                            </button>
-                                        </td>
-                                    </tr>
+                                                <button
+                                                    onClick={() => deleteProject(az)}
+                                                    className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
                                     ))}
                                     </tbody>
                                 </table>

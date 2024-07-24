@@ -28,6 +28,10 @@ export default function Authenticated({user, header, children}) {
                                 { // Viasualizzazione Utente
                                     user.id_user_role === 3 ?
                                         <>
+                                            <NavLink href={route("aziende.create")}
+                                                     active={route().current('aziende.create')}>
+                                                Aggiungi Azienda
+                                            </NavLink>
 
                                             <NavLink href={route('pratiche.index')}
                                                      active={route().current('pratiche.index')}>
@@ -35,7 +39,7 @@ export default function Authenticated({user, header, children}) {
                                             </NavLink>
                                             <NavLink href={route('requestPratica.index')}
                                                      active={route().current('requestPratica.index')}>
-                                                Reqeust Pratica
+                                                Richieste di Preventivo
                                             </NavLink>
 
 
@@ -44,14 +48,14 @@ export default function Authenticated({user, header, children}) {
                                                 Aziende
                                             </NavLink>
 
-                                            <NavLink href={route('preventivatore')}
-                                                     active={route().current('preventivatore')}>
-                                                Preventivatore
-                                            </NavLink>
+                                            {/*<NavLink href={route('preventivatore')}*/}
+                                            {/*         active={route().current('preventivatore')}>*/}
+                                            {/*    Preventivatore*/}
+                                            {/*</NavLink>*/}
 
-                                            <NavLink href={route('shop')} active={route().current('shop')}>
-                                                Shop
-                                            </NavLink>
+                                            {/*<NavLink href={route('shop')} active={route().current('shop')}>*/}
+                                            {/*    Shop*/}
+                                            {/*</NavLink>*/}
                                         </>
                                         :
                                         <></>
@@ -65,17 +69,17 @@ export default function Authenticated({user, header, children}) {
                                                      active={route().current('aziende.index')}>
                                                 Liste Aziende
                                             </NavLink>
-                                            <NavLink href={route('preventivatore')}
-                                                     active={route().current('preventivatore')}>
-                                                Preventivatore
-                                            </NavLink>
+                                            {/*<NavLink href={route('preventivatore')}*/}
+                                            {/*         active={route().current('preventivatore')}>*/}
+                                            {/*    Preventivatore*/}
+                                            {/*</NavLink>*/}
                                             <NavLink href={route('listaUtenti.index')}
                                                      active={route().current('listaUtenti.index')}>
                                                 Lista Utenti
                                             </NavLink>
                                             <NavLink href={route('requestPratica.index')}
                                                      active={route().current('requestPratica.index')}>
-                                                Reqeust Pratica
+                                                Richieste di Preventivo
                                             </NavLink>
                                         </>
                                         :
@@ -180,14 +184,14 @@ export default function Authenticated({user, header, children}) {
                                     Aziende
                                 </ResponsiveNavLink>
 
-                                <ResponsiveNavLink href={route('preventivatore')}
-                                                   active={route().current('preventivatore')}>
-                                    Preventivatore
-                                </ResponsiveNavLink>
+                                {/*<ResponsiveNavLink href={route('preventivatore')}*/}
+                                {/*                   active={route().current('preventivatore')}>*/}
+                                {/*    Preventivatore*/}
+                                {/*</ResponsiveNavLink>*/}
 
-                                <ResponsiveNavLink href={route('shop')} active={route().current('shop')}>
-                                    Shop
-                                </ResponsiveNavLink>
+                                {/*<ResponsiveNavLink href={route('shop')} active={route().current('shop')}>*/}
+                                {/*    Shop*/}
+                                {/*</ResponsiveNavLink>*/}
                             </>
                             :
                             <></>}
@@ -199,10 +203,10 @@ export default function Authenticated({user, header, children}) {
                                                    active={route().current('aziende.index')}>
                                     Aziende
                                 </ResponsiveNavLink>
-                                <ResponsiveNavLink href={route('preventivatore')}
-                                                   active={route().current('preventivatore')}>
-                                    Preventivatore
-                                </ResponsiveNavLink>
+                                {/*<ResponsiveNavLink href={route('preventivatore')}*/}
+                                {/*                   active={route().current('preventivatore')}>*/}
+                                {/*    Preventivatore*/}
+                                {/*</ResponsiveNavLink>*/}
                                 <ResponsiveNavLink href={route('listaUtenti.index')}
                                                    active={route().current('listaUtenti.index')}>
                                     Lista Utenti
