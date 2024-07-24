@@ -11,7 +11,7 @@ export default function RequestPraticaShow({auth, requestPratica}) {
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="font-semibold text-xl text-800 dark:text-200 leading-tight">
-                        {`Pratica "${requestPratica.type_richiesta}"`}
+                        {`Richiesta Preventivo "${requestPratica.request_pratica.type_richiesta}"`}
 
                     </h2>
                     <div className='flex justify-end items-center'>
@@ -46,12 +46,44 @@ export default function RequestPraticaShow({auth, requestPratica}) {
                             <div className="grid gap-1 grid-cols-2 mt-2">
                                 <div>
                                     <div>
-                                        <label className="font-bold text-lg">Project ID</label>
-                                        <p className="mt-1">{requestPratica.id}</p>
+                                        <label className="font-bold text-lg">ID Richiesta preventivo </label>
+                                        <p className="mt-1">{requestPratica.request_pratica.id}</p>
                                     </div>
                                     <div className="mt-4">
-                                        <label className="font-bold text-lg">Project Name</label>
-                                        <p className="mt-1">{requestPratica.type_richiesta}</p>
+                                        <label className="font-bold text-lg">Messaggio della Richiesta</label>
+                                        <p className="mt-1">{requestPratica.request_pratica.volore_richiesta}</p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="font-bold text-lg">Richiedente</label>
+                                        <p className="mt-1">{requestPratica.user_data.name}</p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="font-bold text-lg">Data della Richiesta</label>
+                                        <p className="mt-1">{requestPratica.request_pratica.created_at}</p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="font-bold text-lg">Azienda Richiedente</label>
+                                        <p className="mt-1">{requestPratica.azienda_data.name}</p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="font-bold text-lg">Partita Iva</label>
+                                        <p className="mt-1">{requestPratica.azienda_data.vat_no}</p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="font-bold text-lg">Indirizzo dell'azienda</label>
+                                        <p className="mt-1">{requestPratica.azienda_data.address_complete}</p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="font-bold text-lg">Numero di telefono</label>
+                                        <p className="mt-1">{requestPratica.azienda_data.phone_number}</p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="font-bold text-lg">Punteggio di Rating</label>
+                                        <p className="mt-1">{requestPratica.azienda_data.credit_rating_provider_value}</p>
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="font-bold text-lg">Categoria di Rating</label>
+                                        <p className="mt-1">{requestPratica.azienda_data.credit_rating_value}</p>
                                     </div>
                                 </div>
                             </div>
