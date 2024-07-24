@@ -3,9 +3,75 @@ import {Head, Link, useForm} from '@inertiajs/react';
 import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import {useState} from 'react';
+import jsPDF from "jspdf";
 
 export default function create({auth, aziende}) {
  console.log(aziende)
+
+    const [loanAmount, setLoanAmount] = useState('');
+    const [loanTerm, setLoanTerm] = useState('');
+    const [interestRate, setInterestRate] = useState('');
+    const [amortizationSchedule, setAmortizationSchedule] = useState(null);
+
+    const handleCalculate = () => {
+        const rate = parseFloat(interestRate) / 100 / 12;
+        const term = parseInt(loanTerm) * 12;
+        const amount = parseFloat(loanAmount);
+
+        let balance = amount;
+        let totalInterest = 0;
+        const schedule = [];
+
+        for (let i = 0; i < term; i++) {
+            const interest = balance * rate;
+            const principal = (amount * rate) / (1 - Math.pow(1 + rate, -term)) - interest;
+            balance -= principal;
+            totalInterest += interest;
+
+            schedule.push({
+                month: i + 1,
+                interest: interest.toFixed(2),
+                principal: principal.toFixed(2),
+                balance: balance.toFixed(2),
+            });
+        }
+
+        const annualSummary = [];
+        for (let i = 0; i < loanTerm; i++) {
+            const yearPayments = schedule.slice(i * 12, (i + 1) * 12);
+            const totalInterestYear = yearPayments.reduce((sum, p) => sum + parseFloat(p.interest), 0);
+            const totalPrincipalYear = yearPayments.reduce((sum, p) => sum + parseFloat(p.principal), 0);
+
+            annualSummary.push({
+                year: i + 1,
+                totalInterest: totalInterestYear.toFixed(2),
+                totalPrincipal: totalPrincipalYear.toFixed(2),
+                totalPayment: (totalInterestYear + totalPrincipalYear).toFixed(2),
+            });
+        }
+
+        setAmortizationSchedule({ schedule, annualSummary });
+    };
+
+    const handleDownloadPDF = () => {
+        const pdf = new jsPDF('p', 'pt', 'a4');
+        const logoUrl = './Images/pmiconsulting_cover.jpeg'; // URL del logo
+        const fileName = `preventivo.pdf`;
+
+        pdf.addImage(logoUrl, 'JPEG', 40, 40, 100, 40);
+        pdf.text('Riepilogo Annuale', 40, 100);
+
+        amortizationSchedule.annualSummary.forEach((summary, index) => {
+            const yOffset = 120 + index * 60;
+            pdf.text(`Anno ${summary.year}:`, 40, yOffset);
+            pdf.text(`Spenderai € ${summary.totalPayment} per il ${summary.year}° anno.`, 40, yOffset + 20);
+            pdf.text(`Di cui € ${summary.totalInterest} di INTERESSI e € ${summary.totalPrincipal} di CAPITALE.`, 40, yOffset + 40);
+        });
+
+        pdf.save(fileName);
+    };
+
+
     const [step, setStep] = useState(1);
     const handleNext = () => {
         setStep(step + 1);
@@ -534,6 +600,128 @@ export default function create({auth, aziende}) {
                                                                         <div
                                                                             className="text-red-600">{errors.request_leasing}</div>}
                                                                 </div>
+                                                                <div className="py-12">
+                                                                    <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                                                                        <div
+                                                                            className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                                                                            <div className="p-6 text-gray-900">
+                                                                                <div className="mb-4">
+                                                                                    <label
+                                                                                        className="block text-gray-700 text-sm font-bold mb-2"
+                                                                                        htmlFor="loanAmount">
+                                                                                        Importo del prestito
+                                                                                    </label>
+                                                                                    <input
+                                                                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                                                        id="loanAmount"
+                                                                                        type="number"
+                                                                                        placeholder="Importo"
+                                                                                        value={loanAmount}
+                                                                                        onChange={(e) => setLoanAmount(e.target.value)}
+                                                                                    />
+                                                                                </div>
+
+                                                                                <div className="mb-4">
+                                                                                    <label
+                                                                                        className="block text-gray-700 text-sm font-bold mb-2"
+                                                                                        htmlFor="loanTerm">
+                                                                                        Durata del prestito (anni)
+                                                                                    </label>
+                                                                                    <input
+                                                                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                                                        id="loanTerm"
+                                                                                        type="number"
+                                                                                        placeholder="Durata"
+                                                                                        value={loanTerm}
+                                                                                        onChange={(e) => setLoanTerm(e.target.value)}
+                                                                                    />
+                                                                                </div>
+
+                                                                                <div className="mb-4">
+                                                                                    <label
+                                                                                        className="block text-gray-700 text-sm font-bold mb-2"
+                                                                                        htmlFor="interestRate">
+                                                                                        Tasso di interesse (%)
+                                                                                    </label>
+                                                                                    <input
+                                                                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                                                        id="interestRate"
+                                                                                        type="number"
+                                                                                        placeholder="Tasso"
+                                                                                        value={interestRate}
+                                                                                        onChange={(e) => setInterestRate(e.target.value)}
+                                                                                    />
+                                                                                </div>
+
+                                                                                <div
+                                                                                    className="mb-4 col-span-1 sm:col-span-2">
+                                                                                    <button
+                                                                                        type="button"
+                                                                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                                        onClick={handleCalculate}
+                                                                                    >
+                                                                                        Calcola
+                                                                                    </button>
+                                                                                </div>
+                                                                                {amortizationSchedule && (
+                                                                                    <div className="mt-6">
+                                                                                        <h3 className="text-lg font-semibold text-gray-800 leading-tight">Piano
+                                                                                            di Ammortamento</h3>
+                                                                                        <table
+                                                                                            className="min-w-full mt-4 border-collapse border border-gray-400">
+                                                                                            <thead>
+                                                                                            <tr>
+                                                                                                <th className="border border-gray-300 px-4 py-2">Mese</th>
+                                                                                                <th className="border border-gray-300 px-4 py-2">Interessi</th>
+                                                                                                <th className="border border-gray-300 px-4 py-2">Capitale</th>
+                                                                                                <th className="border border-gray-300 px-4 py-2">Capitale
+                                                                                                    residuo
+                                                                                                </th>
+                                                                                            </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                            {amortizationSchedule.schedule.map((row, index) => (
+                                                                                                <tr key={index}>
+                                                                                                    <td className="border border-gray-300 px-4 py-2">{row.month}</td>
+                                                                                                    <td className="border border-gray-300 px-4 py-2">€ {row.interest}</td>
+                                                                                                    <td className="border border-gray-300 px-4 py-2">€ {row.principal}</td>
+                                                                                                    <td className="border border-gray-300 px-4 py-2">€ {row.balance}</td>
+                                                                                                </tr>
+                                                                                            ))}
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                        <div className="mt-6">
+                                                                                            {amortizationSchedule.annualSummary.map((summary, index) => (
+                                                                                                <div key={index}
+                                                                                                     className="mt-4">
+                                                                                                    <h4 className="text-lg font-semibold">Totale
+                                                                                                        per
+                                                                                                        anno {summary.year}</h4>
+                                                                                                    <p>Spenderai
+                                                                                                        € {summary.totalPayment} per
+                                                                                                        il {summary.year}°
+                                                                                                        anno.</p>
+                                                                                                    <p>Di cui
+                                                                                                        € {summary.totalInterest} di
+                                                                                                        INTERESSI e
+                                                                                                        € {summary.totalPrincipal} di
+                                                                                                        CAPITALE.</p>
+                                                                                                </div>
+                                                                                            ))}
+                                                                                        </div>
+                                                                                        <button
+                                                                                            type="button"
+                                                                                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
+                                                                                            onClick={handleDownloadPDF}
+                                                                                        >
+                                                                                            Scarica PDF
+                                                                                        </button>
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </>
                                                         ) :
                                                         (
@@ -603,20 +791,127 @@ export default function create({auth, aziende}) {
                                                     </div>
                                                     {data.financingType === 'noleggio' ? (
                                                             <>
-                                                                <div className="mb-4">
-                                                                    <InputLabel htmlFor="request_noleggio"
-                                                                                value="request_noleggio"/>
-                                                                    <textarea
-                                                                        id="request_noleggio"
-                                                                        name="request_noleggio"
-                                                                        value={data.request_noleggio}
-                                                                        onChange={(e) => setData('request_noleggio', e.target.value)}
-                                                                        className="mt-1 block w-full"
-                                                                        placeholder="request_noleggio"
-                                                                    />
-                                                                    {errors.request_noleggio &&
+                                                                <div className="py-12">
+                                                                    <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                                                                         <div
-                                                                            className="text-red-600">{errors.request_noleggio}</div>}
+                                                                            className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                                                                            <div className="p-6 text-gray-900">
+                                                                                <div className="mb-4">
+                                                                                    <label
+                                                                                        className="block text-gray-700 text-sm font-bold mb-2"
+                                                                                        htmlFor="loanAmount">
+                                                                                        Importo del prestito
+                                                                                    </label>
+                                                                                    <input
+                                                                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                                                        id="loanAmount"
+                                                                                        type="number"
+                                                                                        placeholder="Importo"
+                                                                                        value={loanAmount}
+                                                                                        onChange={(e) => setLoanAmount(e.target.value)}
+                                                                                    />
+                                                                                </div>
+
+                                                                                <div className="mb-4">
+                                                                                    <label
+                                                                                        className="block text-gray-700 text-sm font-bold mb-2"
+                                                                                        htmlFor="loanTerm">
+                                                                                        Durata del prestito (anni)
+                                                                                    </label>
+                                                                                    <input
+                                                                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                                                        id="loanTerm"
+                                                                                        type="number"
+                                                                                        placeholder="Durata"
+                                                                                        value={loanTerm}
+                                                                                        onChange={(e) => setLoanTerm(e.target.value)}
+                                                                                    />
+                                                                                </div>
+
+                                                                                <div className="mb-4">
+                                                                                    <label
+                                                                                        className="block text-gray-700 text-sm font-bold mb-2"
+                                                                                        htmlFor="interestRate">
+                                                                                        Tasso di interesse (%)
+                                                                                    </label>
+                                                                                    <input
+                                                                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                                                        id="interestRate"
+                                                                                        type="number"
+                                                                                        placeholder="Tasso"
+                                                                                        value={interestRate}
+                                                                                        onChange={(e) => setInterestRate(e.target.value)}
+                                                                                    />
+                                                                                </div>
+
+                                                                                <div
+                                                                                    className="mb-4 col-span-1 sm:col-span-2">
+                                                                                    <button
+                                                                                        type="button"
+                                                                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                                        onClick={handleCalculate}
+                                                                                    >
+                                                                                        Calcola
+                                                                                    </button>
+                                                                                </div>
+                                                                                {amortizationSchedule && (
+                                                                                    <div className="mt-6">
+                                                                                        <h3 className="text-lg font-semibold text-gray-800 leading-tight">Piano
+                                                                                            di Ammortamento</h3>
+                                                                                        <table
+                                                                                            className="min-w-full mt-4 border-collapse border border-gray-400">
+                                                                                            <thead>
+                                                                                            <tr>
+                                                                                            <th className="border border-gray-300 px-4 py-2">Mese</th>
+                                                                                                <th className="border border-gray-300 px-4 py-2">Interessi</th>
+                                                                                                <th className="border border-gray-300 px-4 py-2">Capitale</th>
+                                                                                                <th className="border border-gray-300 px-4 py-2">Capitale
+                                                                                                    residuo
+                                                                                                </th>
+                                                                                            </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                            {amortizationSchedule.schedule.map((row, index) => (
+                                                                                                <tr key={index}>
+                                                                                                    <td className="border border-gray-300 px-4 py-2">{row.month}</td>
+                                                                                                    <td className="border border-gray-300 px-4 py-2">€ {row.interest}</td>
+                                                                                                    <td className="border border-gray-300 px-4 py-2">€ {row.principal}</td>
+                                                                                                    <td className="border border-gray-300 px-4 py-2">€ {row.balance}</td>
+                                                                                                </tr>
+                                                                                            ))}
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                        <div className="mt-6">
+                                                                                            {amortizationSchedule.annualSummary.map((summary, index) => (
+                                                                                                <div key={index}
+                                                                                                     className="mt-4">
+                                                                                                    <h4 className="text-lg font-semibold">Totale
+                                                                                                        per
+                                                                                                        anno {summary.year}</h4>
+                                                                                                    <p>Spenderai
+                                                                                                        € {summary.totalPayment} per
+                                                                                                        il {summary.year}°
+                                                                                                        anno.</p>
+                                                                                                    <p>Di cui
+                                                                                                        € {summary.totalInterest} di
+                                                                                                        INTERESSI e
+                                                                                                        € {summary.totalPrincipal} di
+                                                                                                        CAPITALE.</p>
+                                                                                                </div>
+                                                                                            ))}
+                                                                                        </div>
+                                                                                        <button
+                                                                                            type="button"
+                                                                                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
+                                                                                            onClick={handleDownloadPDF}
+                                                                                        >
+                                                                                            Scarica PDF
+                                                                                        </button>
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </>
                                                         ) :
@@ -672,26 +967,134 @@ export default function create({auth, aziende}) {
                                                                 value="noleggio"
                                                                 checked={data.financingType === 'Noleggio'}
                                                                 onChange={handleFinancingTypeChange}
+                                                                defaultChecked={true}
                                                             />
                                                             <span className="text-gray-700">Noleggio</span>
                                                         </div>
                                                     </div>
                                                     {data.financingType === 'noleggio' && (
                                                         <>
-                                                            <div className="mb-4">
-                                                                <InputLabel htmlFor="request_noleggio"
-                                                                            value="request_noleggio"/>
-                                                                <textarea
-                                                                    id="request_noleggio"
-                                                                    name="request_noleggio"
-                                                                    value={data.request_noleggio}
-                                                                    onChange={(e) => setData('request_noleggio', e.target.value)}
-                                                                    className="mt-1 block w-full"
-                                                                    placeholder="request_noleggio"
-                                                                />
-                                                                {errors.request_noleggio &&
+                                                            <div className="py-12">
+                                                                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                                                                     <div
-                                                                        className="text-red-600">{errors.request_noleggio}</div>}
+                                                                        className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                                                                        <div className="p-6 text-gray-900">
+                                                                            <div className="mb-4">
+                                                                                <label
+                                                                                    className="block text-gray-700 text-sm font-bold mb-2"
+                                                                                    htmlFor="loanAmount">
+                                                                                    Importo del prestito
+                                                                                </label>
+                                                                                <input
+                                                                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                                                    id="loanAmount"
+                                                                                    type="number"
+                                                                                    placeholder="Importo"
+                                                                                    value={loanAmount}
+                                                                                    onChange={(e) => setLoanAmount(e.target.value)}
+                                                                                />
+                                                                            </div>
+
+                                                                            <div className="mb-4">
+                                                                                <label
+                                                                                    className="block text-gray-700 text-sm font-bold mb-2"
+                                                                                    htmlFor="loanTerm">
+                                                                                    Durata del prestito (anni)
+                                                                                </label>
+                                                                                <input
+                                                                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                                                    id="loanTerm"
+                                                                                    type="number"
+                                                                                    placeholder="Durata"
+                                                                                    value={loanTerm}
+                                                                                    onChange={(e) => setLoanTerm(e.target.value)}
+                                                                                />
+                                                                            </div>
+
+                                                                            <div className="mb-4">
+                                                                                <label
+                                                                                    className="block text-gray-700 text-sm font-bold mb-2"
+                                                                                    htmlFor="interestRate">
+                                                                                    Tasso di interesse (%)
+                                                                                </label>
+                                                                                <input
+                                                                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                                                    id="interestRate"
+                                                                                    type="number"
+                                                                                    placeholder="Tasso"
+                                                                                    value={interestRate}
+                                                                                    onChange={(e) => setInterestRate(e.target.value)}
+                                                                                />
+                                                                            </div>
+
+                                                                            <div
+                                                                                className="mb-4 col-span-1 sm:col-span-2">
+                                                                                <button
+                                                                                    type="button"
+                                                                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                                                                    onClick={handleCalculate}
+                                                                                >
+                                                                                    Calcola
+                                                                                </button>
+                                                                            </div>
+                                                                            {amortizationSchedule && (
+                                                                                <div className="mt-6">
+                                                                                    <h3 className="text-lg font-semibold text-gray-800 leading-tight">Piano
+                                                                                        di Ammortamento</h3>
+                                                                                    <table
+                                                                                        className="min-w-full mt-4 border-collapse border border-gray-400">
+                                                                                        <thead>
+                                                                                        <tr>
+                                                                                            <th className="border border-gray-300 px-4 py-2">Mese</th>
+                                                                                            <th className="border border-gray-300 px-4 py-2">Interessi</th>
+                                                                                            <th className="border border-gray-300 px-4 py-2">Capitale</th>
+                                                                                            <th className="border border-gray-300 px-4 py-2">Capitale
+                                                                                                residuo
+                                                                                            </th>
+                                                                                        </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                        {amortizationSchedule.schedule.map((row, index) => (
+                                                                                            <tr key={index}>
+                                                                                                <td className="border border-gray-300 px-4 py-2">{row.month}</td>
+                                                                                                <td className="border border-gray-300 px-4 py-2">€ {row.interest}</td>
+                                                                                                <td className="border border-gray-300 px-4 py-2">€ {row.principal}</td>
+                                                                                                <td className="border border-gray-300 px-4 py-2">€ {row.balance}</td>
+                                                                                            </tr>
+                                                                                        ))}
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                    <div className="mt-6">
+                                                                                        {amortizationSchedule.annualSummary.map((summary, index) => (
+                                                                                            <div key={index}
+                                                                                                 className="mt-4">
+                                                                                                <h4 className="text-lg font-semibold">Totale
+                                                                                                    per
+                                                                                                    anno {summary.year}</h4>
+                                                                                                <p>Spenderai
+                                                                                                    € {summary.totalPayment} per
+                                                                                                    il {summary.year}°
+                                                                                                    anno.</p>
+                                                                                                <p>Di cui
+                                                                                                    € {summary.totalInterest} di
+                                                                                                    INTERESSI e
+                                                                                                    € {summary.totalPrincipal} di
+                                                                                                    CAPITALE.</p>
+                                                                                            </div>
+                                                                                        ))}
+                                                                                    </div>
+                                                                                    <button
+                                                                                        type="button"
+                                                                                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
+                                                                                        onClick={handleDownloadPDF}
+                                                                                    >
+                                                                                        Scarica PDF
+                                                                                    </button>
+                                                                                </div>
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </>
                                                     )}

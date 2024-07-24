@@ -116,7 +116,8 @@
             $request_type = match ($financingType) {
                 'finanziamento' => $request->request->get('request_finanziamento'),
                 'leasing'       => $request->request->get('request_leasing'),
-                'noleggio'      => $request->request->get('request_noleggio'),
+                //TODO attendere aggiornamenti per salvare questo dato -> request noleggio
+                'noleggio'      => $request->request->get('request_noleggio') ?? '',
                 default         => '',
             };
 
@@ -131,7 +132,6 @@
             $reg_no                       = $request->request->get('regNo');
             $safe_no                      = $request->request->get('safeNo');
             $simple_value                 = $request->request->get('simpleValue');
-            $status                       = $request->request->get('status');
             $activityCode                 = $request->request->get('activityCode');
             $correlationId                = $request->request->get('correlationId');
             $id                           = $request->request->get('id');
@@ -140,6 +140,8 @@
             $credit_rating_limit_value    = $request->request->get('credit_rating_limit_value');
             $credit_rating_limit_currency = $request->request->get('credit_rating_limit_currency');
             $credit_rating_provider_value = $request->request->get('credit_rating_provider_value');
+            // TODO capire se usare in futuro asno elimina
+            $status                       = $request->request->get('status');
 
             $save_request_pratica = RequestPraticaController::store($financingType, $request_type);
 
