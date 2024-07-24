@@ -1116,7 +1116,8 @@ export default function create({auth, aziende}) {
                                                         </button>
                                                     </div>
                                                 </>
-                                            ) : (<></>)
+                                            ) :
+                                                (<></>)
                                         }
                                     </>
                                 )}
