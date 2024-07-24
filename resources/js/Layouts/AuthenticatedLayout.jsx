@@ -65,10 +65,10 @@ export default function Authenticated({user, header, children}) {
                                 { // Visualizzazione Amministratore
                                     user.id_user_role === 1 ?
                                         <>
-                                            <NavLink href={route("aziende.create")}
-                                                     active={route().current('aziende.create')}>
-                                                Avvia Richiesta
-                                            </NavLink>
+                                            {/*<NavLink href={route("aziende.create")}*/}
+                                            {/*         active={route().current('aziende.create')}>*/}
+                                            {/*    Avvia Richiesta*/}
+                                            {/*</NavLink>*/}
                                             <NavLink href={route('aziende.index')}
                                                      active={route().current('aziende.index')}>
                                                 Liste Aziende
