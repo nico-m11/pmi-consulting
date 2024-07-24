@@ -117,7 +117,7 @@
                 'finanziamento' => $request->request->get('request_finanziamento'),
                 'leasing'       => $request->request->get('request_leasing'),
                 //TODO attendere aggiornamenti per salvare questo dato -> request noleggio
-                'noleggio'      => $request->request->get('request_noleggio') ?? '',
+                'noleggio'      => $request->request->get('request_noleggio') ?? 'Preventivo noleggio',
                 default         => '',
             };
 
