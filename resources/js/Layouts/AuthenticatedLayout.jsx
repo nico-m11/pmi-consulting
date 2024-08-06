@@ -48,6 +48,11 @@ export default function Authenticated({user, header, children}) {
                                                 Aziende
                                             </NavLink>
 
+                                            <NavLink href={route('tax.create')}
+                                                     active={route().current('tax.create')}>
+                                                Inserisci tasse
+                                            </NavLink>
+
                                             {/*<NavLink href={route('preventivatore')}*/}
                                             {/*         active={route().current('preventivatore')}>*/}
                                             {/*    Preventivatore*/}
@@ -84,6 +89,11 @@ export default function Authenticated({user, header, children}) {
                                             <NavLink href={route('requestPratica.index')}
                                                      active={route().current('requestPratica.index')}>
                                                 Richieste di Preventivo
+                                            </NavLink>
+
+                                            <NavLink href={route('tax.create')}
+                                                     active={route().current('tax.create')}>
+                                                Inserisci tasse
                                             </NavLink>
                                         </>
                                         :

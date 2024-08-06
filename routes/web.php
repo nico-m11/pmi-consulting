@@ -4,6 +4,7 @@
     use App\Http\Controllers\PraticheController;
     use App\Http\Controllers\ProfileController;
     use App\Http\Controllers\RequestPraticaController;
+    use App\Http\Controllers\TaxControllert;
     use App\Http\Controllers\UserController;
     use App\Http\Middleware\RoleAgenteValidate;
     use App\Http\Middleware\RoleAmministratoreValidate;
@@ -62,6 +63,7 @@
         // PRATICHE
         // -----
         Route::resource('/pratiche', PraticheController::class);
+        Route::resource('/tax', TaxControllert::class);
 
         // -----
         // Richiesta PRATICHE
