@@ -41,20 +41,21 @@ export default function create({auth}) {
                         <div className="p-6 text-gray-900">
                             <form className="grid grid-cols-1 sm:grid-cols-2 gap-6" onSubmit={handleSubmit}>
                                 <div className="mb-4">
-                                    <InputLabel htmlFor="employmentType" value="Tipo di impiego"/>
+                                    <InputLabel htmlFor="employmentType" value="employmentType"/>
                                     <select
                                         id="employmentType"
                                         name="employmentType"
                                         value={data.employmentType}
-                                        onChange={(e) => setData('employmentType', e.target.value)}
+                                        onChange={(e) => setData({employmentType: e.target.value})}
                                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-1"
                                     >
-                                        <option value={data.employmentType = 1 }>Enel</option>
-                                        <option value={data.employmentType = 2 }>BNL</option>
-                                        <option value={data.employmentType = 3}>Intesa S.Paolo</option>
+                                        <option value="1">Enel</option>
+                                        <option value="2">BNL</option>
+                                        <option value="3">Intesa S.Paolo</option>
                                     </select>
-                                    {errors.employmentType &&
-                                        <div className="text-red-600">{errors.employmentType}</div>}
+                                    {errors.employmentType && (
+                                        <div className="text-red-600">{errors.employmentType}</div>
+                                    )}
                                 </div>
 
 
@@ -65,7 +66,6 @@ export default function create({auth}) {
                                         value={data.documents}
                                         onChange={(e) => setData('documents', e.target.value)}
                                         onUploadAccepted={(results) => {
-                                            console.log(results)
                                             setData('documents', results);
                                         }}
                                     >
