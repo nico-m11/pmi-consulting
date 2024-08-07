@@ -49,9 +49,9 @@ export default function create({auth}) {
                                         onChange={(e) => setData('employmentType', e.target.value)}
                                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-1"
                                     >
-                                        <option value="full-time">Enel</option>
-                                        <option value="part-time">BNL</option>
-                                        <option value="self-employed">Intesa S.Paolo</option>
+                                        <option value={data.employmentType = 1 }>Enel</option>
+                                        <option value={data.employmentType = 2 }>BNL</option>
+                                        <option value={data.employmentType = 3}>Intesa S.Paolo</option>
                                     </select>
                                     {errors.employmentType &&
                                         <div className="text-red-600">{errors.employmentType}</div>}
