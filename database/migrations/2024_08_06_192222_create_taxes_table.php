@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         //TODO aggiungere campi corretti
-        Schema::create('tax', function (Blueprint $table) {
+        Schema::create('taxes', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->string('type');
 

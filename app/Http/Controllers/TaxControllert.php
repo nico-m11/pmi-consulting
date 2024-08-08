@@ -5,6 +5,7 @@
     use App\Http\Requests\StoreTaxRequest;
     use App\Http\Requests\UpdateTaxRequest;
     use App\Models\Tax;
+    use Illuminate\Database\Eloquent\Casts\Json;
     use Illuminate\Support\Collection;
     use Illuminate\Support\Facades\DB;
     use Inertia\Inertia;
@@ -20,7 +21,13 @@
          */
         public function index()
         {
-            //
+            $tax = Tax::query()->get();
+
+            return Inertia::render('Tax', [
+                'taxes'     => Json::encode($tax),
+                'queryParams' => request()->query() ?: null,
+                'success'     => session('success'),
+            ]);
         }
 
         /**
@@ -171,7 +178,9 @@
          */
         public function show(Tax $tax)
         {
-            //
+            return Inertia::render('TaxShow', [
+                'tax' => $tax
+            ]);
         }
 
         /**
