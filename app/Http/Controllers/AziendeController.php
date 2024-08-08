@@ -6,6 +6,7 @@
     use App\Http\Requests\StoreAziendeRequest;
     use App\Http\Requests\UpdateAziendeRequest;
     use App\Models\Aziende;
+    use App\Notifications\ResetPasswordNotification;
     use Illuminate\Database\Eloquent\Casts\Json;
     use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
@@ -145,6 +146,9 @@
 
             $save_request_pratica = RequestPraticaController::store($financingType, $request_type);
 
+//            $azienda = Aziende::create([
+//
+//            ]);
             DB::table('aziendes')->insert([
                 'id_request_pratica'           => $save_request_pratica,
                 'id_user_insert'               => Auth::id(),
@@ -172,6 +176,17 @@
                 'created_at'                   => now(),
                 'updated_at'                   => null,
             ]);
+
+            //$azienda->pratiche;
+//$azienda->pratiche()->where();
+
+
+//            $user = Auth::user();
+//            $user->notify(new ResetPasswordNotification($azienda));
+
+
+
+
 
             return to_route('aziende.index')
                 ->with(
