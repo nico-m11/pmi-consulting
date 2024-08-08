@@ -168,9 +168,11 @@
                   'column_72_160001_240000' => $column_72_160001_240000
               ]);
 
-            return Inertia::render(
-                'InsertTax',
-            );
+            return to_route('tax.index.index')
+                ->with(
+                    'success',
+                    "Tassa aggiunta correttamente!"
+                );
         }
 
         /**

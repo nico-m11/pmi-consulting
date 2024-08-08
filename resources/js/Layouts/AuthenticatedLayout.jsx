@@ -188,14 +188,29 @@ export default function Authenticated({user, header, children}) {
                         {/* Visualizzazione smartfone Utente*/}
                         {user.id_user_role === 3 ?
                             <>
+                                <ResponsiveNavLink href={route("aziende.create")}
+                                                   active={route().current('aziende.create')}>
+                                    Avvia Richiesta
+                                </ResponsiveNavLink>
+
                                 <ResponsiveNavLink href={route('pratiche.index')}
                                                    active={route().current('pratiche.index')}>
                                     Pratiche
                                 </ResponsiveNavLink>
+                                <ResponsiveNavLink href={route('requestPratica.index')}
+                                                   active={route().current('requestPratica.index')}>
+                                    Richieste di Preventivo
+                                </ResponsiveNavLink>
+
 
                                 <ResponsiveNavLink href={route('aziende.index')}
                                                    active={route().current('aziende.index')}>
                                     Aziende
+                                </ResponsiveNavLink>
+
+                                <ResponsiveNavLink href={route('tax.create')}
+                                                   active={route().current('tax.create')}>
+                                    Inserisci tasse
                                 </ResponsiveNavLink>
 
                                 {/*<ResponsiveNavLink href={route('preventivatore')}*/}
@@ -215,26 +230,26 @@ export default function Authenticated({user, header, children}) {
                             <>
                                 <ResponsiveNavLink href={route('aziende.index')}
                                                    active={route().current('aziende.index')}>
-                                    Aziende
+                                    Liste Aziende
                                 </ResponsiveNavLink>
-                                {/*<ResponsiveNavLink href={route('preventivatore')}*/}
-                                {/*                   active={route().current('preventivatore')}>*/}
-                                {/*    Preventivatore*/}
-                                {/*</ResponsiveNavLink>*/}
                                 <ResponsiveNavLink href={route('listaUtenti.index')}
                                                    active={route().current('listaUtenti.index')}>
                                     Lista Utenti
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href={route('requestPratica.index')}
+                                                   active={route().current('requestPratica.index')}>
+                                    Richieste di Preventivo
+                                </ResponsiveNavLink>
+
+                                <ResponsiveNavLink href={route('tax.create')}
+                                                   active={route().current('tax.create')}>
+                                    Inserisci tasse
                                 </ResponsiveNavLink>
                             </> : <></>}
 
                         {/* Visualizzazione smartfone Agente*/}
                         {user.id_user_role === 2 ?
                             <>
-                                <ResponsiveNavLink href={route('aziende.index')}
-                                                   active={route().current('aziende.index')}>
-                                    Aziende
-                                </ResponsiveNavLink>
-
                                 <ResponsiveNavLink href={route('listaUtenti.index')}
                                                    active={route().current('listaUtenti.index')}>
                                     Lista Utenti
